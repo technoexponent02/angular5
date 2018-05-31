@@ -1,0 +1,99 @@
+<div class="headerBottom">
+    <!-- <div class="headerBottomLine"></div> -->
+    <!-- <pre>{{authUser.token | json}}</pre> -->
+    <div class="navOverlay" onclick=""></div>
+    <ul class="mainNav">
+        <li>
+            <a (click)="closemenu()">Musicians</a>
+            <ul>
+                <li>
+                    <a href="/m/{{musiciansUser}}/musician-overview" (click)="closemenu()">Musicians</a>
+                </li>
+                <li>
+                    <a>Musician search</a>
+                </li>
+                <!-- <li *ngIf="hideMenu">
+                    <a href="/m/{{musiciansUser}}/info" (click)="closemenu()">Musician Profile</a>
+                </li> -->
+                <li>
+                    <a>Presenter Profile</a>
+                </li>
+            </ul>
+            <!-- class="sl" -->
+        </li>
+        <li>
+            <a (click)="closemenu()">Bands / Artists</a>
+            <ul>
+                <li>
+                    <a href="/b/{{musiciansUser}}/band-overview" (click)="closemenu()">Bands</a>
+                </li>
+                <li>
+                    <a>Band search</a>
+                </li>
+                <!-- <li *ngIf="hideMenu">
+                    <a href="/b/{{musiciansUser}}/band-profiles" (click)="closemenu()">Band Profiles</a>
+                </li> -->
+            </ul>
+        </li>
+        <li>
+            <a href="javascript:void(0);" (click)="closemenu()">Events</a>
+        </li>
+        <li>
+            <a href="javascript:void(0);" (click)="closemenu()">Genre</a>
+        </li>
+        <li>
+            <a href="javascript:void(0);" (click)="closemenu()">Media</a>
+        </li>
+        <li>
+            <a href="javascript:void(0);" (click)="closemenu()">Billboard/Forum</a>
+        </li>
+        <li>
+            <a href="javascript:void(0);" (click)="closemenu()">Teacher</a>
+        </li>
+        <li>
+            <a href="javascript:void(0);" (click)="closemenu()">Music &amp; yamuba</a>
+        </li>
+    </ul>
+    <div class="headerSearch">
+        <a href="/search/musicians" class="ico">
+            <img src="assets/images/search-icon.png" alt="">
+        </a>
+    </div>
+    <div class="logedUser">
+        <!-- assets/images/head-user-icon.png -->
+        <!-- <a href="javascript:void(0);" class="uImage" [style.background-image]="profileimage"></a> -->
+        <a href="javascript:void(0);" *ngIf="loggedIn; else notloginImage;" class="uImage" [style.backgroundImage]="musicianLinkData.image"></a>
+        <ng-template #notloginImage>
+            <a href="javascript:void(0);" class="uImage" style="background: url('assets/images/head-user-icon.png');"></a>
+        </ng-template>
+
+
+        <a href="javascript:void(0);" *ngIf="loggedIn; else notloginName;" class="uName">{{musicianLinkData.name}}</a>
+        <ng-template #notloginName>
+            <a href="javascript:void(0);" class="uName">My yamuba</a>
+        </ng-template>
+
+        <ul *ngIf="loggedIn; else notlogin;">
+            <li>
+                <a (click)="logout()" class="popupClick2">Logout</a>
+            </li>
+        </ul>
+
+        <ng-template #notlogin>
+            <ul>
+                <li>
+                    <!-- <a href="#loginPopup" class="popupClick">Login</a> -->
+                    <a (click)="loginPop()" class="popupClick" id="logintrigg">Login</a>
+                </li>
+                <li>
+                    <!-- <a href="#registerPopup" class="popupClick">Register</a> -->
+                    <a (click)="registrationPop()" class="popupClick">Register</a>
+                </li>
+            </ul>
+        </ng-template>
+
+    </div>
+    <a href="javascript:void(0);" id="navClick">
+        <i class="fa fa-bars"></i>
+    </a>
+</div>

@@ -1,0 +1,54 @@
+<section class="themebg">
+	<div class="container">
+		<div class="menu_wrap">
+			<h2 class="dbmenutitle text-uppercase">settings</h2>
+
+			<button class="swapmenubtn hidden-lg hidden-md is-closed" id="fortabmenu">
+		        <span class="hamb-top"></span>
+				<span class="hamb-middle"></span>
+				<span class="hamb-bottom"></span>
+	      </button>
+	      <div class="sidnavmainmenu" id="tabmenu">
+
+			<!-- super admin tabs -->
+		  	<ul class="nav nav-tabs" role="tablist" *ngIf="chkSuperAdmin">
+				<a id="tabmenu-close" href="#" class="btn-lg pull-right toggle hidden-lg hidden-md"><i class="glyphicon glyphicon-remove"></i></a>
+				<li role="presentation" routerLinkActive="active"><a routerLink="/admin/settings/localization">Localization</a></li>
+				<li role="presentation" routerLinkActive="active"><a routerLink="/admin/settings/my-profile">My profile</a></li>
+				<li role="presentation" routerLinkActive="active"><a routerLink="/admin/settings/organization">Organization</a></li>
+				<li role="presentation" routerLinkActive="active"><a routerLink="/admin/settings/subscription-plan">Subscription Plan</a></li>
+				<li role="presentation" routerLinkActive="active"><a routerLink="/admin/settings/users">Users</a></li>
+				<li role="presentation" routerLinkActive="active"><a routerLink="/admin/settings/api-and-integration">API &amp; Integration</a></li>
+				<li role="presentation" routerLinkActive="active"><a routerLink="/admin/settings/clients-in-settings">Clients in settings</a></li>
+			</ul>
+			<!-- super admin tabs -->
+
+			<!-- admin manager tabs -->
+			<ul class="nav nav-tabs" role="tablist" *ngIf="chkAdminManager">
+				<a id="tabmenu-close" href="#" class="btn-lg pull-right toggle hidden-lg hidden-md"><i class="glyphicon glyphicon-remove"></i></a>
+				<li role="presentation" routerLinkActive="active"><a routerLink="/admin/settings/localization">Localization</a></li>
+				<li role="presentation" routerLinkActive="active"><a routerLink="/admin/settings/my-profile">My profile</a></li>
+				<li role="presentation" routerLinkActive="active"><a routerLink="/admin/settings/organization">Organization</a></li>
+				<li role="presentation" routerLinkActive="active"><a routerLink="/admin/settings/users">Users</a></li>
+				<li role="presentation" routerLinkActive="active"><a routerLink="/admin/settings/api-and-integration">API &amp; Integration</a></li>
+				<li role="presentation" routerLinkActive="active"><a routerLink="/admin/settings/clients-in-settings">Clients in settings</a></li>
+			</ul>
+			<!-- admin manager tabs -->
+
+			<!-- admin editor tabs -->
+			<ul class="nav nav-tabs" role="tablist" *ngIf="chkAdminEditor">
+				<a id="tabmenu-close" href="#" class="btn-lg pull-right toggle hidden-lg hidden-md"><i class="glyphicon glyphicon-remove"></i></a>
+				<li role="presentation" routerLinkActive="active"><a routerLink="/admin/settings/my-profile">My profile</a></li>
+			</ul>
+			<!-- admin editor tabs -->
+
+		  	</div>
+		</div>
+	</div>
+</section>
+
+<section class="tabbox">
+	<router-outlet></router-outlet>
+</section>
+
+

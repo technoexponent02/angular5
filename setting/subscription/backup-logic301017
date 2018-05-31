@@ -1,0 +1,477 @@
+serversend(){
+
+    // local object for paypal payment
+    let paypalPaymentObj = {
+      user_id: this.authUser.id,
+      org_id: this.authUser.org_id,
+      subscription_id: this.stripePaymentData.id,
+      amount: this.planTotal,
+      date_signed: this.currentDate,
+      expiration_date: this.planExpiryDate
+    }
+
+    // paypal api call
+    this.userService.sendPaypal(paypalPaymentObj)
+      .subscribe(
+        data => {
+          console.log(data);
+          if(data.status === "success"){
+            // store the success id
+            this.paypalSuccessId = data.subscription_id;
+            // create paypal success url with success id
+            // this.paypalSuccessUrl = `${config.website_base_url}paypal-payment-success/${this.paypalSuccessId}`;
+            this.paypalPaymentUrl = `${config.api_base_url}user/paypal-success/${this.paypalSuccessId}`;
+            // go to paypal
+            setTimeout(()=>{
+              $('#paypal_form').submit();
+            }, 1000);
+          }
+        },
+        error => {
+          console.log(error);
+          alert('Something went wrong!');
+        }
+      )
+    // $('#paypal_form').submit();
+  }
+
+
+
+  /**
+   * @func {{stripePayment}}
+   * @description {{this will set the stripe payment form}}
+   */
+  stripePayment(){
+    this.stripePay = true;
+  }
+
+  /**
+   * @func {{paypalPayment}}
+   * @description {{this will set the payment payment form}}
+   */
+  paypalPayment(){
+    this.stripePay = false;
+  }
+
+
+
+
+  /**
+   * @func {{checkDateisGrater}}
+   * @description {{this will check the current date is grter then expiri date}}
+   */
+  private checkDateisGrater(){
+    if(this.userInformation.user.subscription_plan.expiration_date == null){
+      this.firstUserPlanBtn = true;
+    } else {
+      let currentDate = + new Date(moment().format());
+      let expiriDate = + new Date(moment(this.userInformation.user.subscription_plan.expiration_date).format());
+      // console.log(currentDate > expiriDate);
+      // console.log(currentDate , expiriDate);
+      // was
+      this.planExpireIsWas = "Plan will expire";
+      // show the upgrade and downgrade button
+      if(currentDate > expiriDate){
+        this.onPaymentBtn = false;
+        this.planExpireIsWas = "Plan was expired";
+      }
+    }
+  }
+
+  /**
+   * @func {{yearlyDiscount}}
+   * @param \{{{number}}\} {{$data}} {{this will take the yearly discount price}}
+   * @description {{this function will done the yearly updated price with discount}}
+   */
+  yearlyDiscount($data){
+    // console.log($data.amount_monthly*12);
+    // get total price
+    let totalYearlyPrice = $data.amount_monthly*12;
+    // discount amount
+    let totalDiscountPrice = totalYearlyPrice * ($data.yearly_discount/100);
+    // assign plan data
+    this.planTotal = totalYearlyPrice - totalDiscountPrice;
+    // yearly date assign
+    this.planExpiryDate = moment().add(1, 'years').format();
+  }
+
+  /**
+   * @func {{monthlyDiscount}}
+   * @param \{{{number}}\} {{$data}} {{this will take the monthly discount price}}
+   * @description {{this function will done the monthly updated price with discount}}
+   */
+  monthlyDiscount($data){
+    // console.log($data);
+    // set monthly amount again
+    this.planTotal = $data.amount_monthly;
+    // monthly date assign
+    this.planExpiryDate = moment().add(1, 'months').format();
+  }
+
+
+
+  /**
+   * @func {{yearlyDiscount}}
+   * @param \{{{number}}\} {{$data}} {{this will take the yearly discount price}}
+   * @description {{this function will done the yearly updated price with discount}}
+   */
+  agyearlyDiscount($data){
+    // console.log('yr');
+    // get total price
+    let totalYearlyPrice = $data.amount_monthly*12;
+    // discount amount
+    let totalDiscountPrice = totalYearlyPrice * ($data.yearly_discount/100);
+    // assign plan data
+    this.planTotal = totalYearlyPrice - totalDiscountPrice;
+    // yearly date assign
+    this.planExpiryDate = moment().add(1, 'years').format();
+
+
+    // assign the data for stripe plan data
+    this.stripePaymentData = $data;
+
+    
+    // ****************************
+    // how much day used the plan
+    // ****************************
+    // parse the time stamp
+    let planSignedDate = + new Date(moment(this.userInformation.user.subscription_plan.date_signed));
+    let currentDate = moment.now();
+
+    // minus the current date to signed date for diffrence
+    let diffTimestamp = currentDate - planSignedDate;
+    let diffDays = Math.ceil(diffTimestamp / (1000 * 3600 * 24));
+    
+    console.log('remaining day', diffDays);
+    // how much days used the plan
+
+
+    // ***************************************
+    // number of days subscribed current plan
+    // ***************************************
+    let currentPlanSignedDate = + new Date(moment(this.userInformation.user.subscription_plan.date_signed));
+    let currentPlanExpiredDate = + new Date(moment(this.userInformation.user.subscription_plan.expiration_date));
+
+    let currentDiffTimestamp = currentPlanExpiredDate - currentPlanSignedDate;
+    let currentDiffDays = Math.ceil(currentDiffTimestamp / (1000 * 3600 * 24));
+    
+    console.log('plan total days buy', currentDiffDays);
+    // number of days subscribed current plan
+
+
+    // *****************************
+    // calculate the upadted total
+    // *****************************
+    console.log('plan want to buy amount', this.planTotal);
+    console.log('current plan amount', this.userInformation.user.subscription_plan.amount);
+
+    let updatedPlanTotal = (this.userInformation.user.subscription_plan.amount/currentDiffDays)*diffDays;
+    console.log(Math.floor(this.planTotal - updatedPlanTotal))
+
+    this.planTotal = Math.floor(this.planTotal - updatedPlanTotal);
+    // calculate the upadted total
+
+
+    // invalid minus amount check
+    if(this.planTotal < 0){
+      this.invalidAmount = true;
+    } else {
+      this.invalidAmount = false;
+    }
+
+  }
+
+  /**
+   * @func {{monthlyDiscount}}
+   * @param \{{{number}}\} {{$data}} {{this will take the monthly discount price}}
+   * @description {{this function will done the monthly updated price with discount}}
+   */
+  agmonthlyDiscount($data){
+    // console.log('month');
+    // set monthly amount again
+    this.planTotal = $data.amount_monthly;
+    // monthly date assign
+    this.planExpiryDate = moment().add(1, 'months').format();
+    // upgrade plan pop again check
+    this.upgradePlanPopAgain($data, event, this.cf);
+  }
+
+
+  upgradePlanPopAgain($plan, event, cf){
+    console.log($plan)
+    console.log(this.userInformation.user.subscription_plan)
+
+    // effect on status
+    this.cf = cf;
+
+    // yarly monthly again state
+    this.notAgainMonthlyYearly = false;
+
+    // popup open by doing state change
+    this.paymentPop = true;
+
+    // assign the data for stripe plan data
+    this.stripePaymentData = $plan;
+    
+    // ****************************
+    // how much day used the plan
+    // ****************************
+    // parse the time stamp
+    let planSignedDate = + new Date(moment(this.userInformation.user.subscription_plan.date_signed));
+    let currentDate = moment.now();
+
+    // minus the current date to signed date for diffrence
+    let diffTimestamp = currentDate - planSignedDate;
+    let diffDays = Math.ceil(diffTimestamp / (1000 * 3600 * 24));
+    
+    console.log('remaining day', diffDays);
+    // how much days used the plan
+
+
+    // ***************************************
+    // number of days subscribed current plan
+    // ***************************************
+    let currentPlanSignedDate = + new Date(moment(this.userInformation.user.subscription_plan.date_signed));
+    let currentPlanExpiredDate = + new Date(moment(this.userInformation.user.subscription_plan.expiration_date));
+
+    let currentDiffTimestamp = currentPlanExpiredDate - currentPlanSignedDate;
+    let currentDiffDays = Math.ceil(currentDiffTimestamp / (1000 * 3600 * 24));
+    
+    console.log('plan total days buy', currentDiffDays);
+    // number of days subscribed current plan
+
+
+    // *****************************
+    // calculate the upadted total
+    // *****************************
+    console.log('plan want to buy amount', $plan.amount_monthly);
+    console.log('current plan amount', this.userInformation.user.subscription_plan.amount);
+
+    let updatedPlanTotal = (this.userInformation.user.subscription_plan.amount/currentDiffDays)*diffDays;
+    console.log(Math.floor($plan.amount_monthly - updatedPlanTotal))
+
+    this.planTotal = Math.floor($plan.amount_monthly - updatedPlanTotal);
+    // calculate the upadted total
+
+    // invalid minus amount check
+    if(this.planTotal < 0){
+      this.invalidAmount = true;
+    } else {
+      this.invalidAmount = false;
+    }
+
+
+
+  }
+  
+
+  /**
+   * @func {{upgradePlanPop}}
+   * @param \{{{event object}}\} {{$plan}} {{get the single plan data}}
+   * @description {{this will open the popup for the stripe payment}}
+   */
+  upgradePlanPop($plan, event, cf){
+    console.log($plan);
+
+
+    // effect on status
+    this.cf = cf;
+    // console.log(cf);
+
+    // free plan logic
+    if($plan.amount_monthly == 0){
+      // alert('free');
+      // assign the data for stripe plan data
+      this.stripePaymentData = $plan;
+
+      // make the local payment object
+      if(this.userInformation.user.subscription_plan == null){
+        // console.log('null')
+        let subscriptionObj = {
+          user_id:this.userInformation.user_id,
+          payment_for:'upgrade',
+          id:'',
+          org_id:this.userInformation.id,
+          subscription_id:this.stripePaymentData.id,
+          date_signed: this.currentDate,
+          expiration_date: moment().add(1, 'months').format(),
+          api_token:this.authUser.api_token,
+          amount: 0
+        }
+        // console.log(subscriptionObj)
+        // free plan service call
+        this.freePlan(subscriptionObj);
+      }
+      else{
+        // console.log('not null')
+        let subscriptionObj = {
+          user_id:this.userInformation.user_id,
+          payment_for:'upgrade',
+          id:this.userInformation.user.subscription_plan.id,
+          org_id:this.userInformation.id,
+          subscription_id:this.stripePaymentData.id,
+          date_signed: this.currentDate,
+          expiration_date: moment().add(1, 'months').format(),
+          api_token:this.authUser.api_token,
+          amount: 0
+        }
+        // console.log(subscriptionObj)
+        // free plan service call
+        this.freePlan(subscriptionObj);
+      }
+      
+
+    }
+    else{
+      // popup open by doing state change
+      this.paymentPop = true;
+      // assign the data for stripe plan data
+      this.stripePaymentData = $plan;
+      // console.log($plan);
+      this.planTotal = $plan.amount_monthly;
+      // yearly is checked or not
+      if($('#yarlyplan').is(':checked')){
+        this.yearlyDiscount(this.stripePaymentData);
+      }
+      // monthly is checked or not
+      if($('#monthlyplan').is(':checked')){
+        this.monthlyDiscount(this.stripePaymentData);
+      }
+    }
+  }
+
+
+
+
+
+
+  /**
+   * @func {{freePlan}}
+   * @param \{{{object}}\} {{$freeSubs}} {{this will send the free plan data object}}
+   * @description {{this will post the free plan data}}
+   */
+  private freePlan($freeSubs){
+    this.userService.postFreeSubscribtion($freeSubs)
+      .subscribe(
+        data => {
+          // console.log(data);
+          // message for sucess
+          this.freeplanmsg.push({severity:'success', summary:'Success Message', detail:'you are now free user for one month'});
+          // get the all plan list again
+          this.getAllSubscribtion(this.authUser.api_token, this.userLang.locale, this.authUser.org_id);
+          // reload the screen after two second
+          setTimeout(() => { location.reload(); }, 2000);
+        },
+        error => {
+          console.log(error);
+          alert('Something went wrong!');
+        }
+      );
+  }
+
+  /**
+   * @func {{getToken}}
+   * @description {{this function will get the stripe payment token}}
+   */
+  getToken() {
+    // processing status
+    this.processingPayment = true;
+    // stripe payment
+    (<any>window).Stripe.card.createToken({
+      number: this.cardNumber,
+      exp_month: this.expiryMonth,
+      exp_year: this.expiryYear,
+      cvc: this.cvc
+    }, (status: number, response: any) => {
+
+      // Wrapping inside the Angular zone
+      this._zone.run(() => {
+        if (status === 200) {
+          // console.log(response)
+
+
+          // make the local payment object
+          if(this.userInformation.user.subscription_plan == null){
+            // make the local payment object
+            let subscriptionObj = {
+              user_id:this.userInformation.user_id,
+              stripeToken:response.id,
+              amount: this.planTotal,
+              paid_by:'S',
+              payment_for:'Upgrade',
+              id:'',
+              org_id:this.userInformation.id,
+              subscription_id:this.stripePaymentData.id,
+              date_signed: this.currentDate,
+              expiration_date: this.planExpiryDate,
+              api_token:this.authUser.api_token,
+              effect_on: this.cf
+            }
+            // console.log(subscriptionObj);
+
+            // call the submit payment method
+            this.submitPayment(subscriptionObj);
+          }
+          else{
+            // make the local payment object
+            let subscriptionObj = {
+              user_id:this.userInformation.user_id,
+              stripeToken:response.id,
+              amount: this.planTotal,
+              paid_by:'S',
+              payment_for:'Upgrade',
+              id:this.userInformation.user.subscription_plan.id,
+              org_id:this.userInformation.id,
+              subscription_id:this.stripePaymentData.id,
+              date_signed: this.currentDate,
+              expiration_date: this.planExpiryDate,
+              api_token:this.authUser.api_token,
+              effect_on: this.cf
+            }
+            // console.log(subscriptionObj);
+
+            // call the submit payment method
+            this.submitPayment(subscriptionObj);
+          }
+
+
+        } else {
+          console.log(response.error.message);
+          // processing status
+          this.processingPayment = false;
+          // message error
+          this.stripemsgs.push({severity:'error', detail:response.error.message});
+          setTimeout(()=>{ this.stripemsgs = []; }, 5000);
+        }
+      });
+    });
+  }
+
+  /**
+   * @func {{submitPayment}}
+   * @param \{{{object}}\} {{$paymentData}} {{send the total payment data with stripe successfully payment token}}
+   * @description {{this function will send the payment object data with stripe id token}}
+   */
+  private submitPayment($paymentData){
+    this.userService.postSubscribtion($paymentData)
+      .subscribe(
+        data => {
+          // console.log(data);
+          // alert('Payment done successfully.');
+          // this will say thanks;
+          this.paymentthanks = true;
+          // processing status
+          this.processingPayment = false;
+          // this.paymentPop = false;
+          // this.paymentemsgs.push({severity:'success', detail:'Payment done successfully'});
+          // reload the url
+          // setTimeout(()=>{ location.reload(); }, 2000);
+          // get the all plan list again
+          this.getAllSubscribtion(this.authUser.api_token, this.userLang.locale, this.authUser.org_id);
+        },
+        error => {
+          console.log(error);
+          alert('Something went wrong!');
+        }
+      );
+  }

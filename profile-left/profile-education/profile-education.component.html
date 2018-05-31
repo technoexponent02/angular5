@@ -1,0 +1,172 @@
+<div class="lcdesk">
+  <p class="titleleft clearfix">Education
+    <a href="javascript:void(0);" 
+      id="educationModal"
+      *ngIf="otherProfile == 'no'"
+      (click)="educationModal(education)" 
+      class="plusIcobtn pull-right"></a>
+  </p>
+  <!-- <pre>{{eduList | json}}</pre> -->
+  <div class="srcncont" *ngFor="let edu of eduList">
+    <figure class="rounduc">
+      <img src="assets/images/book_ico.png" class="img-responsive" alt="logo company">
+    </figure>
+    <a href="javascript:void(0);" 
+      id="editedicationModal"
+      *ngIf="otherProfile == 'no'"
+      (click)="editedicationModal(editEducation,edu)" 
+      class="editpen"></a>
+    <p class="namect"> {{edu.board_university_name}}</p>
+    <div class="lcdesk">
+      School: {{edu.school_college_name}}<br>
+      Degree: {{edu.degree_name}}
+    </div>
+  </div>
+
+
+
+</div>
+
+
+<!-- add education -->
+<ng-template #education>
+    <form name="form" (ngSubmit)="f.form.valid && eduSubmit()" #f="ngForm" novalidate autocomplete="off">
+      <div class="modal-header">
+        <button type="button" class="close" (click)="closemodal()" style="color:#000; font-size: 45px;">
+          <span aria-hidden="true">&times;</span>
+        </button>
+        <h4 class="modal-title" id="myModalLabel">Add Education</h4>
+      </div>
+      <div class="modal-body formstyle">
+
+        <div class="form-group">
+          <label>School Name<sup class="text-danger-astr">*</sup></label>
+          <input type="text" class="form-control" name="schoolName" [(ngModel)]="model.school_college_name" #schoolName="ngModel" required>
+          
+          <div class="text-danger lite" *ngIf="schoolName.errors && (schoolName.dirty || schoolName.touched)">
+            <div [hidden]="!schoolName.errors.required">
+              School name is required
+            </div>
+          </div>
+
+        </div>
+
+        <div class="form-group">
+          <label>College/ University Name<sup class="text-danger-astr">*</sup></label>
+          <input type="text" class="form-control" name="collegeName" [(ngModel)]="model.board_university_name" #collegeName="ngModel" required>
+
+          <div class="text-danger lite" *ngIf="collegeName.errors && (collegeName.dirty || collegeName.touched)">
+            <div [hidden]="!collegeName.errors.required">
+              College name is required
+            </div>
+          </div>
+
+
+        </div>
+
+        <div class="row">
+          <div class="form-group col-sm-6">
+            <label>Degree
+              <sup class="text-danger-astr">*</sup>
+            </label>
+            <div class="form-group">
+              <input type="text" class="form-control" name="degree" [(ngModel)]="model.degree_name" #degree="ngModel" required>
+              
+              <div class="text-danger lite" *ngIf="degree.errors && (degree.dirty || degree.touched)">
+                <div [hidden]="!degree.errors.required">
+                  Degree name is required
+                </div>
+              </div>
+
+            </div>
+          </div>
+        </div>
+
+        <p-messages [(value)]="msgs"></p-messages>
+
+      </div>
+      <div class="modal-footer">
+        <!-- <button type="button" class="btn btn-primary delte pull-left">Delete</button> -->
+        <button type="submit" class="btn btn-primary" 
+        class="btn btn-primary"
+        [disabled]="!f.form.valid || loading">
+          <i class="fa fa-spinner fa-pulse fa-spin fa-spin" *ngIf="loading"></i>
+          Save
+        </button>
+      </div>
+    </form>
+</ng-template>
+<!-- add education -->
+
+
+<!-- edit education -->
+<ng-template #editEducation>
+
+  <!-- <pre>{{editmodel | json}}</pre> -->
+
+    <form name="form" (ngSubmit)="f.form.valid && eduUpdate()" #f="ngForm" novalidate>
+      <div class="modal-header">
+        <button type="button" class="close" (click)="closemodal()" style="color:#000; font-size: 45px;">
+          <span aria-hidden="true">&times;</span>
+        </button>
+        <h4 class="modal-title" id="myModalLabel">Edit Education</h4>
+      </div>
+      <div class="modal-body formstyle">
+
+        <div class="form-group">
+          <label>School Name<sup class="text-danger-astr">*</sup></label>
+          <input type="text" class="form-control" name="schoolName" [(ngModel)]="editmodel.school_college_name" #schoolName="ngModel" required>
+
+          <div class="text-danger lite" *ngIf="schoolName.errors && (schoolName.dirty || schoolName.touched)">
+            <div [hidden]="!schoolName.errors.required">
+              School name is required
+            </div>
+          </div>
+
+        </div>
+
+        <div class="form-group">
+          <label>College/ University Name <sup class="text-danger-astr">*</sup></label>
+          <input type="text" class="form-control" name="collegeName" [(ngModel)]="editmodel.board_university_name" #collegeName="ngModel" required>
+
+          <div class="text-danger lite" *ngIf="collegeName.errors && (collegeName.dirty || collegeName.touched)">
+            <div [hidden]="!collegeName.errors.required">
+              College name is required
+            </div>
+          </div>
+
+        </div>
+
+        <div class="row">
+          <div class="form-group col-sm-6">
+            <label>Degree
+              <sup class="text-danger-astr">*</sup>
+            </label>
+            <div class="form-group">
+              <input type="text" class="form-control" name="degree" [(ngModel)]="editmodel.degree_name" #degree="ngModel" required>
+
+              <div class="text-danger lite" *ngIf="degree.errors && (degree.dirty || degree.touched)">
+                <div [hidden]="!degree.errors.required">
+                  Degree name is required
+                </div>
+              </div>
+
+            </div>
+          </div>
+        </div>
+
+        <p-messages [(value)]="msgs"></p-messages>
+
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-primary delte pull-left" (click)="deleteEdu(editmodel.id)">Delete</button>
+        <button type="submit" class="btn btn-primary" 
+        [disabled]="!f.form.valid || loading">
+          <i class="fa fa-spinner fa-pulse fa-spin fa-spin" *ngIf="loading"></i>
+          Save
+        </button>
+      </div>
+    </form>
+</ng-template>
+<!-- edit education -->
+

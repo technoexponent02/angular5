@@ -1,0 +1,23 @@
+.input-group-addon {
+    background-color: #0d79e6;
+    border-color: #0d79e6;
+    color: #fff;
+}
+.plan_action_bd > a[disabled],
+.plan_action_bd button[disabled] {
+    cursor: not-allowed;
+}
+.plan_action_bd button[disabled]{
+    background: #fff none repeat scroll 0 0;
+    border-radius: 17px;
+    border: 0px;
+    box-shadow: 1px 2px 0px #444;
+    display: inline-block;
+    font-size: 19px;
+    margin: 20px 0;
+    padding: 8px;
+    font-family: "Roboto",sans-serif;
+    text-align: center;
+    color: #00458a;
+    width: 202px;
+}

@@ -1,0 +1,254 @@
+<!-- <pre>
+  {{api_link_for_sort | json}}&{{serachOrg | json}}&{{selectPlan | json}}&{{selectStatus | json}}&{{selectCountry}}&{{expirationDateStart}}&{{expirationDateTo}}&{{signedDateStart}}&{{modifiedSignedDateTo}}
+</pre> -->
+<!-- <pre>
+  {{clientData | json}}
+</pre> -->
+
+<section class="dashboardexmenu">
+
+		  <div class="box-shadow">
+        <div class="clearfix">
+          <h3 class="dbtitle text-center">CLIENTS</h3>
+        </div>
+
+        <div class="text-center filterareawrap">
+
+          <div class="form-inline outerfrmgrp inputgrstyle styleone">
+
+            <!-- <div class="container"> -->
+              <div class="row">
+                <div class="col-md-3">
+                  <div class="frmgrmwrap">
+                    <input type="text" class="form-control serachfild" style="padding-left:30px;" name="searchorg" [(ngModel)]="serachOrg" (keyup)="searchOrg()" placeholder="Search by organization">   
+                    <!-- <p-autoComplete [(ngModel)]="text" [suggestions]="results" (completeMethod)="search($event)"></p-autoComplete>  -->
+                  </div>
+                </div>
+                <div class="col-md-3">
+                  <div class="frmgrmwrap">
+                    <select class="form-control minimal" [(ngModel)]="selectPlan" (change)="searchPlan()">
+                      <option [value]="0">-- Select plan --</option>
+                      <option [value]="plan.id" *ngFor="let plan of planList">{{plan.name}}</option>
+                    </select>
+                  </div>
+                </div>
+                <div class="col-md-3">
+                  <div class="frmgrmwrap">
+                    <select class="form-control minimal" [(ngModel)]="selectStatus" (change)="searchStatus()">
+                      <option [value]="0">-- Select status --</option>
+                      <option value="Y">Active</option>
+                      <option value="N">Inctive</option>
+                    </select>
+                  </div>
+                </div>
+                <div class="col-md-3">
+                  <div class="frmgrmwrap">
+                    <!-- <label>Country</label> -->
+                    <select class="form-control" name="country" [(ngModel)]="selectCountry" (change)="searchCountry()">
+                      <option [value]="0">-- Select country --</option>
+                      <option [value]="country.id" *ngFor="let country of countryList">{{country.name}}</option>
+                    </select>
+                  </div>
+                </div>
+              </div>
+            <!-- </div> -->
+
+
+          </div>
+
+
+          <div class="form-inline form-group inputgrstyle">
+
+            <div class="row">
+
+              <div class="col-md-6 hasmarginbtm">
+                <div class="form-group calgrp left">
+                  <label for="exampleInputName2">Expiration date</label>
+
+                  <div class="input-group">
+                      <input type="text" class="form-control" id="frmdate" placeholder="select date">
+                      <div class="input-group-addon">
+                         <i class="fa fa-calendar"></i>
+                      </div>
+                      <!-- <span>{{calfrmDate}}</span> -->
+                  </div>
+
+                </div>
+              </div>
+
+              <div class="col-md-6 hasmarginbtm">
+                <div class="form-group calgrp right">
+                  <label for="exampleInputEmail2">To</label>
+                  
+                  <div class="input-group">
+                    <input type="text" class="form-control" id="todate"  placeholder="select date" [disabled]="calfrmDate.length <= 0">
+                    <div class="input-group-addon">
+                        <i class="fa fa-calendar"></i>
+                    </div>
+                    <!-- <span>{{caltoDate}}</span> -->
+                  </div>
+
+                </div>
+              </div>
+
+            </div>
+
+            <div class="row">
+
+              <div class="col-md-6">
+                <div class="form-group calgrp left">
+                  <label for="exampleInputEmail2">Signed date</label>
+                  <!-- <p-calendar [(ngModel)]="signedDateStart" [showIcon]="true"></p-calendar> -->
+
+                  <div class="input-group">
+                      <input type="text" class="form-control" id="signfrmdate" placeholder="select date">
+                      <div class="input-group-addon">
+                         <i class="fa fa-calendar"></i>
+                      </div>
+                      <!-- <span>{{signcalfrmDate}}</span> -->
+                  </div>
+
+                </div>
+              </div>
+
+              <div class="col-md-6">
+                <div class="form-group calgrp right">
+                  <label for="exampleInputEmail2">To</label>
+                  <!-- <p-calendar [(ngModel)]="signedDateTo" [showIcon]="true" (onSelect)="searchSignedDateTo($event)"></p-calendar>  -->
+
+                  <div class="input-group">
+                    <input type="text" class="form-control" id="signtodate"  placeholder="select date" [disabled]="signcalfrmDate.length <= 0">
+                    <div class="input-group-addon">
+                        <i class="fa fa-calendar"></i>
+                    </div>
+                    <!-- <span>{{signcaltoDate}}</span> -->
+                  </div>
+
+                </div>
+              </div>
+
+            </div>
+
+          </div>
+
+          <!-- <div class="clearfix resultnpagination" style="display:inline-block;">
+          
+            <nav aria-label="..." class="paginationstyl">
+                <ul class="pagination">
+                    <li class="disabled"><a href="#" aria-label="Previous"><i class="fa fa-angle-left" aria-hidden="true"></i></a></li>
+                    <li class="active"><a href="#">1 <span class="sr-only">(current)</span></a></li>
+                    <li><a href="#">2</a></li>
+                    <li><a href="#">3</a></li>
+                    <li><a href="#">4</a></li>
+                    <li><a href="#">5</a></li>
+                    <li><a href="#" aria-label="Next"><i class="fa fa-angle-right" aria-hidden="true"></i></a></li>
+                </ul>
+            </nav>
+
+            <select class="form-control pull-right">
+              <option>25 results</option>
+            </select>
+          </div> -->
+
+        </div>
+
+        <div class="table-responsive themecolor client-table">
+
+          <p-dataTable [value]="clientData" [rows]="10" [paginator]="true" [pageLinks]="3" [rowsPerPageOptions]="[10,50,80]" resizableColumns="true">
+            <p-column field="organization.company_name" header="Organization" [sortable]="true">
+
+              <ng-template let-col let-company="rowData" pTemplate="body">
+                <!-- <pre>{{company | json}}</pre> -->
+                <span *ngIf="company.organization.is_admin == 'Y'; else hascompany">{{company.organization.company_name}}</span>
+                <ng-template #hascompany>
+                  <span>
+                    <a [routerLink]="['/admin/client/organization']" [queryParams]="{token:company.client_token, org_id:company.org_id}" (click)="storeClientData(company.client_token, company.org_id, company.type, company.organization.user_id, company.organization.company_name)">
+                      {{company.organization.company_name}}
+                    </a>
+                  </span>
+                </ng-template>
+              </ng-template>
+
+            </p-column>
+            <p-column field="email" [style]="{'width':'20%'}" header="Email"></p-column>
+            <p-column field="country.name" header="Country">
+
+              <ng-template let-col let-country="rowData" pTemplate="body">
+                <span *ngIf="country.country == null; else hascountry">- - - -</span>
+                <ng-template #hascountry>
+                  <span>{{country?.country?.name}}</span>
+                </ng-template>
+              </ng-template>
+              
+            </p-column>
+            <p-column field="subscription_id" [style]="{'text-align': 'center', 'width':'5%'}" header="Plan">
+
+                <ng-template let-col let-plan="rowData" pTemplate="body">
+                    <span *ngIf="plan.subscription_plan_name.length == 0; else hasplan">- - - -</span>
+                    <ng-template #hasplan>
+                      <span>{{plan?.subscription_plan_name[0]?.name}}</span>
+                    </ng-template>
+                </ng-template>
+
+            </p-column>
+            <!-- <p-column field="is_active" [style]="{'text-align': 'center'}" header="Status">
+              <ng-template let-col let-client="rowData" pTemplate="body">
+                <span>{{client.is_active == 'Y' ? 'Active' : 'Inactive'}}</span>
+              </ng-template>
+            </p-column> -->
+            <p-column field="is_active" header="Change Status">
+              <ng-template let-col let-stat="rowData" pTemplate="body">
+                <div class="toggler" style="width: 40px; margin: 0 auto;">
+                  <label class="i-switch i-switch-md  csswitch">
+                    <input type="checkbox" name="status" [ngModel]="stat.is_active == 'Y' ? true : stat.is_active == 'N' ? false : null" (ngModelChange)="changeStatus($event, stat.client_token, stat.user_id)">
+                    <i></i>
+                  </label>
+                </div>
+              </ng-template>
+            </p-column>
+            <p-column field="date_signed" header="Date Signed">
+
+                <ng-template let-col let-date="rowData" pTemplate="body">
+                    <span *ngIf="date.date_signed == null; else datesigned">- - - -</span>
+                    <ng-template #datesigned>
+                      <span>{{date.date_signed}}</span>
+                    </ng-template>
+                </ng-template>
+
+            </p-column>
+            <p-column field="expiration_date" header="Expiration Date">
+
+                <ng-template let-col let-dateex="rowData" pTemplate="body">
+                    <span *ngIf="dateex.expiration_date == null; else dateexpired">- - - -</span>
+                    <ng-template #dateexpired>
+                      <span>{{dateex.expiration_date}}</span>
+                    </ng-template>
+                </ng-template>
+
+            </p-column>
+            <p-column field="details" [style]="{'width':'8%', 'text-align': 'center'}" header="Details">
+              <ng-template let-col let-client="rowData" pTemplate="body">
+                <!-- <a href="javascript:void(0);" (click)="viewOrg(client.client_token)">View</a> -->
+                <!-- <a [routerLink]="['/admin/client', client.client_token]">View</a> -->
+                <span *ngIf="client.org_id == 0; else userchild">
+                    <a [routerLink]="['/admin/client/localization']" [queryParams]="{token:client.client_token, org_id:client.org_id}" (click)="storeClientData(client.client_token, client.org_id, client.type, client.organization.user_id, client.organization.company_name)" *ngIf="client.type == 4; else adminExeView">View</a>
+                    <ng-template #adminExeView>
+                        <a [routerLink]="['/admin/client/my-profile']" [queryParams]="{token:client.client_token, org_id:client.org_id}" (click)="storeClientData(client.client_token, client.org_id, client.type, client.organization.user_id, client.organization.company_name)">View</a>
+                    </ng-template>
+                </span>
+                <ng-template #userchild>
+                    <a [routerLink]="['/admin/client/profile']" [queryParams]="{token:client.client_token, org_id:client.org_id}" (click)="storeClientData(client.client_token, client.org_id, client.type, client.organization.user_id, client.organization.company_name)">View</a>
+                </ng-template>
+                <!-- <pre></pre> -->
+              </ng-template>
+            </p-column>
+          </p-dataTable> 
+
+        </div>
+
+      
+      </div>
+
+</section>
+		    	
+

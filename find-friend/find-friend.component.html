@@ -1,0 +1,187 @@
+<section class="profilesec">
+  <div class="container">
+    <div class="row rowet">
+      <div class="col-lg-9 prleft">
+
+        <app-profile-cover></app-profile-cover>
+
+        <div class="panelwide bg-white">
+          <div class="wdtile" id="searchFrm">
+            <p class="mrg0">Search for friends</p>
+          </div>
+          <div class="panel-body formnew">
+            <div class="row">
+              <div class="col-sm-4">
+                <div class="row">
+                  <label class="col-sm-12 col-md-3 paddr0">Name</label>
+                  <div class="form-group col-sm-12 col-md-9">
+                    <input type="text" class="form-control" name="">
+                  </div>
+                </div>
+              </div>
+
+              <div class="col-sm-4">
+                <div class="row">
+                  <label class="col-sm-12 col-md-3 paddr0">Location</label>
+                  <div class="form-group col-sm-12 col-md-9">
+                    <input type="text" class="form-control" name="">
+                  </div>
+                </div>
+              </div>
+              <div class="col-sm-4">
+                <div class="row">
+                  <label class="col-sm-12 col-md-3 paddr0">School</label>
+                  <div class="form-group col-sm-12 col-md-9">
+                    <input type="text" class="form-control" name="">
+                  </div>
+                </div>
+              </div>
+
+            </div>
+
+
+            <div class="row mrgb19">
+              <div class="col-sm-4">
+                <div class="row">
+                  <label class="col-sm-12 col-md-3 paddr0">College</label>
+                  <div class="form-group col-sm-12 col-md-9">
+                    <input type="text" class="form-control" name="">
+                  </div>
+                </div>
+              </div>
+
+              <div class="col-sm-4">
+                <div class="row">
+                  <label class="col-sm-12 col-md-3 paddr0">Company</label>
+                  <div class="form-group col-sm-12 col-md-9">
+                    <input type="text" class="form-control" name="">
+                  </div>
+                </div>
+              </div>
+              <div class="col-sm-4">
+                <a href="javascript:void(0);" (click)="searchfrnd();" class="btn btn-warning fillbtn btn-lg btnbrder pull-right">Search Firend</a>
+              </div>
+
+            </div>
+
+
+          </div>
+
+
+        </div>
+
+
+        <div class="panelwide bg-white">
+          <div class="wdtile">
+            <p class="mrg0">
+              <ng-container *ngIf="searchState; else mayknow">
+                  Search result
+              </ng-container>
+              <ng-template #mayknow>
+                  People you may know
+              </ng-template>
+            </p>
+          </div>
+          
+
+          <div class="panel-body frndRequestlist" *ngIf="searchState == false">
+            <app-suggested-friends></app-suggested-friends>
+          </div>
+
+          <div class="panel-body frndRequestlist" *ngIf="searchState">
+            search result
+          </div>
+
+
+
+
+        </div>
+
+
+      </div>
+      <!-- end left panel ]] -->
+
+
+      <div class="col-lg-3 prright">
+        <!-- <div class="thbrder rightpan brdrad bg-white">
+          <h3 class="prrightTitle clearfix">People you may know
+            <a class="pull-right" href="#">See All</a>
+          </h3>
+          <ul class="peoplelist list-unstyled">
+            <li>
+              <a href="#" class="poepleav rounduc">
+                <img src="assets/images/avatar3.png" class="img-responsive" alt="Phtoto">
+              </a>
+              <p class="namepeople">Madhu Sree Banerjee
+                <span>Total Points 100</span>
+              </p>
+              <a href="javascript:void(0);" class="btn btn-warning btnfill btnbg userplussp">Add Friend</a>
+            </li>
+
+            <li>
+              <a href="#" class="poepleav rounduc">
+                <img src="assets/images/avatar4.png" class="img-responsive" alt="Phtoto">
+              </a>
+              <p class="namepeople">Bhagirath Mondal
+                <span>Total Points 100</span>
+              </p>
+              <a href="javascript:void(0);" class="btn btn-warning btnfill btnbg userplussp">Add Friend</a>
+            </li>
+
+            <li>
+              <a href="#" class="poepleav rounduc">
+                <img src="assets/images/avatar5.png" class="img-responsive" alt="Phtoto">
+              </a>
+              <p class="namepeople">Madhu Sree Banerjee
+                <span>Total Points 100</span>
+              </p>
+              <a href="javascript:void(0);" class="btn btn-warning btnfill btnbg userplussp">Add Friend</a>
+            </li>
+
+            <li>
+              <a href="#" class="poepleav rounduc">
+                <img src="assets/images/avatar4.png" class="img-responsive" alt="Phtoto">
+              </a>
+              <p class="namepeople">Bhagirath Mondal
+                <span>Total Points 100</span>
+              </p>
+              <a href="javascript:void(0);" class="btn btn-warning btnfill btnbg userplussp">Add Friend</a>
+            </li>
+
+            <li>
+              <a href="#" class="poepleav rounduc">
+                <img src="assets/images/avatar5.png" class="img-responsive" alt="Phtoto">
+              </a>
+              <p class="namepeople">Madhu Sree Banerjee
+                <span>Total Points 100</span>
+              </p>
+              <a href="javascript:void(0);" class="btn btn-warning btnfill btnbg userplussp">Add Friend</a>
+            </li>
+
+          </ul>
+        </div> -->
+
+        <div class="thbrder rightpan brdrad bg-white">
+          <h3 class="prrightTitle noborder clearfix">Featured Pages
+            <a class="pull-right" href="#">See All</a>
+          </h3>
+          <div class="text-center">
+            <img src="assets/images/demosec.png" class="img-responsive">
+          </div>
+          <p class="fepageTitle">tripadvisor</p>
+          <p class="txtgreylink">Website · 14 likes</p>
+          <p class="txtgreylink">
+            <a href="#">Partha</a> and
+            <a href="#">Sourav</a> like this.</p>
+
+          <a href="javascript:void(0);" class="btn btn-warning btnfill mrgl btnbg likesp mrgl12 mrgb19">Like page</a>
+        </div>
+        <div class="rightadd">
+          <img src="assets/images/addone.png" class="img-responsive" alt="add">
+        </div>
+
+      </div>
+      <!-- end right panel ]] -->
+    </div>
+  </div>
+</section>

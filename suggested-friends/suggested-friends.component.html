@@ -1,0 +1,61 @@
+<!-- <pre>{{friendList | json}}</pre> -->
+
+<!-- <div style="text-align: center; position:relative;padding:10px;" *ngIf="dataload">
+  <div class="line-loading">
+    <div class="line-loading-bar"></div>
+    <div class="line-loading-bar"></div>
+    <div class="line-loading-bar"></div>
+    <div class="line-loading-bar"></div>
+  </div>
+</div> -->
+
+
+<div *ngIf="friendList.length == 0; else hasfrnd">
+  <h5 style="padding: 20px;">{{friendListmsg}}</h5>
+</div>
+
+<ng-template #hasfrnd>
+
+  <div class="panel-body frndRequestlist" infiniteScroll [infiniteScrollDistance]="2" [infiniteScrollThrottle]="50" (scrolled)="onScroll()">
+
+
+
+    <ul class="list-unstyled">
+
+      <li class="smfrndbx clearfix" *ngFor="let friend of friendList">
+        <a class="avsrc rounduc">
+          <img *ngIf="friend?.profile_picture == 'NA'; else hasimg" src="assets/images/ctavatar_default.png" class="img-responsive"
+            alt="Phtoto">
+          <ng-template #hasimg>
+            <img src="{{profileurl}}{{friend?.profile_picture}}" alt="profile-image" class="img-responsive">
+          </ng-template>
+        </a>
+        <div class="pull-left wrbtn">
+          <h4 class="avdrname">
+            <a routerLink="/profile/{{friend?.username}}">{{friend?.first_name}} {{friend?.last_name}}</a>
+            <span class="btn-block">Web Designer at Techno Exponent</span>
+            <span class="btn-block">Pampa Biswas is a mutual friend.</span>
+          </h4>
+        </div>
+        
+        <div class="btndv pull-right">
+          <a href="javascript:void(0);" (click)="addfriend(friend)" class="btn btn-warning btnfill btnbg userplussp">Add Friend</a>
+        </div>
+
+      </li>
+
+
+    </ul>
+
+  </div>
+
+</ng-template>
+
+<div style="text-align: center; position:relative;padding:10px;" *ngIf="loading || inifbusy">
+  <div class="line-loading">
+    <div class="line-loading-bar"></div>
+    <div class="line-loading-bar"></div>
+    <div class="line-loading-bar"></div>
+    <div class="line-loading-bar"></div>
+  </div>
+</div>

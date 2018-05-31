@@ -1,0 +1,188 @@
+<!-- <pre>
+  select-picture works! {{setImage.status}}
+  <button (click)="sendUpdatedData()">Back</button>
+</pre> -->
+
+<!-- <pre>{{setImage | json}}</pre> -->
+<!-- <pre>{{uploadedImageData | json}}</pre> -->
+
+
+<div class="uploadGalleryPopupBody" style="padding: 16px 30px 30px 30px;">
+
+  <div class="img-select-loading">
+    <span class="loader">
+      <i class="fa fa-refresh fa-spin fa-3x fa-fw"></i>
+      <span>Loading images...</span>
+    </span>
+  </div>
+
+  <h2 class="popupTl">Select picture</h2>
+  <form (ngSubmit)="f.form.valid && sendUpdatedData(f)" #f="ngForm" novalidate autocomplete="off">
+    <div class="uploadGallery">
+        <!-- *ngIf="imageThumbShow" -->
+      <div class="uploadGallerytl">Choose picture</div>
+      <div class="rw">
+
+        <!-- <div id="imagecomingloader" *ngIf="!imageThumbShow">
+          <i class="fa fa-refresh fa-spin fa-3x fa-fw"></i>
+          <span>Loading images...</span>
+        </div> -->
+
+        <div class="colm" *ngFor="let thumb of imageThumbList">
+          <label class="prevUploadImage">
+            <!-- <input type="radio" name="chooseUploadimage" (change)="baseToFileCrop(thumb.imgBase_64string)" /> -->
+            <input type="radio" name="chooseUploadimage" (change)="baseToFileCropSelect(thumb)" />
+            <span class="imageBox" [ngStyle]="{'background': 'url(' + thumb.image + ')'}">
+              <i class="fa fa-check-square"></i>
+            </span>
+          </label>
+        </div>
+
+        <div style="text-align:center;">
+          <button class="button orange small" type="button" *ngIf="hideLoadMore" (click)="loadMoreThumb()">
+            <i class="fa fa-refresh fa-spin fa-3x fa-fw"></i>
+            Load More
+          </button>
+        </div>
+
+      </div>
+
+
+    </div>
+
+    <!-- <button (click)="baseToFileCrop()">uploaded image</button> -->
+
+    <div class="uploadNewPic">
+      <div class="uploadGallerytl">
+        {{cropareaTitleState == true ? 'Cropping picture' : 'Upload new picture'}}
+      </div>
+
+      <!-- <input type="file" accept="image/x-png,image/jpg,image/jpeg" name="image" id="image" (change)="readURL($event);" /> -->
+      <div class="image_container" *ngIf="showcrop">
+        <img id="blah" src="" alt="your image" />
+      </div>
+
+      <!-- <img-cropper [image]="uploadedImageData.imagesource" [settings]="cropperSettings"></img-cropper> -->
+      <!-- <span class="result" *ngIf="data1.image" >
+          <img [src]="data1.image" 
+          [width]="croppedWidth" 
+          [height]="croppedHeight">
+          {{data1.image.length}}
+      </span> -->
+
+      <!-- <div id="cropperpreview" style="margin-bottom: 20px;" *ngIf="uploadimage">
+        <img-cropper #cropper [image]="uploadedImageData.imagesource" [settings]="cropperSettings" *ngIf="uploadimage"></img-cropper>
+      </div> -->
+
+      <!-- <div class="file-upload">
+          <span class="text">upload</span>
+          <input id="custom-input" type="file" (change)="fileChangeListener($event)">
+      </div>
+      <img-cropper #cropper [image]="data" [settings]="cropperSettings"></img-cropper>
+      <br>
+      <span class="result rounded" *ngIf="data.image" >
+          <img [src]="data.image" [width]="cropperSettings.croppedWidth" [height]="cropperSettings.croppedHeight">
+      </span> -->
+
+      <!-- <div class="upload-demo"></div> -->
+
+
+      <div class="uploadpicFormCont">
+        <div class="customUploader" [ngClass]="{'hasSelectedalbum' : changeFormState !== true}">
+          <label>
+            <!-- <input id="custom-input" type="file" accept="image/*" (change)="fileChangeListener($event)" /> -->
+            <input type="file" accept="image/x-png,image/jpg,image/jpeg" name="image" id="image"  (change)="readURL($event);"/>
+            <span class="uploaderInner">
+              <img src="assets/images/cloud-upload-icon.png" alt="" />
+              <span class="txtTl">Drag and drop Image here to upload</span>
+              <span class="button orange sm">+ Upload Photo</span>
+            </span>
+          </label>
+        </div>
+        <div class="uploadNewPicRight" *ngIf="changeFormState">
+          <div class="formRow nw">
+            <span class="formTtl">Title</span>
+            <div class="formFld">
+              <input type="text" name="title" placeholder="Type title...." class="field" [(ngModel)]="uploadedImageData.title" />
+            </div>
+          </div>
+          <div class="formRow nw">
+            <span class="formTtl">Year</span>
+            <div class="formFld">
+              <select class="field" name="year" style="max-width:182px;" [(ngModel)]="uploadedImageData.year">
+                <option value="">Select year</option>
+                <option [value]="year" *ngFor="let year of yearList">{{year}}</option>
+              </select>
+            </div>
+          </div>
+          <div class="formRow nw">
+            <span class="formTtl">Details</span>
+            <div class="formFld">
+              <textarea class="field" name="details" placeholder="Write your details..." [(ngModel)]="uploadedImageData.details"></textarea>
+            </div>
+          </div>
+          <!-- <div class="formRow nw">
+            <span class="formTtl nogap">Added
+              <small>25.10.2017</small>
+            </span>
+          </div> -->
+          <div class="formRow nw">
+            <span class="formTtl">Picture album</span>
+            <div class="formFld">
+              <angular2-multiselect name="albumtag" [data]="itemList" 
+                  [(ngModel)]="uploadedImageData.picturealbun" 
+                  [settings]="settings">
+              </angular2-multiselect>
+            </div>
+          </div>
+          <div class="formRow nw">
+            <div class="formFld">
+              <div class="chkList">
+                <label class="chkBox orange">
+                  <input type="checkbox" name="privacy" [(ngModel)]='imageTermsCheck' required #privacy="ngModel">
+                  <i class="fa fa-square-o"></i>
+                  <em>*</em> I have all rights to upload / use / present this picture 
+                </label>
+              </div>
+              <!-- {{imageTermsCheck}} -->
+
+              <div *ngIf="f.submitted && !privacy.valid" class="frmError">
+                <div [hidden]="!privacy.errors.required">
+                  This field is required
+                </div>
+              </div>
+
+              <div id="imageReq" class="frmError" style="display:none;">
+                <div>
+                  Please select an image first
+                </div>
+              </div>
+
+
+            </div>
+          </div>
+          <div class="spacer"></div>
+        </div>
+        <div class="spacer"></div>
+      </div>
+    </div>
+    <div class="uploadDoneBtn">
+        <a href="javascript:void(0);" (click)="backToTemplate()" class="button black">Back</a>
+        <!-- <a href="javascript:void(0);" (click)="sendUpdatedData()" class="button orange popupClick">Done</a> -->
+        <!-- <a href="javascript:void(0);" type="submit" class="button orange">Done</a> -->
+        <button type="submit" class="button orange">Done</button>
+    </div>
+  </form>
+
+
+
+  <!-- <input type="file" name="image" id="image" (change)="readURL($event);"/>
+	<div class="image_container">
+		<img id="blah" src="#" alt="your image" />
+	</div>
+	<div id="cropped_result"></div>
+	<button id="crop_button">Crop</button> -->
+
+
+
+</div>

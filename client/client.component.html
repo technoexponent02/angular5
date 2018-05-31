@@ -1,0 +1,75 @@
+<!-- <pre>{{client | json}}</pre> -->
+
+<section class="themebg">
+  <div class="container">
+    <div class="menu_wrap">
+      <h2 class="dbmenutitle text-uppercase">{{orgName}}</h2>
+      <button class="swapmenubtn hidden-lg hidden-md is-closed" id="fortabmenu">
+        <span class="hamb-top"></span>
+        <span class="hamb-middle"></span>
+        <span class="hamb-bottom"></span>
+      </button>
+      <div class="sidnavmainmenu" id="tabmenu">
+
+        <!-- user owner -->
+        <ul class="nav nav-tabs" role="tablist" *ngIf="chkOwner">
+          <a id="tabmenu-close" href="#" class="btn-lg pull-right toggle hidden-lg hidden-md"><i class="glyphicon glyphicon-remove"></i></a>
+          <li role="presentation" [routerLinkActive]="['active']"><a [routerLink]="['/admin/client/profile']" [queryParams]="{token:client.client_token, org_id:client.org_id}">My profile</a></li>
+          <li role="presentation" [routerLinkActive]="['active']"><a [routerLink]="['/admin/client/organization']" [queryParams]="{token:client.client_token, org_id:client.org_id}">Organization</a></li>
+          <li role="presentation" [routerLinkActive]="['active']"><a [routerLink]="['/admin/client/configuration']" [queryParams]="{token:client.client_token, org_id:client.org_id}">Configuration</a></li>
+          <li role="presentation" [routerLinkActive]="['active']"><a [routerLink]="['/admin/client/branding']" [queryParams]="{token:client.client_token, org_id:client.org_id}">Branding</a></li>
+          <li role="presentation" [routerLinkActive]="['active']"><a [routerLink]="['/admin/client/subscription']" [queryParams]="{token:client.client_token, org_id:client.org_id}">Subscription</a></li>
+          <li role="presentation" [routerLinkActive]="['active']"><a [routerLink]="['/admin/client/invoices']" [queryParams]="{token:client.client_token, org_id:client.org_id}">Invoices</a></li>
+          <li role="presentation" [routerLinkActive]="['active']"><a [routerLink]="['/admin/client/users']" [queryParams]="{token:client.client_token, org_id:client.org_id}">Users</a></li>
+          <li role="presentation" [routerLinkActive]="['active']"><a [routerLink]="['/admin/client/api-and-integration']" [queryParams]="{token:client.client_token, org_id:client.org_id}">API & Integration</a></li>
+        </ul>
+        <!-- user owner -->
+
+        <!-- user manager -->
+        <ul class="nav nav-tabs" role="tablist" *ngIf="chkManager">
+          <a id="tabmenu-close" href="#" class="btn-lg pull-right toggle hidden-lg hidden-md"><i class="glyphicon glyphicon-remove"></i></a>
+          <li role="presentation" [routerLinkActive]="['active']"><a [routerLink]="['/admin/client/profile']" [queryParams]="{token:client.client_token, org_id:client.org_id}">My profile</a></li>
+          <li role="presentation" [routerLinkActive]="['active']"><a [routerLink]="['/admin/client/organization']" [queryParams]="{token:client.client_token, org_id:client.org_id}">Organization</a></li>
+          <li role="presentation" [routerLinkActive]="['active']"><a [routerLink]="['/admin/client/configuration']" [queryParams]="{token:client.client_token, org_id:client.org_id}">Configuration</a></li>
+          <li role="presentation" [routerLinkActive]="['active']"><a [routerLink]="['/admin/client/branding']" [queryParams]="{token:client.client_token, org_id:client.org_id}">Branding</a></li>
+          <li role="presentation" [routerLinkActive]="['active']"><a [routerLink]="['/admin/client/users']" [queryParams]="{token:client.client_token, org_id:client.org_id}">Users</a></li>
+          <li role="presentation" [routerLinkActive]="['active']"><a [routerLink]="['/admin/client/api-and-integration']" [queryParams]="{token:client.client_token, org_id:client.org_id}">API & Integration</a></li>
+        </ul>
+        <!-- user manager -->
+
+        <!-- user manager -->
+        <ul class="nav nav-tabs" role="tablist" *ngIf="chkEditor">
+          <a id="tabmenu-close" href="#" class="btn-lg pull-right toggle hidden-lg hidden-md"><i class="glyphicon glyphicon-remove"></i></a>
+          <li role="presentation" [routerLinkActive]="['active']"><a [routerLink]="['/admin/client/profile']" [queryParams]="{token:client.client_token, org_id:client.org_id}">My profile</a></li>
+        </ul>
+        <!-- user manager -->
+
+
+        <!-- admin manager -->
+        <ul class="nav nav-tabs" role="tablist" *ngIf="chkAdminManager">
+          <a id="tabmenu-close" href="#" class="btn-lg pull-right toggle hidden-lg hidden-md"><i class="glyphicon glyphicon-remove"></i></a>
+          <li role="presentation" [routerLinkActive]="['active']"><a [routerLink]="['/admin/client/localization']" [queryParams]="{token:client.client_token, org_id:client.org_id}">Localization</a></li>
+          <li role="presentation" [routerLinkActive]="['active']"><a [routerLink]="['/admin/client/my-profile']" [queryParams]="{token:client.client_token, org_id:client.org_id}">My profile</a></li>
+          <li role="presentation" [routerLinkActive]="['active']"><a [routerLink]="['/admin/client/admin-organization']" [queryParams]="{token:client.client_token, org_id:client.org_id}">Organization</a></li>
+          <li role="presentation" [routerLinkActive]="['active']"><a [routerLink]="['/admin/client/admin-users']" [queryParams]="{token:client.client_token, org_id:client.org_id}">Users</a></li>
+          <li role="presentation" [routerLinkActive]="['active']"><a [routerLink]="['/admin/client/admin-api-and-integration']" [queryParams]="{token:client.client_token, org_id:client.org_id}">API & Integration</a></li>
+          <li role="presentation" [routerLinkActive]="['active']"><a [routerLink]="['/admin/client/clients-in-settings']" [queryParams]="{token:client.client_token, org_id:client.org_id}">Clients in Setting</a></li>
+        </ul>
+        <!-- admin manager -->
+
+        <!-- admin exe -->
+        <ul class="nav nav-tabs" role="tablist" *ngIf="chkAdminExe">
+          <a id="tabmenu-close" href="#" class="btn-lg pull-right toggle hidden-lg hidden-md"><i class="glyphicon glyphicon-remove"></i></a>
+          <li role="presentation" [routerLinkActive]="['active']"><a [routerLink]="['/admin/client/my-profile']" [queryParams]="{token:client.client_token, org_id:client.org_id}">My profile</a></li>
+        </ul>
+        <!-- admin exe -->
+
+
+
+      </div>
+    </div>
+  </div>
+</section>
+<section class="tabbox">
+  <router-outlet></router-outlet>
+</section>

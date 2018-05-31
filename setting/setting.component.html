@@ -1,0 +1,51 @@
+<section class="themebg">
+  <div class="container">
+    <div class="menu_wrap">
+      <h2 class="dbmenutitle text-uppercase">{{ 'settings' | translate }}</h2>
+      <button class="swapmenubtn hidden-lg hidden-md is-closed" id="fortabmenu">
+        <span class="hamb-top"></span>
+        <span class="hamb-middle"></span>
+        <span class="hamb-bottom"></span>
+      </button>
+      <div class="sidnavmainmenu" id="tabmenu">
+        <!-- Owner Nav tabs -->
+        <ul class="nav nav-tabs" role="tablist" *ngIf="chkOwner">
+          <a id="tabmenu-close" href="#" class="btn-lg pull-right toggle hidden-lg hidden-md"><i class="glyphicon glyphicon-remove"></i></a>
+          <li role="presentation" routerLinkActive="active"><a routerLink="/user/settings/my-profile">{{ 'my_profile' | translate }}</a></li>
+          <li role="presentation" routerLinkActive="active"><a routerLink="/user/settings/organization">{{ 'organization' | translate }}</a></li>
+          <li role="presentation" routerLinkActive="active"><a routerLink="/user/settings/configuration">{{ 'Configuration' | translate }}</a></li>
+          <!-- <li role="presentation" routerLinkActive="active"><a routerLink="/user/settings/branding">{{ 'Branding' | translate }}</a></li> -->
+          <li role="presentation" routerLinkActive="active"><a routerLink="/user/settings/subscription">{{ 'Subscription' | translate }}</a></li>
+          <li role="presentation" routerLinkActive="active"><a routerLink="/user/settings/invoices">{{ 'Invoices' | translate }}</a></li>
+          <li role="presentation" routerLinkActive="active"><a routerLink="/user/settings/users">{{ 'Users' | translate }}</a></li>
+          <li role="presentation" routerLinkActive="active"><a routerLink="/user/settings/api-and-integration">{{ 'api_and_integration' | translate }}</a></li>
+        </ul>
+        <!-- Owner Nav tabs -->
+
+        <!-- Manager Nav tabs -->
+        <ul class="nav nav-tabs" role="tablist" *ngIf="chkManager">
+          <a id="tabmenu-close" href="#" class="btn-lg pull-right toggle hidden-lg hidden-md"><i class="glyphicon glyphicon-remove"></i></a>
+          <li role="presentation" routerLinkActive="active"><a routerLink="/user/settings/my-profile">{{ 'my_profile' | translate }}</a></li>
+          <li role="presentation" routerLinkActive="active"><a routerLink="/user/settings/organization">{{ 'organization' | translate }}</a></li>
+          <li role="presentation" routerLinkActive="active"><a routerLink="/user/settings/configuration">{{ 'Configuration' | translate }}</a></li>
+          <!-- <li role="presentation" routerLinkActive="active"><a routerLink="/user/settings/branding">{{ 'Branding' | translate }}</a></li> -->
+          <li role="presentation" routerLinkActive="active"><a routerLink="/user/settings/users">{{ 'Users' | translate }}</a></li>
+          <li role="presentation" routerLinkActive="active"><a routerLink="/user/settings/api-and-integration">{{ 'api_and_integration' | translate }}</a></li>
+        </ul>
+        <!-- Manager Nav tabs -->
+
+        <!-- Editor Nav tabs -->
+        <ul class="nav nav-tabs" role="tablist" *ngIf="chkEditor">
+          <a id="tabmenu-close" href="#" class="btn-lg pull-right toggle hidden-lg hidden-md"><i class="glyphicon glyphicon-remove"></i></a>
+          <li role="presentation" routerLinkActive="active"><a routerLink="/user/settings/my-profile">{{ 'my_profile' | translate }}</a></li>
+        </ul>
+        <!-- Editor Nav tabs -->
+
+
+      </div>
+    </div>
+  </div>
+</section>
+<section class="tabbox">
+  <router-outlet></router-outlet>
+</section>

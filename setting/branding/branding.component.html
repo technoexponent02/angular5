@@ -1,0 +1,136 @@
+<!-- <pre>
+	{{brandingDetails | json}}
+</pre> -->
+
+<!-- <div class="container">
+	<div class="settings-loader-outer"> -->
+
+		<!-- loader -->
+		<!-- <div class="linear-progress med">
+			<div class="bar bar1"></div>
+			<div class="bar bar2"></div>
+		</div>
+		<div class="setting-http-load">
+		</div> -->
+		<!-- loader -->
+
+		<!-- Tab panes -->
+		<!-- <div class="tab-content">
+			<div role="tabpanel" class="tab-pane active" id="home">
+				<div class="row">
+					<p-messages [(value)]="msgs"></p-messages> -->
+
+					<form name="form" (ngSubmit)="updateMyBranding()" #f="ngForm" novalidate>
+						<!-- <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12">
+
+
+							<h3 class="dbtitle ">DISPLAY</h3>
+
+							<div class="form-group">
+								<label>FROM EMAIL</label>
+								<div class="clearfix form-inline">
+									<input type="text" class="form-control pull-left" name="from_email" [(ngModel)]="brandingDetails.from_email">
+
+								</div>
+							</div>
+
+							<div class="form-group">
+								<label>CUSTOM SUBDOMAIN</label>
+								<input type="text" class="form-control" name="custom_subdomain" [(ngModel)]="brandingDetails.custom_subdomain">
+								<p class="pull-left dmpara">.yourdomain.com</p>
+							</div>
+
+
+						</div> -->
+						<!-- left col for input data -->
+
+						<!-- <div class="col-lg-4 col-md-4 col-sm-4 hidden-xs"></div> -->
+
+
+						<!-- <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12"> -->
+
+							<div class="panel-body" *ngIf="authUser.SubscriptionFeture.includes(3)">
+
+
+								<h3 class="dbsubtitle">VISUAL</h3>
+
+
+								<!-- <div class="form-group">
+									<label class="bigtext col-lg-6 col-md-6 col-sm-5 col-xs-12">NADIR</label>
+									<div class="col-lg-6 col-md-6 col-sm-7 col-xs-12">
+										<figure class="avatarfigure">
+
+											<img *ngIf="hasNadirLogoImg; else nonadir" [src]="brandingDetails.nadir" class="img-responsive">
+											<ng-template #nonadir>
+												<img src="assets/images/no-user-avatar.png" class="img-responsive">
+											</ng-template>
+
+											<div class="file-upload">
+												<label for="upload" class="file_upload__label">
+													<i class="fa fa-camera" aria-hidden="true"></i> Change</label>
+												<form id="nadirLogoForm" method="post" enctype="multipart/form-data" [action]='logoImageUpdateApi'>
+													<input name="type" type="hidden" value="nadir">
+													<input name="id" type="hidden" [value]="brandingDetails.id">
+													<input name="picture" id="living_area" type="file" class="inputFile file_upload__input" (change)="imageUploadNadirJq()" />
+												</form>
+											</div>
+										</figure>
+									</div>
+
+								</div> -->
+
+
+								<div class="form-group">
+									<label class="bigtext col-lg-6 col-md-6 col-sm-5 col-xs-12 haslogo">
+										<p>LOGO</p>
+										<span>Recommended size: 200px X 90px</span>
+									</label>
+									<div class="col-lg-6 col-md-6 col-sm-7 col-xs-12">
+										<figure class="avatarfigure">
+
+											<img *ngIf="hasLogoImg; else logo" [src]="brandingDetails.logo" class="img-responsive">
+											<ng-template #logo>
+												<img src="assets/images/no-user-avatar.png" class="img-responsive">
+											</ng-template>
+
+											<div class="file-upload">
+												<label for="upload" class="file_upload__label">
+													<i class="fa fa-camera" aria-hidden="true"></i> Change</label>
+												<form id="brandingLogoForm" method="post" enctype="multipart/form-data" [action]='logoImageUpdateApi'>
+													<input name="type" type="hidden" value="branding_logo">
+													<input name="id" type="hidden" [value]="brandingDetails.id">
+													<input name="picture" id="living_area" type="file" class="inputFile file_upload__input" (change)="imageLogoUploadJq()" />
+												</form>
+											</div>
+										</figure>
+									</div>
+
+								</div>
+
+								<!-- updated or created -->
+								<div class="alert alert-success updatealert" role="alert" *ngIf="brandingUpdatedSuccess">
+									<span class="updatestatusclose success" (click)="brandingUpdatedSuccessClose()">X</span>
+									<strong>You successfully done!</strong>
+								</div>
+
+								<!-- error alert -->
+								<!-- <div class="alert alert-danger updatealert" role="alert" *ngIf="isFormUpdatePostFail">
+									<span class="updatestatusclose danger" (click)="formUpdatePostFailClose()">X</span> 
+									
+								</div> -->
+
+								<!-- <input type="submit" class="btn btn-success btn-lg btnbig" value="Update"> -->
+							</div>
+						<!-- </div> -->
+						<!-- right col LOGO UPLOAD ABOUT INDUSTRY ]]-->
+
+					</form>
+				<!-- </div>
+				<p-messages [(value)]="btmmsgs"></p-messages>
+			</div> -->
+			<!-- tab one -->
+			<!--    <div role="tabpanel" class="tab-pane" id="profile"></div> -->
+		<!-- </div> -->
+
+	<!-- </div>
+</div> -->

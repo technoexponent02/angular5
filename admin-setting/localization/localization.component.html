@@ -1,0 +1,295 @@
+ <!-- <pre>
+	{{addCurrencyObj | json}}
+</pre>    -->
+
+<p-growl [(value)]="allMessage"></p-growl>
+
+<!-- add language popup start -->
+<p-dialog header="Add Language" [(visible)]="addLanguagePop" modal="modal" width="500" [responsive]="true">
+	<!-- <pre>{{addedLanguageObj | json}}</pre> -->
+    <div class="form-group">
+		<label>Language</label>
+		<input type="text" class="form-control" placeholder="Type your language" name="addLanguage" [(ngModel)]="addedLanguageObj.name">
+	</div>
+	<div class="form-group">
+		<label>Locale</label>
+		<input type="text" class="form-control" placeholder="Type your locale" name="addLocale" [(ngModel)]="addedLanguageObj.locale">
+	</div>
+	<div class="form-group">
+		<label>Select Country Flag</label>
+		<select class="form-control" name="cuntry-flag" [(ngModel)]="addedLanguageObj.picture">
+			<option value=''>--Select Flag--</option>
+			<option [value]="country.flag" *ngFor="let country of countryFlagAndData">
+				{{country.name}}
+			</option>
+		</select>
+	</div>
+	<div class="form-group">
+		<label>Status</label>
+		<div class="form-inline">
+			<div class="radio">
+				<label class="i-checks">                                
+					<input type="radio" name="radio" [checked]="addedLanguageObj.status" (change)="addedLanguageObj.status = true"><i></i> Active
+				</label>
+			</div>
+			<div class="radio">
+				<label class="i-checks">                                
+					<input type="radio" name="radio" [checked]="!addedLanguageObj.status" (change)="addedLanguageObj.status = false"><i></i> Inactive
+				</label>
+			</div>
+		</div>
+	</div>
+	<p-footer>
+		<button type="button" pButton label="Save changes" (click)="addLanguageSave()"></button>
+	</p-footer>
+</p-dialog>
+<!-- add language popup end -->
+
+<!-- edit language popup start -->
+<p-dialog header="Edit Language" [(visible)]="editLanguagePop" modal="modal" width="500" [responsive]="true">
+    <div class="form-group">
+		<label>Language</label>
+		<input type="text" class="form-control" placeholder="Type your language" name="addLanguage" [(ngModel)]="editLanguageObj.name">
+	</div>
+	<div class="form-group">
+		<label>Locale</label>
+		<input type="text" class="form-control" placeholder="Type your locale" name="addLocale" [(ngModel)]="editLanguageObj.locale">
+	</div>
+	<div class="form-group">
+		<label>Select Country Flag</label>
+		<select class="form-control" name="cuntry-flag" [(ngModel)]="editLanguageObj.picture">
+			<option value=''>--Select Flag--</option>
+			<option [value]="country.flag" *ngFor="let country of countryFlagAndData">
+				{{country.name}}
+			</option>
+		</select>
+	</div>
+	<div class="form-group">
+		<label>Status</label>
+		<div class="form-inline">
+			<div class="radio">
+				<label class="i-checks">                                
+					<input type="radio" name="radio" [checked]="editLanguageObj.status == 1" (change)="editLanguageObj.status = '1'"><i></i> Active
+				</label>
+			</div>
+			<div class="radio">
+				<label class="i-checks">                                
+					<input type="radio" name="radio" [checked]="editLanguageObj.status == 0" (change)="editLanguageObj.status = '0'"><i></i> Inactive
+				</label>
+			</div>
+		</div>
+	</div>
+	<p-footer>
+		<button type="button" pButton label="Save changes" (click)="editLanguageSave()"></button>
+	</p-footer>
+</p-dialog>
+<!-- edit language popup end -->
+
+<!-- add currencies popup start -->
+<p-dialog header="Add Currency" [(visible)]="addCurrencyPop" modal="modal" width="500" [responsive]="true">
+    <div class="modal-body">
+
+        <div class="form-group">
+	        <label>Currency</label>
+	        <input type="text" class="form-control" placeholder="Type your currency" name="addCurrency" [(ngModel)]="addCurrencyObj.name">
+        </div>
+
+        <div class="form-group">
+	        <label>Symbol</label>
+	        <input type="text" class="form-control" placeholder="Type your currency symbol" name="currencySymbol" [(ngModel)]="addCurrencyObj.symbol">
+        </div>
+
+        <div class="form-group">
+	        <label>Base rate</label>
+	        <input type="text" class="form-control" placeholder="Type your base rate" name="baseRate" [(ngModel)]="addCurrencyObj.base_rate">
+        </div>
+
+
+        <div class="form-group">
+	    	<label>Default</label>
+			<div class="form-inline">
+				<div class="radio">
+					<label class="i-checks">                                
+						<input type="radio" name="radio1" [checked]="addCurrencyObj.default" (change)="addCurrencyObj.default = true"><i></i> Yes
+					</label>
+				</div>
+				<div class="radio">
+					<label class="i-checks">                                
+						<input type="radio" name="radio1" [checked]="!addCurrencyObj.default" (change)="addCurrencyObj.default = false"><i></i> No
+					</label>
+				</div>
+			</div>
+		</div>  
+
+
+        <div class="form-group">
+	        <label>Status</label>
+	       	<div class="form-inline">
+	    		<div class="radio">
+	    			<label class="i-checks">                                
+						<input type="radio" name="radio" [checked]="addCurrencyObj.status" (change)="addCurrencyObj.status = true"><i></i> Active
+                    </label>
+	    		</div>
+	    		<div class="radio">
+	    			<label class="i-checks">                                
+						<input type="radio" name="radio" [checked]="!addCurrencyObj.status" (change)="addCurrencyObj.status = false"><i></i> Inactive
+                    </label>
+	    		</div>
+	    	</div>
+        </div> 
+
+
+      </div>
+	<p-footer>
+		<button type="button" pButton label="Save changes" (click)="addCurrencySave()"></button>
+	</p-footer>
+</p-dialog>
+<!-- add currencies popup end -->
+
+<!-- edit currencies popup start -->
+<p-dialog header="Edit Currency" [(visible)]="editCurrencyPop" modal="modal" width="500" [responsive]="true">
+    <div class="modal-body">
+
+        <div class="form-group">
+	        <label>Currency</label>
+	        <input type="text" class="form-control" placeholder="Type your currency" name="currency" [(ngModel)]="editCurrencyObj.name">
+        </div>
+
+        <div class="form-group">
+	        <label>Symbol</label>
+	        <input type="text" class="form-control" placeholder="Type your currency symbol" name="currency-symbol" [(ngModel)]="editCurrencyObj.symbol">
+        </div>
+
+        <div class="form-group">
+	        <label>Base rate</label>
+	        <input type="text" class="form-control" placeholder="Type your base rate" name="base-rate" [(ngModel)]="editCurrencyObj.base_rate">
+        </div>
+
+
+        <div class="form-group">
+	    	<label>Default</label>
+			<div class="form-inline">
+				<div class="radio">
+					<label class="i-checks">                                
+						<input type="radio" name="radio1" [checked]="editCurrencyObj.default == 1" (change)="editCurrencyObj.default = '1'"><i></i> Yes
+					</label>
+				</div>
+				<div class="radio">
+					<label class="i-checks">                                
+						<input type="radio" name="radio1" [checked]="editCurrencyObj.default == 0" (change)="editCurrencyObj.default = '0'"><i></i> No
+					</label>
+				</div>
+			</div>
+        </div>
+
+
+        <div class="form-group">
+	        <label>Status</label>
+	       	<div class="form-inline">
+	    		<div class="radio">
+	    			<label class="i-checks">                                
+						<input type="radio" name="radio" [checked]="editCurrencyObj.status == 1" (change)="editCurrencyObj.status = '1'"><i></i> Active
+                    </label>
+	    		</div>
+	    		<div class="radio">
+	    			<label class="i-checks">                                
+						<input type="radio" name="radio" [checked]="editCurrencyObj.status == 0" (change)="editCurrencyObj.status = '0'"><i></i> Inactive
+                    </label>
+	    		</div>
+	    	</div>
+        </div>
+
+
+      </div>
+	<p-footer>
+		<button type="button" pButton label="Save changes" (click)="editCurrencySave()"></button>
+	</p-footer>
+</p-dialog>
+<!-- edit currencies popup end -->
+
+
+<div class="container">
+	<div class="settings-loader-outer">
+		
+		<!-- loader -->
+		<div class="linear-progress med">
+			<div class="bar bar1"></div>
+			<div class="bar bar2"></div>
+		</div>
+		<div class="setting-http-load">
+		</div>
+		<!-- loader -->
+
+		<!-- Tab panes -->
+		<div class="tab-content">
+			<div role="tabpanel" class="tab-pane active" id="home">
+				<div class="row">
+					<div class="col-lg-8 col-md-12 col-sm-12 col-xs-12">
+						
+						<!-- table for language [[ -->
+						<div class="clearfix">
+							<h3 class="dbsubtitle pull-left">language</h3>
+							<button type="button" class="btn btn-success btntheme pull-right" (click)="addLanguagePopupTrigger()">ADD</button>
+						</div>
+
+						<div class="smalltable table-responsive themecolor">
+							<table class="table table-bordered">
+								<thead>
+									<tr>
+										<th>Language</th>
+										<th>Status</th>
+										<th>Edit</th>
+										<th>Delete</th>
+									</tr>
+								</thead>
+								<tbody>
+									<tr *ngFor="let languagelist of languageTable">
+										<td>{{languagelist.name}}</td>
+										<td>{{languagelist.status == 1 ? 'Active' : 'Inactive'}}</td>
+										<td><button type="button" class="editbtn"><i class="fa fa-pencil" aria-hidden="true" (click)="editLanguage(languagelist)"></i></button></td>
+										<td><button class="delete" (click)="deleteLanguage(languagelist)"><i class="fa fa-trash"></i></button></td> 
+									</tr>
+								</tbody>
+							</table>
+						</div><!-- ]] -->
+
+						<!-- table for currencies [[ -->
+						<div class="clearfix">
+							<h3 class="dbsubtitle pull-left">Currencies</h3>
+							<button type="button" class="btn btn-success btntheme pull-right" (click)="addCurrencyPopupTrigger()">ADD</button>
+						</div>
+
+						<div class="smalltable  table-responsive themecolor">
+							<table class="table table-bordered">
+								<thead>
+									<tr>
+										<th>Currency</th>
+										<th>Symbol</th>
+										<th>Base rate</th>
+										<th>Default</th>
+										<th>Status</th>
+										<th>Edit</th>
+										<th>Delete</th>
+									</tr>
+								</thead>
+								<tbody>
+									<tr *ngFor="let currenciesDetails of currenciesTable">
+										<td>{{currenciesDetails.name}}</td>
+										<td>{{currenciesDetails.symbol}}</td>
+										<td>{{currenciesDetails.base_rate}}</td>
+										<td>{{currenciesDetails.default == 0 ? 'No' : 'Yes'}}</td>
+										<td>{{currenciesDetails.status == 1 ? 'Active' : 'Inactive'}}</td>
+										<td><button type="button" class="editbtn" (click)="editCurrency(currenciesDetails)"><i class="fa fa-pencil" aria-hidden="true"></i></button></td>
+										<td><button class="delete" (click)="deleteCurrency(currenciesDetails)"><i class="fa fa-trash"></i></button></td>
+									</tr>
+								</tbody>
+							</table>
+						</div><!-- ]] -->
+
+					</div>
+				</div>
+			</div><!-- tab one -->
+			<!--    <div role="tabpanel" class="tab-pane" id="profile"></div> -->
+		</div>
+	</div>
+</div>

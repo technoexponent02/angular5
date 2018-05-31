@@ -1,0 +1,239 @@
+<section class="dashboard topbg">
+
+  <div class="container">
+    <div class="white_bg topstc panel-body">
+      <h3 class="dbtitle">Statistics</h3>
+
+      <div class="outerwrapfraccess">
+        <div class="noaccessLeads" *ngIf="noAccess">
+          <a routerLink="/user/settings/subscription">Upgrade your plan</a>
+        </div>
+
+        <div class="form-inline formstyle form-group inlineinputs">
+          <div class="form-group">
+            <select class="form-control" [(ngModel)]="tourId" (change)="filterTourRange($event)">
+              <option value="">All Tours</option>
+              <option [value]="tour.tourid" *ngFor="let tour of tourlist">{{tour.title == '' ? 'No title set' : tour.title}}</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <select class="form-control" name="dateRange" [(ngModel)]="filterDate" (change)="filterDateRange()">
+              <option value="">Date Range</option>
+              <option value="7">Last 7 days</option>
+              <option value="C">Custom</option>
+            </select>
+          </div>
+
+          <!-- <div class="form-group date">
+            <label>From</label>
+            <div class="input-group">
+              <input type="text" class="form-control hasDatepicker" name="" id="datepicker">
+              <div class="input-group-addon">
+                <i class="fa fa-calendar" aria-hidden="true"></i>
+              </div>
+            </div>
+          </div>
+
+          <div class="form-group date">
+            <label>To</label>
+            <div class="input-group">
+              <input type="text" class="form-control hasDatepicker" name="" id="datepicker2">
+              <div class="input-group-addon">
+                <i class="fa fa-calendar" aria-hidden="true"></i>
+              </div>
+            </div>
+          </div> -->
+          <div class="form-group date-filter" *ngIf="openDateRange">
+            <!-- <nz-rangepicker [(ngModel)]="_dateRange" [nzPlaceholder]="['Select start date', 'Select end date']"></nz-rangepicker> -->
+
+            <!-- <datetime [ngModel]="dateFrom" [timepicker]="false"></datetime>
+            <datetime [(ngModel)]="dateTo" [timepicker]="false"></datetime> -->
+            <my-date-range-picker name="mydaterange" [options]="myDateRangePickerOptions" [(ngModel)]="model" required (click)="clicCalender()"
+              placeholder="Choose date range" (dateRangeChanged)="onDateRangeChanged($event)"></my-date-range-picker>
+
+
+          </div>
+
+        </div>
+        <!-- <pre>{{model | json}}</pre> -->
+
+
+        <div class="row">
+          <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12 formstyle">
+            <div class="menuwrap">
+              <div class="panel-title titlewrp clearfix">
+                <p>Total views per day</p>
+              </div>
+
+              <div id="myfirstchart" style="height: 250px;"></div>
+
+            </div>
+          </div>
+          <!--  col ]] -->
+
+
+          <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12 formstyle">
+            <div class="menuwrap">
+              <div class="panel-title titlewrp clearfix">
+                <p>Top 5 tours</p>
+              </div>
+
+              <div id="hero-donut2" style="height: 250px;"></div>
+
+            </div>
+          </div>
+          <!--  col ]] -->
+
+          <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12 formstyle">
+            <div class="menuwrap">
+              <div class="panel-title titlewrp clearfix">
+                <p>Average time spend per tours</p>
+              </div>
+
+              <div id="pushups2" style="height: 250px;"></div>
+
+            </div>
+          </div>
+          <!--  col ]] -->
+
+        </div>
+        <div class="form-group">
+          <div class="panel-body"></div>
+          <div class="row">
+            <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12 formstyle">
+              <div class="menuwrap">
+                <div class="panel-title titlewrp clearfix">
+                  <p>Country</p>
+                </div>
+
+                <div id="hero-donut" style="height: 250px;"></div>
+
+              </div>
+            </div>
+            <!--  col ]] -->
+
+
+            <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12 formstyle">
+              <div class="menuwrap">
+                <div class="panel-title titlewrp clearfix">
+                  <p>Top 5 tours</p>
+                </div>
+
+                <div id="toptours" style="height: 250px;"></div>
+
+              </div>
+            </div>
+            <!--  col ]] -->
+
+            <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12 formstyle">
+              <div class="menuwrap">
+                <div class="panel-title titlewrp clearfix">
+                  <p>Total Shares</p>
+                </div>
+
+                <div id="pushups" style="height: 250px;"></div>
+
+              </div>
+            </div>
+            <!--  col ]] -->
+
+          </div>
+
+        </div>
+        <!-- <div class="menuwrap mrtop30">
+            <div class="panel-body">
+            <center><img src="assets/images/revenue-src.png" class="img-responsive"></center>
+            </div>
+          </div> -->
+
+
+        <div class="menuwrap mrtop30">
+          <div class="panel-body stattable">
+            <!-- <div class="table-responsive"> -->
+
+            <!-- <nz-table class="table" #nzTable [nzDataSource]="tourlist" [nzIsPagination]="false">
+                <thead nz-thead>
+                  <tr>
+                    <th nz-th>
+                      <span>Tour</span>
+                    </th>
+                    <th nz-th>
+                      <span>Views</span>
+                    </th>
+                    <th nz-th>
+                      <span>Likes</span>
+                    </th>
+                    <th nz-th>
+                      <span>Share</span>
+                    </th>
+                    <th nz-th>
+                      <span>Link clicks</span>
+                    </th>
+                  </tr>
+                </thead>
+                <tbody nz-tbody>
+                  <tr nz-tbody-tr *ngFor="let tour of tourlist">
+                    <td nz-td>{{tour.title == '' ? 'No title set' : tour.title}}</td>
+                    <td nz-td>{{tour.view_count}}</td>
+                    <td nz-td>3</td>
+                    <td nz-td>{{tour.share_count}}</td>
+                    <td nz-td>2</td>
+                  </tr>
+
+                </tbody>
+              </nz-table> -->
+            <!-- <pre>{{tourlist | json}}</pre> -->
+
+
+            <!-- <p-dataTable [value]="tourlist">
+                  <p-column *ngFor="let col of cols" [field]="col.field" [header]="col.header"></p-column>
+              </p-dataTable> -->
+
+
+            <p-dataTable [value]="tourlist" [rows]="10" [paginator]="true" [pageLinks]="3" resizableColumns="true">
+
+              <p-column field="tour" header="Full Name" [sortable]="true">
+                <ng-template let-col let-name="rowData" pTemplate="body">
+                  <span>{{name.title == '' ? 'No title set' : name.title}}</span>
+                </ng-template>
+              </p-column>
+
+              <p-column field="view_count" header="Views"></p-column>
+              <p-column field="leads" header="Leads">
+                <ng-template let-col let-name="rowData" pTemplate="body">
+                  <span>{{name.lead_count}}</span>
+                </ng-template>
+              </p-column>
+              <p-column field="share_count" header="Share"></p-column>
+              <!-- <p-column field="link" header="Link clicks">
+                      <ng-template let-col let-name="rowData" pTemplate="body">
+                        <span>5</span>
+                      </ng-template>
+                  </p-column> -->
+
+            </p-dataTable>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+            <!-- </div> -->
+          </div>
+        </div>
+      </div>
+
+
+    </div>
+  </div>
+
+
+</section>

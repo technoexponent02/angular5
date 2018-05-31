@@ -1,0 +1,58 @@
+.input-group-addon {
+    background-color: #0d79e6;
+    border-color: #0d79e6;
+    color: #fff;
+}
+.plan_action_bd > a[disabled],
+.plan_action_bd button[disabled] {
+    cursor: not-allowed;
+}
+.plan_action_bd button,
+.plan_action_bd button[disabled]{
+    background: #fff none repeat scroll 0 0;
+    border-radius: 17px;
+    border: 0px;
+    box-shadow: 1px 2px 0px #444;
+    display: inline-block;
+    font-size: 19px;
+    margin: 20px 0;
+    padding: 8px;
+    font-family: "Roboto",sans-serif;
+    text-align: center;
+    color: #00458a;
+    width: 202px;
+}
+.save_bd.paypal{
+    margin: 0;
+    display: inline-block;
+}
+.securestripe{
+    width: 122px;
+    float: right;
+}
+.securepaypal{
+    width: 145px;
+    margin-top: 5px
+}
+
+.invalidAmount{
+    background: #f94962;
+    color: #fff;
+    padding: 15px;
+    position: absolute;
+    z-index: 999;
+    border: 1px solid #ce1414;
+    margin-bottom: 10px;
+}
+
+.col-sm-6.disabled:after{
+    content: '';
+    display: block;
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    z-index: 9999;
+    background: rgba(255, 255, 255, 0.85);
+    top: 0;
+    left: 0;
+}

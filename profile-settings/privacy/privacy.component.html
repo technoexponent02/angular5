@@ -1,0 +1,32 @@
+<h4 class="settTitleSub">Privacy</h4>
+<div class="wformbx panel-body withradio">
+  <div class="form-inline">
+    <label>Who can see your friends</label>
+    <div class="form-group radio">
+      <label>
+        <input type="radio" class="hidden" [checked]="authUser.privacy_scope == 1" (change)="privacyLvlChange(1)" name="wcanseefriend">
+        <span class="icoradioCirle rounduc"></span>
+        Only me
+      </label>
+    </div>
+
+    <div class="form-group radio">
+      <label>
+        <input type="radio" class="hidden"  [checked]="authUser.privacy_scope == 2" (change)="privacyLvlChange(2)" name="wcanseefriend">
+        <span class="icoradioCirle rounduc"></span>
+        Friends
+      </label>
+    </div>
+
+    <div class="form-group radio">
+      <label>
+        <input type="radio" class="hidden"  [checked]="authUser.privacy_scope == 3" (change)="privacyLvlChange(3)" name="wcanseefriend">
+        <span class="icoradioCirle rounduc"></span>
+        Public
+      </label>
+    </div>
+
+    <p-messages [(value)]="msgs"></p-messages>
+
+  </div>
+</div>

@@ -1,0 +1,60 @@
+
+<p-growl [(value)]="msgs">
+	</p-growl>
+
+<div class="container">
+		  <!-- Tab panes -->
+		  <div class="tab-content">
+		    <div role="tabpanel" class="tab-pane active" id="home">
+
+
+			  <div class="row" style="margin-bottom: 20px;">
+				<div class="col-md-8">
+					<h3 class="dbtitle">API &amp; Integration</h3>
+				</div>
+				<div class="col-md-4">
+					<select class="form-control" style="float: right;" [(ngModel)]="singleOrg" (change)="selectOrg(singleOrg);">
+						<option value="">Select Organization</option>
+						<option [value]="org.organization_id" *ngFor="let org of allOrgData">{{org.company_name}}</option>
+					</select>
+				</div>
+			  </div>
+
+			  <div class="row">
+					<div class="col-md-12 table-responsive themecolor client-table">
+
+						<p-dataTable [value]="apiResults" [rows]="10" [paginator]="true" [pageLinks]="3" [rowsPerPageOptions]="[10,50,80]" resizableColumns="true">
+							
+							<p-column field="id" [style]="{'width':'15%'}" header="Organization" [sortable]="true">
+								<ng-template let-col let-name="rowData" pTemplate="body">
+									{{name.first_name}} {{name.last_name}}
+								</ng-template>
+							</p-column>
+							<p-column field="api_key" [style]="{'width':'13%'}" header="Api Key" [sortable]="true">
+							</p-column>
+							<p-column field="api_token" [style]="{'width':'20%'}" header="Api Token" [sortable]="true">
+							</p-column>
+							<p-column field="domain_name" [style]="{'width':'20%'}" header="Domain Key" [sortable]="true">
+							</p-column>
+							<p-column field="created_at" [style]="{'width':'10%'}" header="Created Date" [sortable]="true">
+								<ng-template let-col let-fdate="rowData" pTemplate="body">
+									{{fdate.created_at | date}}
+								</ng-template>
+							</p-column>
+
+							<p-column header="Action" [style]="{'width':'10%'}">
+								<ng-template let-col let-name="rowData" pTemplate="body">
+									<button class="btn btn-success" (click)="statusUpdate(name)">{{name.status == 1 ? 'Inactive' : 'Active'}}</button>
+								</ng-template>
+							</p-column>
+				
+						</p-dataTable> 
+	
+					</div>
+			  </div>
+
+
+		    </div><!-- tab one -->
+		 <!--    <div role="tabpanel" class="tab-pane" id="profile"></div> -->
+		</div>
+	</div>

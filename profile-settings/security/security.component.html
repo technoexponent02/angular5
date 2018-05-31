@@ -1,0 +1,95 @@
+<form name="form" (ngSubmit)="f.form.valid && makeSave()" #f="ngForm" autocomplete="off" novalidate>
+
+  <!-- <h4 class="settTitleSub">Security</h4> -->
+
+  <div class="settTitleSub">
+    <h4>Security</h4>
+    <div class="settingbtngrp">
+      <button type="submit" [disabled]="!f.form.valid || loading">
+
+          <ng-container *ngIf="loading; else noload">
+            <i class="fa fa-spinner fa-pulse fa-spin fa-spin"></i>
+            Updating...
+          </ng-container>
+          <ng-template #noload>
+            <i class="fa fa-check"></i>
+            Save
+          </ng-template>
+
+      </button>
+    </div>
+  </div>
+
+
+  <div class="wformbx panel-body">
+    <div class="row rowsix">
+      <label class="col-sm-3">Old Password</label>
+      <div class="form-group col-sm-6 paddl0">
+
+        <input type="password" class="form-control"
+        [(ngModel)]="securityModel.current_password"
+        #oldPass="ngModel"
+        required
+        minlength="6"
+        name="old">
+
+        <div class="text-danger lite" *ngIf="oldPass.errors && (oldPass.dirty || oldPass.touched)">
+          <div [hidden]="!oldPass.errors.required">
+            Old password is required
+          </div>
+          <div [hidden]="!oldPass.errors.minlength">
+            Password must be 6 character
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <div class="row rowsix">
+      <label class="col-sm-3">New Password</label>
+      <div class="form-group col-sm-6 paddl0">
+
+        <input type="password" class="form-control"
+        [(ngModel)]="securityModel.new_password"
+        #newPass="ngModel"
+        minlength="6"
+        name="new" 
+        required>
+
+        <div class="text-danger lite" *ngIf="newPass.errors && (newPass.dirty || newPass.touched)">
+          <div [hidden]="!newPass.errors.required">
+            New password is required
+          </div>
+          <div [hidden]="!newPass.errors.minlength">
+            Password must be 6 character
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <div class="row rowsix">
+      <label class="col-sm-3">Confirm New Password</label>
+      <div class="form-group col-sm-6 paddl0">
+        
+        <input type="password" class="form-control" 
+        placeholder=""
+        required
+        name="password2" 
+        ngModel
+        #password2="ngModel"
+        [equalTo]="newPass"/>
+
+        <div class="text-danger lite" *ngIf="password2.errors && (password2.dirty || password2.touched)">
+          <div [hidden]="!password2.errors.equalTo">
+            Password not matched
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <p-messages [(value)]="msgs"></p-messages>
+
+  </div>
+</form>

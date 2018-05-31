@@ -1,0 +1,161 @@
+<!-- <pre>
+	{{configObj | json}}
+</pre> -->
+<p-growl [(value)]="msgs"></p-growl>
+
+<div class="container">
+	<div class="settings-loader-outer">
+    
+    <!-- loader -->
+		<div class="linear-progress med">
+      <div class="bar bar1"></div>
+      <div class="bar bar2"></div>
+    </div>
+    <div class="setting-http-load">
+    </div>
+    <!-- loader -->
+
+		<!-- Tab panes -->
+		<div class="tab-content">
+			<div role="tabpanel" class="tab-pane active" id="home">
+				<div class="row">
+
+					<div class="organaization-validation">
+						<div class="col-md-12">
+							<h3 class="dbsubtitle">ORGANAIZATION VALIDATION SETTINGS</h3>
+              
+              <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12">
+
+                <div class="row form-group">
+                  <label class="col-lg-6  col-md-6 col-sm-6 col-xs-12">Company name</label>
+                  <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+                    <label class="i-switch i-switch-md bg-info csswitch">
+                        <input type="checkbox" name="control" [ngModel]="configObj.company_name == '1' ? true : configObj.company_name == '0' ? false : null" (ngModelChange)="configObj.company_name = $event ? '1' : '0'">
+                        <i></i>
+                    </label>
+                  </div>
+                </div>
+
+                <div class="row form-group">
+                  <label class="col-lg-6  col-md-6 col-sm-6 col-xs-12">Website</label>
+                  <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+                    <label class="i-switch i-switch-md bg-info csswitch">
+                        <input type="checkbox" name="control" [ngModel]="configObj.website == '1' ? true : configObj.website == '0' ? false : null" (ngModelChange)="configObj.website = $event ? '1' : '0'">
+                        <i></i>
+                    </label>
+                  </div>
+                </div>
+
+                <div class="row form-group">
+                  <label class="col-lg-6  col-md-6 col-sm-6 col-xs-12">Phone number code</label>
+                  <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+                    <label class="i-switch i-switch-md bg-info csswitch">
+                        <input type="checkbox" name="control" [ngModel]="configObj.phone_number_code == '1' ? true : configObj.phone_number_code == '0' ? false : null" (ngModelChange)="configObj.phone_number_code = $event ? '1' : '0'">
+                        <i></i>
+                    </label>
+                  </div>
+                </div>
+
+                <div class="row form-group">
+                  <label class="col-lg-6  col-md-6 col-sm-6 col-xs-12">Phone number</label>
+                  <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+                    <label class="i-switch i-switch-md bg-info csswitch">
+                        <input type="checkbox" name="control" [ngModel]="configObj.phone_number == '1' ? true : configObj.phone_number == '0' ? false : null" (ngModelChange)="configObj.phone_number = $event ? '1' : '0'">
+                        <i></i>
+                    </label>
+                  </div>
+                </div>
+
+                <div class="row form-group">
+                  <label class="col-lg-6  col-md-6 col-sm-6 col-xs-12">Tax</label>
+                  <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+                    <label class="i-switch i-switch-md bg-info csswitch">
+                        <input type="checkbox" name="control" [ngModel]="configObj.tax_id == '1' ? true : configObj.tax_id == '0' ? false : null" (ngModelChange)="configObj.tax_id = $event ? '1' : '0'">
+                        <i></i>
+                    </label>
+                  </div>
+                </div>
+
+                <div class="row form-group">
+                  <label class="col-lg-6  col-md-6 col-sm-6 col-xs-12">Address</label>
+                  <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+                    <label class="i-switch i-switch-md bg-info csswitch">
+                        <input type="checkbox" name="control" [ngModel]="configObj.address == '1' ? true : configObj.address == '0' ? false : null" (ngModelChange)="configObj.address = $event ? '1' : '0'">
+                        <i></i>
+                    </label>
+                  </div>
+                </div>
+
+                <div class="row form-group">
+                  <label class="col-lg-6  col-md-6 col-sm-6 col-xs-12">Postal code</label>
+                  <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+                    <label class="i-switch i-switch-md bg-info csswitch">
+                        <input type="checkbox" name="control" [ngModel]="configObj.postal_code == '1' ? true : configObj.postal_code == '0' ? false : null" (ngModelChange)="configObj.postal_code = $event ? '1' : '0'">
+                        <i></i>
+                    </label>
+                  </div>
+                </div>
+
+                <div class="row form-group">
+                  <label class="col-lg-6  col-md-6 col-sm-6 col-xs-12">City</label>
+                  <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+                    <label class="i-switch i-switch-md bg-info csswitch">
+                        <input type="checkbox" name="control" [ngModel]="configObj.city == '1' ? true : configObj.city == '0' ? false : null" (ngModelChange)="configObj.city = $event ? '1' : '0'">
+                        <i></i>
+                    </label>
+                  </div>
+                </div>
+
+                <div class="row form-group">
+                  <label class="col-lg-6  col-md-6 col-sm-6 col-xs-12">State</label>
+                  <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+                    <label class="i-switch i-switch-md bg-info csswitch">
+                        <input type="checkbox" name="control" [ngModel]="configObj.state == '1' ? true : configObj.state == '0' ? false : null" (ngModelChange)="configObj.state = $event ? '1' : '0'">
+                        <i></i>
+                    </label>
+                  </div>
+                </div>
+
+                <!-- <div class="row form-group">
+                  <label class="col-lg-6  col-md-6 col-sm-6 col-xs-12">Country</label>
+                  <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+                    <label class="i-switch i-switch-md bg-info csswitch">
+                        <input type="checkbox" name="control" [ngModel]="configObj.country_id == '1' ? true : configObj.country_id == '0' ? false : null" (ngModelChange)="configObj.country_id = $event ? '1' : '0'">
+                        <i></i>
+                    </label>
+                  </div>
+                </div> -->
+
+                <div class="row form-group">
+                  <label class="col-lg-6  col-md-6 col-sm-6 col-xs-12">About</label>
+                  <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+                    <label class="i-switch i-switch-md bg-info csswitch">
+                        <input type="checkbox" name="control" [ngModel]="configObj.about == '1' ? true : configObj.about == '0' ? false : null" (ngModelChange)="configObj.about = $event ? '1' : '0'">
+                        <i></i>
+                    </label>
+                  </div>
+                </div>
+
+                <!-- <div class="row form-group">
+                  <label class="col-lg-6  col-md-6 col-sm-6 col-xs-12">Industry</label>
+                  <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+                    <label class="i-switch i-switch-md bg-info csswitch">
+                        <input type="checkbox" name="control" [ngModel]="configObj.industry_id == 1 ? true : configObj.industry_id == 0 ? false : null" (ngModelChange)="configObj.industry_id = $event ? 1 : 0">
+                        <i></i>
+                    </label>
+                  </div>
+                </div> -->
+
+                <input class="btn btn-success btn-lg btnbig" type="submit" value="SAVE" (click)="orgValidationUpdate()">
+
+              </div>
+
+						</div>
+					</div>
+
+				</div>
+			</div><!-- tab one -->
+		</div>
+	</div>
+</div>
+

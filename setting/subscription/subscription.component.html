@@ -1,0 +1,521 @@
+
+
+<!-- free msg -->
+<p-growl [(value)]="freeplanmsg"></p-growl>
+<!-- free msg -->
+<!-- <pre>{{notAgainMonthlyYearly | json }}</pre> -->
+<!-- payment popup -->
+<p-dialog header="Just one more step" [(visible)]="paymentPop" modal="modal" width="800" [responsive]="true">
+	<div class="modal-body">
+			
+			
+		<div class="stepon_bd">
+
+			<!-- payment method toggle -->
+			<div class="paymentcheck" style="margin-bottom: 20px;background: #eee;padding: 19px;">
+				<form>
+
+					<div class="form-inline">
+						<div class="radio">
+							<label class="i-checks">                                
+								<input name="radio" id="stripe" type="radio" checked="true" (change)="stripePayment()"><i></i> Stripe
+							</label>
+						</div>
+						<div class="radio">
+							<label class="i-checks">                                
+								<input name="radio" id="paypal" type="radio" (change)="paypalPayment()"><i></i> Paypal
+							</label>
+						</div>
+					</div>
+
+					<!-- {{stripePay | json}} -->
+
+				</form>
+			</div>
+			<!-- payment method toggle -->
+
+			<!-- stripe payment -->
+			<div class="stripe" id="stripeformwrap" [hidden]="!stripePay">
+
+				<div class="row">
+					<div class="payment-done" *ngIf="paymentthanks; else dopayment">
+						<h3 style="text-align: center;">Thank you for your subscription.</h3>
+					</div>
+					<ng-template #dopayment>
+						<div class="col-sm-5">
+							<h2>Subscription Details</h2>
+						
+							<div class="row form-group">
+								<label class="col-lg-6 col-md-6 col-sm-6 col-xs-12">{{stripePaymentData?.name}}</label>
+								<div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+									<h1>${{stripePaymentData?.amount_monthly}}</h1>
+								</div>
+							</div>
+							<div class="row form-group">
+								<label class="col-lg-3 col-md-3 col-sm-6 col-xs-12">Period</label>
+								<div class="col-lg-9 col-md-9 col-sm-6 col-xs-12">
+
+									<div class="form-inline">
+
+										<!-- first time upgrade -->
+										<div *ngIf="this.secondTimeBuyUpgrade == false; else secondTime">
+											<!-- <pre>1</pre> -->
+											<div class="radio">
+												<label class="i-checks">                                
+													<input name="radio" id="yarlyplan" type="radio" (change)="yearlyDiscount(stripePaymentData)"><i></i> Yearly
+												</label>
+											</div>
+											<div class="radio">
+												<label class="i-checks">                                
+													<input name="radio" id="monthlyplan" checked="true" type="radio" (change)="monthlyDiscount(stripePaymentData)"><i></i> Monthly
+												</label>
+											</div>
+										</div>
+
+										<!-- running upgrade -->
+										<ng-template #secondTime>
+												<!-- <pre>0</pre> -->
+											<div class="radio">
+												<label class="i-checks">                                
+													<input name="radio" id="agyarlyplan" type="radio" (change)="scyearlyDiscount(stripePaymentData)"><i></i> Yearly
+												</label>
+											</div>
+											<div class="radio">
+												<label class="i-checks">                                
+													<input name="radio" id="agmonthlyplan" checked="true" type="radio" (change)="scmonthlyDiscount(stripePaymentData)"><i></i> Monthly
+												</label>
+											</div>
+										</ng-template>
+
+									</div>
+
+
+								</div>
+							</div>
+							<div class="row form-group">
+								<span class="save_bd">Go yearly to save ${{stripePaymentData?.yearly_discount}}%</span>
+							</div>
+							<div class="row form-group">
+								<div class="invalidAmount col-md-12" *ngIf="invalidAmount">
+									<p>You can buy this plan after your plan expiry date.<strong>Kindly choose another period.</strong></p>
+								</div>
+								<label class="col-lg-6 col-md-6 col-sm-6 col-xs-12" style="font-size:18px;">TOTAL</label>
+								<div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+									<h1>${{planTotal}}</h1>
+								</div>
+							</div>
+							<div class="row form-group">
+								<!-- <p class="s_bd">Your next billing period will be 4 July 2017</p> -->
+							</div>
+						
+						
+						</div>
+						<div class="col-sm-6" [ngClass]="{'disabled': invalidAmount }">
+							<h2>Credit card details</h2>
+							<div class="c_form_bd">
+								<!-- <div class="row form-group">      
+									<label class="col-lg-12 col-md-3 col-sm-3 col-xs-12">Card Holders Name</label>
+									<div class="col-lg-6 col-md-9 col-sm-9 col-xs-12">
+										<input class="form-control" name="" type="text" placeholder="First Name">
+									</div>
+									<div class="col-lg-6 col-md-9 col-sm-9 col-xs-12">
+										<input class="form-control" name="" type="text" placeholder="Last Name">
+									</div>
+								</div> -->
+								<form name="form" id="payment-form" (ngSubmit)="f.form.valid && getToken()" #f="ngForm" novalidate>
+									<div class="row form-group">      
+										<label class="col-lg-12 col-md-3 col-sm-3 col-xs-12">Credit Card Number</label>
+										<div class="col-lg-12 col-md-9 col-sm-9 col-xs-12">
+											<div class="input-group">
+												<input class="form-control" [(ngModel)]="cardNumber" name="card-number" type="text" size="20" data-stripe="number" placeholder="Card Number" #card="ngModel" maxlength="20" pattern="^[0-9]+$" required>
+												<div class="input-group-addon"><i class="fa fa-credit-card" aria-hidden="true"></i></div>
+											</div>
+											<div *ngIf="f.submitted && !card.valid" class="text-danger" style="font-size: 11px;">
+												<div [hidden]="!card.errors.required">
+													Card number is required
+												</div>
+												<div [hidden]="!card.errors.pattern">
+													Card number must be number
+												</div>
+											</div>
+										</div>
+									</div>
+									<div class="row form-group">      
+										
+										<label class="col-lg-12 col-md-3 col-sm-3 col-xs-12">Expiration Date</label>
+										<div class="col-lg-4 col-md-9 col-sm-9 col-xs-12">
+											<input type="text" class="form-control" [(ngModel)]="expiryMonth" name="expiry-month" type="text" size="2" data-stripe="exp_month" placeholder="e.g. 01" #month="ngModel" minlength="2" maxlength="2" pattern="^[0-9]+$" required>
+											<div *ngIf="f.submitted && !month.valid" class="text-danger" style="font-size: 11px;">
+												<div [hidden]="!month.errors.required">
+													Month is required
+												</div>
+												<div [hidden]="!month.errors.pattern && !month.errors.minlength">
+													Must be 2 digit month number
+												</div>
+											</div>
+										</div>
+					
+										<div class="col-lg-4 col-md-9 col-sm-9 col-xs-12">
+											<input class="form-control" [(ngModel)]="expiryYear" name="expiry-year" type="text" size="2" data-stripe="exp_year" placeholder="e.g. 2019" #year="ngModel" minlength="4" maxlength="4" pattern="^[0-9]+$" required>
+											<div *ngIf="f.submitted && !year.valid" class="text-danger" style="font-size: 11px;">
+												<div [hidden]="!year.errors.required">
+													Year is required
+												</div>
+												<div [hidden]="!year.errors.pattern && !year.errors.minlength">
+													Must be 4 digit month number
+												</div>
+											</div>
+										</div>
+
+										<div class="col-lg-4 col-md-9 col-sm-9 col-xs-12">
+											<input class="form-control" [(ngModel)]="cvc" name="cvc" type="text" size="4" data-stripe="cvc" placeholder="###" #serc="ngModel" maxlength="4" pattern="^[0-9]+$" required>
+											<div *ngIf="f.submitted && !serc.valid" class="text-danger" style="font-size: 11px;">
+												<div [hidden]="!serc.errors.required">
+													CVC is required
+												</div>
+												<div [hidden]="!serc.errors.pattern">
+													Must be number
+												</div>
+											</div>
+										</div>
+										
+										
+										<div class="col-lg-4" *ngIf="processingPayment">
+											<div>
+												<br>
+												<p><i class="fa fa-refresh fa-spin fa-3x fa-fw" style="display: inline-block;font-size: 13px;"></i>Processing...</p>
+											</div>
+										</div>
+									</div>
+									<div class="text-left">
+										<button type="submit" class="btn btn-success btntheme" [disabled]="invalidAmount" style="font-size:20px;font-weight:300;margin-top: 20px;">Subscribe</button>
+										<img src="assets/images/powered-by-stripe.png" alt="secure" class="securestripe" />
+									</div>
+								</form>
+				
+							</div>
+						</div>
+					</ng-template>
+				</div>
+				<p-messages [(value)]="stripemsgs"></p-messages>
+				<p-messages [(value)]="paymentemsgs"></p-messages>
+
+			</div>
+			<!-- stripe payment -->
+
+
+			<!-- paypal payment -->
+			<div id="paypalformwrap" [hidden]="stripePay">
+				<div class="row">
+
+
+					<div class="col-sm-12">
+						<h2>Subscription Details</h2>
+					
+						<div class="row form-group">
+							<label class="col-lg-6 col-md-6 col-sm-6 col-xs-12">{{stripePaymentData?.name}}</label>
+							<div class="col-lg-6 col-md-6 col-sm-6 col-xs-12" style="text-align:right;">
+								<h1>${{stripePaymentData?.amount_monthly}}</h1>
+							</div>
+						</div>
+						<div class="row form-group">
+							<label class="col-lg-3 col-md-3 col-sm-6 col-xs-12">Period</label>
+							<div class="col-lg-9 col-md-9 col-sm-6 col-xs-12" style="text-align:right;">
+								<div class="form-inline">
+
+									<!-- first time upgrade -->
+									<div *ngIf="this.secondTimeBuyUpgrade == false; else secondTime">
+										<div class="radio">
+											<label class="i-checks">                                
+												<input name="radio" id="yarlyplan" type="radio" (change)="yearlyDiscount(stripePaymentData)"><i></i> Yearly
+											</label>
+										</div>
+										<div class="radio">
+											<label class="i-checks">                                
+												<input name="radio" id="monthlyplan" checked="true" type="radio" (change)="monthlyDiscount(stripePaymentData)"><i></i> Monthly
+											</label>
+										</div>
+									</div>
+
+									<!-- running upgrade -->
+									<ng-template #secondTime>
+											<!-- <pre>0</pre> -->
+										<div class="radio">
+											<label class="i-checks">                                
+												<input name="radio" id="agyarlyplan" type="radio" (change)="scyearlyDiscount(stripePaymentData)"><i></i> Yearly
+											</label>
+										</div>
+										<div class="radio">
+											<label class="i-checks">                                
+												<input name="radio" id="agmonthlyplan" checked="true" type="radio" (change)="scmonthlyDiscount(stripePaymentData)"><i></i> Monthly
+											</label>
+										</div>
+									</ng-template>
+
+
+								</div>
+							</div>
+						</div>
+						<div class="row form-group" style="text-align:right;">
+							<span class="save_bd paypal">Go yearly to save ${{stripePaymentData?.yearly_discount}}%</span>
+						</div>
+						<div class="row form-group">
+
+							<div class="invalidAmount col-md-12" *ngIf="invalidAmount">
+								<p>You can buy this plan after your plan expiry date.<strong>Kindly choose another period.</strong></p>
+							</div>
+
+							<label class="col-lg-6 col-md-6 col-sm-6 col-xs-12" style="font-size:18px;">TOTAL</label>
+							<div class="col-lg-6 col-md-6 col-sm-6 col-xs-12" style="text-align:right;">
+								<h1>${{planTotal}}</h1>
+								<!-- <pre>{{planTotal}}</pre> -->
+							</div>
+						</div>
+						<div class="row form-group">
+							<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12" style="text-align:right;">
+								<!-- <img src="assets/images/secure-paypal-logo.jpg" alt="secure" class="securepaypal" /> -->
+								<!-- <button type="submit" class="btn btn-success btntheme" [disabled]="invalidAmount" (click)="serversend()" style="font-size:20px;font-weight:300;">Payment with paypal</button> -->
+
+
+								<div id="paypal-button-container"></div>
+
+							</div>
+						</div>
+						
+						<!-- fisrt form -->
+						
+					
+					</div>
+					
+					<!-- <form method="post" id="paypal_form" action="https://api-3t.sandbox.paypal.com/nvp">
+						<input type="hidden" name=USER value="webmaster_api1.remarso.com">
+						<input type="hidden" name=PWD value="DDTVG6AE6ZQBMVAB">
+						<input type="hidden" name=SIGNATURE value="AxjHQLqJRMYK7vZO4T7aExY5Zf2mAOrmHNpt9FPNpoViYcJ8JR2GBnGL">
+						<input type="hidden" name=VERSION value="64.0">
+						<input type="hidden" name=PAYMENTREQUEST_0_PAYMENTACTION value="Sale">
+						<input name=PAYMENTREQUEST_0_AMT value="12">
+						<input type="hidden" name=RETURNURL [value]="paypalSuccessUrl">
+						<input type="hidden" name=CANCELURL [value]="paypalFailUrl">
+						<input type="submit" name=METHOD value="SetExpressCheckout">
+					</form> -->
+
+
+					<!-- <form method="post" action="https://google.com">
+						<input type="submit" name="test" value="submit">
+					</form> -->
+				
+					<!-- <form action="https://www.sandbox.paypal.com/cgi-bin/webscr" method="post" name="paypal_form" id="paypal_form">
+						<input type="hidden" name="cmd" value="_xclick" readonly="">
+						<input type="hidden" name="business" [value]="authUser.email" readonly="">
+						<input type="hidden" name="return" id="return_url" [value]="paypalSuccessUrl" readonly="">
+						<input type="hidden" name="undefined_quantity" value="0" readonly="">
+						<input type="hidden" name="item_name" id="item_name" value="plan" readonly="">
+						<input type="hidden" name="item_number" value="1" readonly="">
+						<input type="hidden" name="notify_url" id="notify_url" [value]="paypalPaymentUrl" readonly="">
+						<input type="hidden" name="currency_code" id="currency_code" value="USD" readonly="">
+						<input type="hidden" name="amount" id="amount" [value]="planTotal" readonly="">
+						<input type="hidden" name="no_shipping" value="1" readonly="">
+						<input type="hidden" name="custom" value="117" readonly="">
+						<input type="hidden" name="cancel_return" id="cancel_return" [value]="paypalFailUrl" readonly="">
+					</form> -->
+
+
+
+				</div>
+			</div>
+			<!-- paypal payment -->
+
+
+
+		</div>
+
+	</div>
+</p-dialog>
+<!-- payment popup -->
+
+
+<!-- success payment popup -->
+<p-dialog header="Thank You Message" [(visible)]="thankyoupop" modal="modal" width="800" [responsive]="true">
+	<div class="row">
+		<h3 style="text-align: center; padding: 50px 0;">Thank you for your subscription.</h3>
+	</div>
+</p-dialog>
+<!-- success payment popup -->
+
+<!-- <pre>
+	{{userInformation | json}}
+</pre> -->
+
+<div class="container">
+	<div class="settings-loader-outer">
+			
+		<div class="linear-progress med">
+			<div class="bar bar1"></div>
+			<div class="bar bar2"></div>
+		</div>
+		<div class="setting-http-load">
+		</div>
+
+		<!-- Tab panes -->
+		<div class="tab-content">
+			<div role="tabpanel" class="tab-pane active" id="home">
+
+				<div class="subscription_plan_bd">
+					<h1>
+						Subscription Plans
+						<span *ngIf="planData.length == 0; else hasallplan"></span>
+						<ng-template #hasallplan>
+							
+							<!-- you are under free plan -->
+							<span *ngIf="userInformation?.user?.subscription_plan?.amount == 0; else notUnderFreePlan">
+								(You are under the free plan)
+							</span>
+							<!-- you are under free plan -->
+							<!-- you are under paid plan -->
+							<ng-template #notUnderFreePlan>
+
+
+								<span *ngIf="userInformation?.user?.subscription_plan?.expiration_date != null">
+									<span *ngIf="expirePlanDate.length > 0">
+										<span *ngFor="let plan of planData">
+											<span *ngIf="userInformation.user.subscription_plan.subscription_id == plan.id">
+												(Plan {{plan.name}} will expire on: {{expirePlanDate}})
+											</span>
+
+										</span>
+									</span>
+								</span>
+
+
+								<!-- <span *ngIf="userInformation?.user?.subscription_plan?.expiration_date != null">
+									<span *ngIf="expirePlanDate.length > 0">
+										<pre>{{userInformation.user.subscription_plan | json}}</pre>
+										<span>(Plan will expire on: {{expirePlanDate}})</span>
+									</span>
+								</span> -->
+							</ng-template>
+							<!-- you are under paid plan -->
+
+						</ng-template>
+					</h1>
+					
+					<h4 *ngIf="userInformation?.user?.future_subscription_plan != null && userInformation?.user?.future_subscription_plan?.subscription_status == 'S'">
+						<span *ngFor="let plan of planData">
+							<span *ngIf="userInformation.user.future_subscription_plan.subscription_id == plan.id">
+								You have a future plan {{plan.name}} start from {{userInformation?.user?.future_subscription_plan?.date_signed | date}}
+							</span>
+						</span>
+					</h4>
+				
+				<div class="row plandata">
+						
+						<div *ngIf="planData.length == 0; else hasplanlist">
+							Please choose the country first
+						</div>
+						<ng-template #hasplanlist>
+							<div class="col-sm-3" style="margin-bottom: 30px;" *ngFor="let plan of planData; let i=index">
+								<!-- <pre>{{plan | json}}</pre> -->
+								<div class="S_block_bd">
+									<h2>{{plan.name}}</h2>
+									<div class="p_sec_bd">
+										<h1>${{plan.amount_monthly}}</h1>
+										<p>{{plan.note}}</p>
+									</div>
+
+									<!-- <pre>{{plan | json}}</pre> -->
+									
+									<div class="s_feature_bd">
+										<div slimScroll
+											width="auto"
+											height="130px"
+											size="4px">
+												<ul style="padding: 0px;">
+													<li><i class="fa fa-cog" aria-hidden="true"></i> Maximum tour: {{plan.maximum_tour}}</li>
+													<li><i class="fa fa-cog" aria-hidden="true"></i> Maximum user: {{plan.maximum_users}}</li>
+													<li><i class="fa fa-cog" aria-hidden="true"></i> Sences per tour: {{plan.sences_per_tour}}</li>
+													<li *ngFor="let feature of plan.subscription_feture"><i class="fa fa-cog" aria-hidden="true"></i>  {{feature?.subscription_feture_details?.name}}</li>
+												</ul>
+										</div>
+									</div>
+
+
+									<!-- free active first time -->
+									<ng-container *ngIf="plan?.amount_monthly*1 == userInformation?.subscription_details.amount_monthly; else firstUpgrade">
+										<div class="plan_action_bd">
+											<a href="javascript:void(0);" style="cursor: default;">
+												<span>Current</span>
+											</a>
+										</div>
+									</ng-container>
+									<!-- free active first time -->
+									<!-- first time upgrade -->
+									<ng-template #firstUpgrade>
+										<!-- <pre>{{plan | json}}</pre> -->
+
+										<!-- check free plan or upgrade and downgrade -->
+										<div *ngIf="plan.amount_monthly*1 == 0; else upgradeDowngradeBlock">
+											<div class="plan_action_bd">
+												<a href="javascript:void(0);" style="cursor: default;">
+													<span>Free</span>
+												</a>
+											</div>
+										</div>
+										<!-- upgrade downgrade -->
+										<ng-template #upgradeDowngradeBlock>
+
+
+											<!-- upgrade -->
+											<div *ngIf="plan.amount_monthly*1 > userInformation?.subscription_details?.amount_monthly; else downgrade">
+												<!-- fisrt time upgrade -->
+												<div class="plan_action_bd" *ngIf="this.secondTimeBuyUpgrade == false; else secondTime">
+													<button type="button" [disabled]="userInformation?.user?.future_subscription_plan != null" (click)="upgradePlanPop(plan, 'C')">
+														<span>Upgrade</span>
+													</button>
+												</div>
+												<!-- second time upgrade -->
+												<ng-template #secondTime>
+													<div class="plan_action_bd">
+														<button type="button" [disabled]="userInformation?.user?.future_subscription_plan != null" (click)="upgradePlanPop(plan, 'C')">
+															<span>Upgrade</span>
+														</button>
+													</div>
+												</ng-template>
+											</div>
+											<!-- downgrade -->
+											<ng-template #downgrade>
+
+												<!-- <pre>{{plan?.amount_monthly*1 | json}}</pre>
+												<pre>{{userInformation?.subscription_details.amount_monthly | json}}</pre> -->
+
+												<div class="plan_action_bd">
+													<button type="button" [disabled]="userInformation?.user?.future_subscription_plan != null && userInformation?.user?.future_subscription_plan?.subscription_status == 'S'" (click)="downgradePlanPop(plan, 'F')">
+														<span>Downgrade</span>
+													</button>
+												</div>
+											</ng-template>
+
+
+										</ng-template>
+
+									</ng-template>
+									<!-- first time upgrade -->
+
+									
+
+								</div>
+							</div>
+						</ng-template>
+					
+				</div>
+				</div>
+				
+				
+				
+			</div><!-- tab one -->
+			<!--    <div role="tabpanel" class="tab-pane" id="profile"></div> -->
+		</div>
+
+	</div>
+</div>
+
+<!-- <pre>{{userInformation?.user?.future_subscription_plan | json}}</pre> -->

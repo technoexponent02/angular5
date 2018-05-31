@@ -1,0 +1,221 @@
+<!-- <pre>
+	{{configObj | json}}
+</pre> -->
+
+<div class="container">
+	<div class="settings-loader-outer">
+
+		<!-- loader -->
+		<div class="linear-progress med">
+			<div class="bar bar1"></div>
+			<div class="bar bar2"></div>
+		</div>
+		<div class="setting-http-load">
+		</div>
+		<!-- loader -->
+
+		<!-- Tab panes -->
+		<div class="tab-content">
+			<div role="tabpanel" class="tab-pane active" id="home">
+				<div class="row">
+					<p-messages [(value)]="msgs"></p-messages>
+					<form name="form" (ngSubmit)="f.form.valid && updateMyConfiguration()" #f="ngForm" novalidate>
+
+						<div class="col-lg-4 col-md-4 col-sm-6 col-xs-12">
+
+
+							<h3 class="dbsubtitle">{{ 'dash_sett' | translate }}</h3>
+
+							<div class="row form-group">
+								<label class="col-lg-6  col-md-6 col-sm-6 col-xs-12">{{ 'lang' | translate }}</label>
+								<div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+									<select class="form-control" name="dashboard_language_id" [(ngModel)]="configObj.dashboard_language_id">
+										<option *ngFor="let language of configurationDetails.language" [value]="language.id">{{language.name}}</option>
+									</select>
+								</div>
+							</div>
+
+
+							<h3 class="dbsubtitle">{{ 'viewer_default_sett' | translate }}</h3>
+
+
+							<div class="row form-group">
+								<label class="col-lg-6  col-md-6 col-sm-6 col-xs-12">{{ 'control' | translate }}</label>
+								<div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+									<label class="i-switch i-switch-md bg-info csswitch">
+										<input type="checkbox" name="control" [ngModel]="configObj.control == 1 ? true : configObj.control == 0 ? false : null" (ngModelChange)="configObj.control = $event ? 1 : 0">
+										<i></i>
+									</label>
+
+								</div>
+							</div>
+
+							<div class="row form-group">
+								<label class="col-lg-6  col-md-6 col-sm-6 col-xs-12">{{ 'Scene_selector' | translate }}</label>
+								<div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+									<label class="i-switch i-switch-md bg-info csswitch">
+										<input type="checkbox" name="scene_selector" [ngModel]="configObj.scene_selector == 1 ? true : configObj.scene_selector == 0 ? false : null"
+										 (ngModelChange)="configObj.scene_selector = $event ? 1 : 0">
+										<i></i>
+									</label>
+
+								</div>
+							</div>
+
+
+
+							<!-- <div class="row form-group">
+								<label class="col-lg-6  col-md-6 col-sm-6 col-xs-12">{{ 'Audio' | translate }}</label>
+								<div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+									<label class="i-switch i-switch-md bg-info csswitch">
+										<input type="checkbox" name="audio" [ngModel]="configObj.audio == 1 ? true : configObj.audio == 0 ? false : null" (ngModelChange)="configObj.audio = $event ? 1 : 0">
+										<i></i>
+									</label>
+
+								</div>
+							</div> -->
+
+
+
+							<!-- <div class="row form-group">
+								<label class="col-lg-6  col-md-6 col-sm-6 col-xs-12">{{ 'location' | translate }}</label>
+								<div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+									<label class="i-switch i-switch-md bg-info csswitch">
+										<input type="checkbox" name="location" [ngModel]="configObj.location == 1 ? true : configObj.location == 0 ? false : null"
+										 (ngModelChange)="configObj.location = $event ? 1 : 0">
+										<i></i>
+									</label>
+
+								</div>
+							</div> -->
+
+
+							<div class="row form-group">
+								<label class="col-lg-6  col-md-6 col-sm-6 col-xs-12">{{ 'share' | translate }}</label>
+								<div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+									<label class="i-switch i-switch-md bg-info csswitch">
+										<input type="checkbox" name="share" [ngModel]="configObj.share == 1 ? true : configObj.share == 0 ? false : null" (ngModelChange)="configObj.share = $event ? 1 : 0">
+										<i></i>
+									</label>
+
+								</div>
+							</div>
+
+							<div class="row form-group" *ngIf="authUser.SubscriptionFeture.includes(3)">
+								<label class="col-lg-6  col-md-6 col-sm-6 col-xs-12">
+									Logo
+								</label>
+								<div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+									<label class="i-switch i-switch-md bg-info csswitch">
+										<input type="checkbox" name="logo" [ngModel]="configObj.logo == 1 ? true : configObj.logo == 0 ? false : null" (ngModelChange)="configObj.logo = $event ? 1 : 0">
+										<i></i>
+									</label>
+
+								</div>
+							</div>
+
+
+							<div class="row form-group" *ngIf="authUser.SubscriptionFeture.includes(3)">
+								<label class="col-lg-6  col-md-6 col-sm-6 col-xs-12">Copyright</label>
+								<div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+									<label class="i-switch i-switch-md bg-info csswitch">
+										<input type="checkbox" name="organization" [ngModel]="configObj.organization == 1 ? true : configObj.organization == 0 ? false : null"
+										 (ngModelChange)="configObj.organization = $event ? 1 : 0">
+										<i></i>
+									</label>
+
+								</div>
+							</div>
+
+							<div class="row form-group" *ngIf="authUser.SubscriptionFeture.includes(3)">
+								<label class="col-lg-6  col-md-6 col-sm-6 col-xs-12">Contact Form</label>
+								<div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+									<label class="i-switch i-switch-md bg-info csswitch">
+										<input type="checkbox" name="from_email" [ngModel]="configObj.from_email == 1 ? true : configObj.from_email == 0 ? false : null"
+										 (ngModelChange)="configObj.from_email = $event ? 1 : 0">
+										<i></i>
+									</label>
+
+								</div>
+							</div>
+
+
+							<!-- <div class="row form-group">
+								<label class="col-xs-12">Sharing option</label>
+								<div class="col-xs-12">
+									<select class="form-control" name="share_option_id" [(ngModel)]="configObj.share_option_id">
+										<option *ngFor="let shareOption of configurationDetails.shareoption" [value]="shareOption.id">{{shareOption.name}}</option>
+									</select>
+								</div>
+							</div> -->
+
+							<!-- normal error when sending post -->
+							<div class="alert alert-danger updatealert" role="alert" *ngIf="configurationUpdatedError">
+								<span class="updatestatusclose danger" (click)="formUpdateErrorPostFailClose()">X</span>
+								<strong>Oh snap!</strong> Something went wrong
+							</div>
+
+							<!-- updated or created -->
+							<div class="alert alert-success updatealert" role="alert" *ngIf="configurationUpdatedSuccess">
+								<span class="updatestatusclose success" (click)="configurationUpdatedSuccessClose()">X</span>
+								<strong>You successfully done!</strong>
+							</div>
+
+							<!-- error alert -->
+							<div class="alert alert-danger updatealert" role="alert" *ngIf="isFormUpdatePostFail">
+								<span class="updatestatusclose danger" (click)="formUpdatePostFailClose()">X</span>
+
+
+							</div>
+
+
+
+							<input type="submit" class="btn btn-success btn-lg btnbig" value="Update">
+
+						</div>
+						<!-- left col for input data -->
+
+						<div class="col-lg-4">
+							<branding></branding>
+							<div class="row form-group" *ngIf="authUser.SubscriptionFeture.includes(3)">
+								<label class="col-xs-12">From Email</label>
+								<div class="col-xs-12" *ngIf="configObj.from_email == 0">
+
+									<input type="email" pattern="^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$" class="form-control" [(ngModel)]="configObj.from_email_value"  #frmemail="ngModel" name="frmemail">
+									<div *ngIf="f.submitted && !frmemail.valid" class="text-danger">
+										<div [hidden]="!frmemail.errors.pattern">
+											Email is not valid
+										</div>
+									</div>
+
+								</div>
+								<div class="col-xs-12" *ngIf="configObj.from_email == 1">
+									<input type="email" 
+									required
+									pattern="^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$"
+									class="form-control" 
+									[(ngModel)]="configObj.from_email_value"  
+									#frmemail="ngModel" 
+									name="frmemail">
+									<div *ngIf="f.submitted && !frmemail.valid" class="text-danger">
+										<div [hidden]="!frmemail.errors.required">
+											Email is required
+										</div>
+										<div [hidden]="!frmemail.errors.pattern">
+											Email is not valid
+										</div>
+									</div>
+								</div>
+
+							</div>
+						</div>
+
+					</form>
+				</div>
+				<p-messages [(value)]="btmmsgs"></p-messages>
+			</div>
+			<!-- tab one -->
+			<!--    <div role="tabpanel" class="tab-pane" id="profile"></div> -->
+		</div>
+	</div>
+</div>

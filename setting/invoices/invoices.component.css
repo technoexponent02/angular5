@@ -1,0 +1,43 @@
+.table-bordered {
+border: 1px solid #ddd;
+}
+table thead {
+background-color: #eeeff1;
+}
+.table.table-bordered  {
+width: 100%;
+max-width: 100%;
+margin-bottom: 20px;
+}
+.table.table-bordered >thead>tr>th {
+font-weight: 300;
+color: #000000;
+font-size: 16px;
+padding: 10px 15px;
+}
+.table.table-bordered >tbody>tr>td {
+font-weight: 300;
+color: #000000;
+font-size: 14px;
+background-color: #fff;
+padding: 9px 18px;
+text-align:left;
+}
+
+
+
+
+.input-group.disabled {
+    position: relative;
+}
+.input-group.disabled:after {
+    content: '';
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background: transparent;
+    left: 0;
+    top: 0;
+    z-index: 999;
+    cursor: not-allowed;
+}

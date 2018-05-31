@@ -1,0 +1,17 @@
+.edit-form{
+    background: #0778e5;
+    padding: 15px 10px;
+    margin-bottom: 50px;
+}
+.edit-form h3{
+    margin: 0px;
+    color: #fff;
+    display: block;
+    margin-right: 10px;
+    float: left;
+    margin: 4px 5px;
+}
+.backlist{
+    float: right;
+    margin-right: 5px;
+}

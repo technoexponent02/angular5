@@ -1,0 +1,81 @@
+<ul class="sidebarNav">
+
+  <li *ngIf="isguest">
+    <a [href]="musicianLinkData.link">
+      <span class="ico uImage" [style.backgroundImage]="musicianLinkData.image"></span>
+      {{musicianLinkData.name}}
+    </a>
+  </li>
+
+  <li>
+    <a href="javascript:void(0);">
+      <span class="ico" style="background:url(assets/images/news-icon.png);"></span> News
+      <span class="count">3</span>
+    </a>
+  </li>
+  <li>
+    <a href="javascript:void(0);">
+      <!-- class="sl" -->
+      <span class="ico" style="background:url(assets/images/calendar-icon.png);"></span> Calendar
+      <span class="count">3</span>
+    </a>
+  </li>
+  <li>
+    <a href="javascript:void(0);">
+      <span class="ico" style="background:url(assets/images/messages-icon.png);"></span> Messages
+      <span class="count">3</span>
+    </a>
+  </li>
+  <li>
+    <a href="javascript:void(0);">
+      <span class="ico" style="background:url(assets/images/contacts-group-icon.png);"></span> Contacts &amp; Groups
+    </a>
+  </li>
+
+  <ng-container *ngIf="isguest">
+    <!-- <pre>{{bandListData | json}}</pre> -->
+    <li *ngFor="let band of bandListData">
+
+      <ng-container *ngIf="band.is_dummy_band == 'N'">
+        <a [href]="band.bandProfileURL" [title]="band.band_name">
+          <span class="ico" style="border-radius: 100px;" [style.background]="'url('+band.band_image+')'"></span> 
+          {{band.band_name}}
+        </a>
+      </ng-container>
+      <!-- <ng-template #dummyBand>
+          <a class="sidebarlink-disabled" title="{{band.band_name}} - Dummy Band">
+            <span class="ico" style="border-radius: 100px;" [style.background]="'url('+band.band_image+')'"></span> 
+            {{band.band_name}}
+          </a>
+      </ng-template> -->
+
+
+
+    </li>
+  </ng-container>
+
+
+
+
+
+  <li>
+    <a href="javascript:void(0);">
+      <span class="ico" style="background:url(assets/images/gigsr-icon.png);"></span> Gigs
+    </a>
+  </li>
+  <li>
+    <a href="javascript:void(0);">
+      <span class="ico" style="background:url(assets/images/teacher-icon.png);"></span> Teacher
+    </a>
+  </li>
+  <li>
+    <a href="javascript:void(0);">
+      <span class="ico" style="background:url(assets/images/ticketing-icon.png);"></span> Ticketing
+    </a>
+  </li>
+  <li>
+    <a href="javascript:void(0);">
+      <span class="ico" style="background:url(assets/images/playlists-icon.png);"></span> Playlists
+    </a>
+  </li>
+</ul>

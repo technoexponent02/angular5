@@ -1,0 +1,54 @@
+<div style="text-align: center; position:relative;padding:60px;" *ngIf="loading">
+    <div class="line-loading">
+      <div class="line-loading-bar"></div>
+      <div class="line-loading-bar"></div>
+      <div class="line-loading-bar"></div>
+      <div class="line-loading-bar"></div>
+    </div>
+</div>
+
+<div *ngIf="friendList.length == 0; else hasfrnd">
+    <h5 style="padding: 20px;">{{friendListmsg}}</h5>
+</div>
+
+<ng-template #hasfrnd>
+  <ul class="peoplelist list-unstyled">
+
+    <div style="text-align: center; position:relative;padding:60px;" *ngIf="loading">
+      <div class="line-loading">
+        <div class="line-loading-bar"></div>
+        <div class="line-loading-bar"></div>
+        <div class="line-loading-bar"></div>
+        <div class="line-loading-bar"></div>
+      </div>
+    </div>
+
+
+    <li *ngFor="let friend of friendList">
+      <!-- <pre>{{friend | json}}</pre> -->
+
+      <a class="poepleav rounduc">
+          <img *ngIf="friend?.profile_picture == 'NA'; else hasimg" src="assets/images/ctavatar_default.png" class="img-responsive"
+            alt="Phtoto">
+          <ng-template #hasimg>
+            <img src="{{profileurl}}{{friend?.profile_picture}}" alt="profile-image" class="img-responsive">
+          </ng-template>
+      </a>
+      <p class="namepeople">
+        <a routerLink="/profile/{{friend?.username}}">{{friend?.first_name}} {{friend?.last_name}}</a>
+        <span>Total Points 100</span>
+      </p>
+
+      <!-- <a href="javascript:void(0);" (click)="addfriend(friend)" *ngIf="friend?.user_friends?.length == 0" class="btn btn-warning btnfill btnbg userplussp">Add Friend</a>
+
+      <a *ngIf="friend?.user_friends[0]?.is_accepted == 3" class="btn btn-warning btnfill btnbg userplussp">Pending...</a> -->
+
+      <a href="javascript:void(0);" (click)="addfriend(friend)" class="btn btn-warning btnfill btnbg userplussp">Add Friend</a>
+
+      <!-- <a *ngIf="friend?.user_friends[0]?.is_accepted == 3" class="btn btn-warning btnfill btnbg userplussp">Pending...</a> -->
+
+
+    </li>
+
+  </ul>
+</ng-template>

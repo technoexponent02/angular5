@@ -1,0 +1,157 @@
+<div class="invoice-box">
+  <table cellpadding="0" cellspacing="0">
+    <tr class="top">
+      <td colspan="2">
+        <table>
+          <tr>
+            <td class="title">
+              <img src="/assets/images/logo.png" alt="virtual tour">
+            </td>
+            
+            <td class="info">
+              Invoice:<br>
+              Created: {{invoiceData.date_signed}}<br>
+              Due: {{invoiceData.expiration_date}}
+            </td>
+          </tr>
+        </table>
+      </td>
+    </tr>
+    
+    <tr class="information">
+      <td colspan="2">
+        <table>
+          <tr>
+            <td>
+              <!-- Sparksuite, Inc.<br>
+              12345 Sunny Road<br>
+              Sunnyville, TX 12345 -->
+            </td>
+            
+            <!-- <td>
+              {{authUser.first_name}} {{authUser.last_name}}<br>
+              {{authUser.email}}
+            </td> -->
+          </tr>
+        </table>
+      </td>
+    </tr>
+    
+    <tr class="heading">
+      <td>
+        Item
+      </td>
+      
+      <td>
+        Details
+      </td>
+    </tr>
+    
+    <tr class="item">
+      <td>
+        Plan Name
+      </td>
+      
+      <td>
+        {{invoiceData.subscription_details?.name}}
+      </td>
+    </tr>
+    <tr class="item">
+      <td>
+        Monthly Amout
+      </td>
+      
+      <td>
+        ${{invoiceData.subscription_details?.amount_monthly}}
+      </td>
+    </tr>
+    <tr class="item">
+      <td>
+        Maximum Tour
+      </td>
+      
+      <td>
+        {{invoiceData.subscription_details?.maximum_tour}}
+      </td>
+    </tr>
+    <tr class="item">
+      <td>
+        Maximum User
+      </td>
+      
+      <td>
+        {{invoiceData.subscription_details?.maximum_users}}
+      </td>
+    </tr>
+    <tr class="item">
+      <td>
+        Sences Per Tour
+      </td>
+      
+      <td>
+        {{invoiceData.subscription_details?.sences_per_tour}}
+      </td>
+    </tr>
+
+
+    <tr class="heading">
+      <td>
+        Payment
+      </td>
+      
+      <td>
+        Details
+      </td>
+    </tr>
+    
+    <tr class="item">
+      <td>
+        Payment method
+      </td>
+      
+      <td>
+        
+        <span *ngIf="invoiceData.subscription_method == 'P'">PayPal</span>
+        <span *ngIf="invoiceData.subscription_method == 'S'">Stripe</span>
+        <span *ngIf="invoiceData.subscription_method == 'F'">Free</span>
+
+      </td>
+    </tr>
+
+
+    
+    <tr class="heading">
+      <td>
+        Details
+      </td>
+      
+      <td>
+        Amount
+      </td>
+    </tr>
+    
+    <tr class="item">
+      <td>
+        Paid Amount
+      </td>
+      
+      <td>
+        ${{invoiceData?.amount}}
+      </td>
+    </tr>
+    
+    
+    
+    <tr class="total">
+      <td></td>
+      
+      <td>
+         Total: ${{invoiceData?.amount}}
+      </td>
+    </tr>
+  </table>
+</div>
+<div class="button-holder">
+  <a href="javascript:void(0);" class="btn btn-print" onClick="window.print()">Print</a>
+  <a href="{{apiLink}}{{invoiceData?.pdf_link}}" class="btn btn-download">Download invoice</a>
+</div>

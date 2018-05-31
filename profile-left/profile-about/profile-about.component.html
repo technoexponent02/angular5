@@ -1,0 +1,169 @@
+<!-- <pre>{{aboutModel.date_of_birth}}</pre> -->
+<div class="bxinfo">
+  <p class="titleleft">About
+    <a href="javascript:void(0);" 
+      class="editpen pull-right" 
+      id="aboutModal"
+      *ngIf="otherProfile == 'no'"
+      (click)="aboutModal(about)"></a>
+  </p>
+  <div *ngIf="this.model.about_me != null ; else noAboutme">
+    <div class="lcdesk">
+      {{aboutModel.about_me}}
+    </div>
+  </div>
+
+  <ng-template #noAboutme></ng-template>
+
+  <div *ngIf="this.aboutModel.phone != null ; else noPhone">
+    <p class="numberinfo">
+      <span class="ico">
+        <img src="assets/images/phone_ico.png" class="img-responsive inlinesec" alt="icon">
+        <!-- </span> 083486 43462</p> -->
+      </span>{{aboutModel.phone}}
+    </p>
+  </div>
+  
+  <ng-template #noPhone></ng-template>
+
+  <div *ngIf="this.aboutModel.date_of_birth != null ; else noDate">
+    <p class="numberinfo">
+      <span class="ico">
+        <img src="assets/images/birthday_ico.png" class="img-responsive inlinesec" alt="icon">
+        <!-- </span> 25 October 1994</p> -->
+      </span>
+      <ng-container *ngIf="otherProfile == 'no'; else otherprofdate">
+        {{aboutModel.date_of_birth | date}}
+      </ng-container>
+      <ng-template #otherprofdate>
+        {{aboutModel.date_of_birth}}
+      </ng-template>
+      
+    </p>
+  </div>
+
+  <ng-template #noDate></ng-template>
+
+</div>
+
+
+
+
+<ng-template #about>
+
+    <!-- <pre>{{model | json}}</pre> -->
+
+    <form name="form" (ngSubmit)="f.form.valid && aboutSubmit(f.value)" #f="ngForm" autocomplete="off" novalidate>
+      <div class="modal-header">
+        <!-- <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button> -->
+        <button type="button" class="close" (click)="closemodal()" style="color:#000; font-size: 45px;">
+          <span aria-hidden="true">&times;</span>
+        </button>
+        <h4 class="modal-title" id="myModalLabel">Edit About Information</h4>
+      </div>
+      <div class="modal-body formstyle">
+        <div class="row">
+          <div class="form-group col-sm-6">
+            <label>First Name
+              <sup class="text-danger-astr">*</sup>
+            </label>
+            <!-- <div [ngClass]="{ 'has-error': firstName.errors && (firstName.dirty || firstName.touched) }"> -->
+              <input type="text" class="form-control" placeholder="First Name" name="firstName" [(ngModel)]="model.first_name" #firstName="ngModel"
+                required>
+              <div class="text-danger lite" *ngIf="firstName.errors && (firstName.dirty || firstName.touched)">
+                <div [hidden]="!firstName.errors.required">
+                  First name is required
+                </div>
+              </div>
+            <!-- </div> -->
+          </div>
+
+          <div class="form-group col-sm-6">
+            <label>Last Name
+              <sup class="text-danger-astr">*</sup>
+            </label>
+            <!-- <div class="form-group" [ngClass]="{ 'has-error': lastName.errors && (lastName.dirty || lastName.touched) }"> -->
+              <input type="text" class="form-control" placeholder="Last Name" name="lastName" [(ngModel)]="model.last_name" #lastName="ngModel"
+                required>
+
+              <div class="text-danger lite" *ngIf="lastName.errors && (lastName.dirty || lastName.touched)">
+                <div [hidden]="!lastName.errors.required">
+                  Last name is required
+                </div>
+              </div>
+            <!-- </div> -->
+          </div>
+
+        </div>
+
+        <div class="form-group locationinp">
+          <label>Location
+            <sup class="text-danger-astr">*</sup>
+          </label>
+          <ng4geo-autocomplete
+          [userSettings]="userSettings3"
+          (componentCallback)="autoCompleteCallback1($event)"></ng4geo-autocomplete>
+        </div>
+        <div class="form-group">
+          <label>About</label>
+          <textarea class="form-control" rows="6" name="about" [(ngModel)]="model.about_me" #about="ngModel">
+        </textarea>
+        </div>
+
+        <div class="row">
+          <div class="form-group col-sm-6">
+            <label>Phone
+              <sup class="text-danger-astr">*</sup>
+            </label>
+            <!-- <div class="form-group" [ngClass]="{ 'has-error': phone.errors && (phone.dirty || phone.touched) }"> -->
+              <input type="text" class="form-control" name="phone" [(ngModel)]="model.phone" #phone="ngModel" pattern="^[0-9]+$" required>
+              <!-- <div *ngIf="phone.errors && (phone.dirty || phone.touched)">
+                <div [hidden]="!phone.errors.required" class="help-block">
+                  Phone number is requird
+                </div>
+                <div [hidden]="!phone.errors.pattern" class="help-block">
+                  Phone must be number
+                </div>
+              </div> -->
+
+              <div class="text-danger lite" *ngIf="phone.errors && (phone.dirty || phone.touched)">
+                <div [hidden]="!phone.errors.required">
+                  Phone number is required
+                </div>
+                <div [hidden]="!phone.errors.pattern">
+                  Must be valid number
+                </div>
+              </div>
+
+
+            <!-- </div> -->
+          </div>
+
+          <div class="form-group col-sm-6">
+            <label>Date Of Birth
+              <sup class="text-danger-astr">*</sup>
+            </label>
+            <div class="form-group withsrc">
+              <div class="about-dob">
+
+                  <ng-datepicker required class="form-control" name="date_of_birth" [(ngModel)]="model.date_of_birth"></ng-datepicker>
+                    
+              </div>
+            </div>
+          </div>
+
+        </div>
+
+        <p-messages [(value)]="msgs"></p-messages>
+
+      </div>
+      <div class="modal-footer">
+        <button type="submit" class="btn btn-primary"
+        name="save" 
+        [disabled]="!f.form.valid || loading">
+          <i class="fa fa-spinner fa-pulse fa-spin fa-spin" *ngIf="loading"></i>
+          Save
+        </button>
+      </div>
+    </form>
+</ng-template>

@@ -1,0 +1,395 @@
+ <!-- <pre>
+	 {{singleSubscription | json}} 
+</pre>  -->
+
+<p-growl [(value)]="allMessage"></p-growl>
+
+<div class="container">
+	<div class="settings-loader-outer">
+		
+		<!-- loader -->
+		<div class="linear-progress med">
+			<div class="bar bar1"></div>
+			<div class="bar bar2"></div>
+		</div>
+		<div class="setting-http-load">
+		</div>
+		<!-- loader -->
+
+		<!-- Tab panes -->
+		<div class="tab-content">
+			<div role="tabpanel" class="tab-pane active" id="home">
+				<div class="row">
+					<div class="col-lg-5 col-md-5 col-sm-6 col-xs-12">
+
+						<div *ngIf="addPlanFormToggle; else editForm">
+							<form name="form" (ngSubmit)="addPlan()" #f="ngForm" novalidate>
+								<h3 class="dbsubtitle">Plan</h3>
+
+								<div class="row form-group">
+									<label class="col-lg-6 col-md-6 col-sm-6 col-xs-12">Title</label>
+									<div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+										<input type="text" class="form-control" name="plan-title" [(ngModel)]="addPlanObj.name" #plan_name="ngModel" required>
+										<!-- validation area  -->
+										<div class="text-danger" *ngIf="plan_name.errors && (plan_name.dirty || plan_name.touched)">
+											<div [hidden]="!plan_name.errors.required">
+												Plan Name is required
+											</div>
+										</div>
+										<!-- validation area  -->
+									</div>
+								</div>
+
+								<div class="row form-group">
+									<label class="col-lg-6 col-md-6 col-sm-6 col-xs-12">AMOUNT MONTHLY</label>
+									<div class="col-lg-6 col-md-6 col-sm-6 col-xs-12 form-inline">
+										<div class="input-group">
+											<input type="text" class="form-control" placeholder="10" name="monthly-amout" [(ngModel)]="addPlanObj.amount_monthly" #amount_monthly="ngModel" required>
+											<div class="input-group-addon">{{defaultCurrency.name}}</div>
+										</div>
+										<!-- validation area  -->
+										<div class="text-danger" *ngIf="amount_monthly.errors && (amount_monthly.dirty || amount_monthly.touched)">
+											<div [hidden]="!amount_monthly.errors.required">
+												Amount monthly is required
+											</div>
+										</div>
+										<!-- validation area  -->
+									</div>
+								</div>
+
+								<div class="row form-group">
+									<label class="col-lg-6 col-md-6 col-sm-6 col-xs-12">YEARLY DISCOUNT</label>
+									<div class="col-lg-6 col-md-6 col-sm-6 col-xs-12 form-inline">
+										<div class="input-group">
+											<input type="text" class="form-control" placeholder="20" name="yarly-discount" [(ngModel)]="addPlanObj.yearly_discount">
+											<div class="input-group-addon">%</div>
+										</div>
+									</div>
+								</div>
+
+								<div class="row form-group">
+									<label class="col-lg-6 col-md-6 col-sm-6 col-xs-12">Maximum tour</label>
+									<div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+										<input type="text" class="form-control" placeholder="10" name="max-tour" [(ngModel)]="addPlanObj.maximum_tour" #maximum_tour="ngModel" required>
+										<!-- validation area  -->
+										<div class="text-danger" *ngIf="maximum_tour.errors && (maximum_tour.dirty || maximum_tour.touched)">
+											<div [hidden]="!maximum_tour.errors.required">
+												Maximum tour is required
+											</div>
+										</div>
+										<!-- validation area  -->
+									</div>
+								</div>
+
+								<div class="row form-group">
+									<label class="col-lg-6 col-md-6 col-sm-6 col-xs-12">Maximum users</label>
+									<div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+										<input type="text" class="form-control" placeholder="2" name="max-user" [(ngModel)]="addPlanObj.maximum_users" #maximum_user="ngModel" required>
+										<!-- validation area  -->
+										<div class="text-danger" *ngIf="maximum_user.errors && (maximum_user.dirty || maximum_user.touched)">
+											<div [hidden]="!maximum_user.errors.required">
+												Maximum user is required
+											</div>
+										</div>
+										<!-- validation area  -->
+									</div>
+								</div>
+
+								<div class="row form-group">
+									<label class="col-lg-6 col-md-6 col-sm-6 col-xs-12">Scenes per tour</label>
+									<div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+										<input type="text" class="form-control" placeholder="2" name="scenes-per-tour" [(ngModel)]="addPlanObj.sences_per_tour" #sences_per_tour="ngModel" required>
+										<!-- validation area  -->
+										<div class="text-danger" *ngIf="sences_per_tour.errors && (sences_per_tour.dirty || sences_per_tour.touched)">
+											<div [hidden]="!sences_per_tour.errors.required">
+												Scenes per tour is required
+											</div>
+										</div>
+										<!-- validation area  -->
+									</div>
+								</div>
+
+								<div class="row form-group">
+									<label class="col-lg-6 col-md-6 col-sm-6 col-xs-12">Status</label>
+									<div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+										<!-- <select [(ngModel)]="addPlanObj.status" name="status-select">
+											<option [value]="1">Active</option>
+											<option [value]="0">Inactive</option>
+										</select> -->
+										<label class="i-switch i-switch-md bg-info csswitch">
+											<input type="checkbox" name="control" [ngModel]="addPlanObj.status == '1' ? true : addPlanObj.status == '0' ? false : null" (ngModelChange)="addPlanObj.status = $event ? '1' : '0'">
+											<i></i>
+										</label>
+									</div>
+								</div>
+
+								<h3 class="dbsubtitle">Featues</h3>
+							
+								<div class="row">
+									<div class="form-group clearfix col-lg-6 col-md-6 col-sm-6 col-xs-6 col-xs-lg-4 col-xs-md-4 add-feature-wrap" *ngFor="let feature of featureList">
+										<label class="checkFld pull-left">                                
+											<input type="checkbox" name="remember" id="fe-{{feature.id}}" value="{{feature.id}}">
+											<i class="fa fa-square-o"></i>
+											{{feature.name}}
+										</label>
+									</div>
+									
+								</div>
+
+								<h3 class="dbsubtitle">Countries Available</h3>
+
+								<div class="form-inline">
+									<div class="radio">
+										<label class="i-checks">                                
+											<input type="radio" name="radio" (change)="allCountryAdd()"><i></i> All
+										</label>
+									</div>
+									<div class="radio">
+										<label class="i-checks">                                
+											<input type="radio" name="radio" (change)="allCountryNo()"><i></i> Selected
+										</label>
+									</div>
+								</div>
+
+
+								<div class="smalltable table-responsive themecolor">
+									<table class="table table-bordered scroll-table">
+										<thead>
+											<tr>
+												<th>Select</th>
+												<th>Country</th>
+											</tr>
+										</thead>
+										<tbody>
+											<tr *ngFor="let country of countryList">
+												<td class="countrylist">
+													<label class="checkFld pull-left">                                
+													<input type="checkbox" name="remember" id="cuntry-{{country.id}}" value="{{country.id}}">
+													<i class="fa fa-square-o"></i></label>
+												</td>
+												<td>{{country.name}}</td>
+											</tr>
+										</tbody>
+									</table>
+								</div><!-- ]] -->
+
+								<div class="form-group">
+									<label>Note</label>
+									<textarea class="form-control" cols="" rows="4" name="note" [(ngModel)]="addPlanObj.note"></textarea>
+								</div>
+
+								<input type="submit" [disabled]="!f.form.valid" class="btn btn-success btn-lg btnbig" value="SAVE">
+							</form>
+						</div>
+						
+						<!-- edit form  -->
+						<ng-template #editForm>
+							<form name="editform" (ngSubmit)="editPlanPost()" #ef="ngForm" novalidate>
+								<h3 class="dbsubtitle">Edit Plan</h3>
+
+								<div class="row form-group">
+									<label class="col-lg-6 col-md-6 col-sm-6 col-xs-12">Title</label>
+									<div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+										<input type="text" class="form-control" name="plan-title" [(ngModel)]="singleSubscription.name" #plan_name="ngModel" required>
+										<!-- validation area  -->
+										<div class="text-danger" *ngIf="plan_name.errors && (plan_name.dirty || plan_name.touched)">
+											<div [hidden]="!plan_name.errors.required">
+												Plan Name is required
+											</div>
+										</div>
+										<!-- validation area  -->
+									</div>
+								</div>
+
+								<div class="row form-group">
+									<label class="col-lg-6 col-md-6 col-sm-6 col-xs-12">AMOUNT MONTHLY</label>
+									<div class="col-lg-6 col-md-6 col-sm-6 col-xs-12 form-inline">
+										<div class="input-group">
+											<input type="text" class="form-control" placeholder="10" name="monthly-amout" [(ngModel)]="singleSubscription.amount_monthly" #amount_monthly="ngModel" required>
+											<div class="input-group-addon">{{defaultCurrency.name}}</div>
+										</div>
+										<!-- validation area  -->
+										<div class="text-danger" *ngIf="amount_monthly.errors && (amount_monthly.dirty || amount_monthly.touched)">
+											<div [hidden]="!amount_monthly.errors.required">
+												Amount monthly is required
+											</div>
+										</div>
+										<!-- validation area  -->
+									</div>
+								</div>
+
+								<div class="row form-group">
+									<label class="col-lg-6 col-md-6 col-sm-6 col-xs-12">YEARLY DISCOUNT</label>
+									<div class="col-lg-6 col-md-6 col-sm-6 col-xs-12 form-inline">
+										<div class="input-group">
+											<input type="text" class="form-control" placeholder="20" name="yarly-discount" [(ngModel)]="singleSubscription.yearly_discount">
+											<div class="input-group-addon">%</div>
+										</div>
+									</div>
+								</div>
+
+								<div class="row form-group">
+									<label class="col-lg-6 col-md-6 col-sm-6 col-xs-12">Maximum tour</label>
+									<div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+										<input type="text" class="form-control" placeholder="10" name="max-tour" [(ngModel)]="singleSubscription.maximum_tour" #maximum_tour="ngModel" required>
+										<!-- validation area  -->
+										<div class="text-danger" *ngIf="maximum_tour.errors && (maximum_tour.dirty || maximum_tour.touched)">
+											<div [hidden]="!maximum_tour.errors.required">
+												Maximum tour is required
+											</div>
+										</div>
+										<!-- validation area  -->
+									</div>
+								</div>
+
+								<div class="row form-group">
+									<label class="col-lg-6 col-md-6 col-sm-6 col-xs-12">Maximum users</label>
+									<div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+										<input type="text" class="form-control" placeholder="2" name="max-user" [(ngModel)]="singleSubscription.maximum_users" #maximum_user="ngModel" required>
+										<!-- validation area  -->
+										<div class="text-danger" *ngIf="maximum_user.errors && (maximum_user.dirty || maximum_user.touched)">
+											<div [hidden]="!maximum_user.errors.required">
+												Maximum user is required
+											</div>
+										</div>
+										<!-- validation area  -->
+									</div>
+								</div>
+
+								<div class="row form-group">
+									<label class="col-lg-6 col-md-6 col-sm-6 col-xs-12">Scenes per tour</label>
+									<div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+										<input type="text" class="form-control" placeholder="2" name="scenes-per-tour" [(ngModel)]="singleSubscription.sences_per_tour" #sences_per_tour="ngModel" required>
+										<!-- validation area  -->
+										<div class="text-danger" *ngIf="sences_per_tour.errors && (sences_per_tour.dirty || sences_per_tour.touched)">
+											<div [hidden]="!sences_per_tour.errors.required">
+												Scenes per tour is required
+											</div>
+										</div>
+										<!-- validation area  -->
+									</div>
+								</div>
+
+								<div class="row form-group">
+									<label class="col-lg-6 col-md-6 col-sm-6 col-xs-12">Status</label>
+									<div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+										<!-- <select [(ngModel)]="singleSubscription.status" name="status-select">
+											<option [value]="1">Active</option>
+											<option [value]="0">Inactive</option>
+										</select> -->
+										<label class="i-switch i-switch-md bg-info csswitch">
+											<input type="checkbox" name="control" [ngModel]="singleSubscription.status == '1' ? true : singleSubscription.status == '0' ? false : null" (ngModelChange)="singleSubscription.status = $event ? '1' : '0'">
+											<i></i>
+										</label>
+										<!-- {{singleSubscription.status}} -->
+									</div>
+								</div>
+
+								<h3 class="dbsubtitle">Featues</h3>
+							
+								<div class="row editfeaturelist">
+									<!-- <div class="form-group clearfix col-lg-6 col-md-6 col-sm-6 col-xs-6 col-xs-lg-4 col-xs-md-4 add-feature-wrap-edit" *ngFor="let feature of featureList">
+										<label class="checkFld pull-left">                                
+											<input type="checkbox" [checked]="true" name="feture" id="editfe-{{feature.id}}" value="{{feature.id}}">
+											<i class="fa fa-square-o"></i>
+											{{feature.name}}
+										</label>
+									</div> -->
+								</div>
+
+								<h3 class="dbsubtitle">Countries Available</h3>
+
+								<div class="form-inline">
+									<div class="radio">
+										<label class="i-checks">                                
+											<input type="radio" name="radio" (change)="allCountryEdit()"><i></i> All
+										</label>
+									</div>
+									<div class="radio">
+										<label class="i-checks">                                
+											<input type="radio" name="radio" (change)="allCountryEditNo()"><i></i> Selected
+										</label>
+									</div>
+								</div>
+
+
+								<div class="smalltable table-responsive themecolor">
+									<table class="table table-bordered scroll-table">
+										<thead>
+											<tr>
+												<th>Select</th>
+												<th>Country</th>
+											</tr>
+										</thead>
+										<tbody class="editCountryList">
+											<!-- <tr *ngFor="let country of countryList">
+												<td class="countrylist-edit">
+													<label class="checkFld pull-left">                                
+													<input type="checkbox" name="remember" id="editcuntry-{{country.id}}" value="{{country.id}}">
+													<i class="fa fa-square-o"></i></label>
+												</td>
+												<td>{{country.name}}</td>
+											</tr> -->
+										</tbody>
+									</table>
+								</div><!-- ]] -->
+
+								<div class="form-group">
+									<label>Note</label>
+									<textarea class="form-control" cols="" rows="4" name="note" [(ngModel)]="singleSubscription.note"></textarea>
+								</div>
+
+								<input type="submit" [disabled]="!ef.form.valid" class="btn btn-success btn-lg btnbig" value="SAVE">
+							</form>
+						</ng-template>
+						<!-- edit form  -->
+
+					</div>
+
+					<div class="col-lg-1 col-md-1 hidden-sm hidden-xs"></div>
+
+					<div class="col-lg-7 col-md-7 col-sm-7 col-xs-12">			    		
+						<h3 class="dbsubtitle">Plan list</h3>
+							
+
+						<div class="smalltable  table-responsive themecolor">
+							<table class="table table-bordered subscription-plan-table">
+								<thead>
+									<tr>
+										<th>ID</th>
+										<th>Plan</th>
+										<th>Create date</th>
+										<th>Active subscribers</th>
+										<th>Status</th>
+										<th>Edit</th>
+										<th>Remove</th>
+									</tr>
+								</thead>
+								<tbody *ngIf="!allPlanList == 0; else noPlanList">
+									<tr *ngFor="let plan of allPlanList; let id = index">
+										<td>{{id + 1}}</td>
+										<td>{{plan.name}}</td>
+										<td>{{plan.created_at}}</td>
+										<td>{{plan.no_of_user}}</td>
+										<td>{{plan.status == 1 ? 'Active' : 'Inactive'}}</td>
+										<td><button class="editbtn" (click)="editPlan(plan)"><i class="fa fa-pencil" aria-hidden="true"></i></button></td>
+										<td><button class="delete" (click)="deletePlan(plan)"><i class="fa fa-trash"></i></button></td>
+									</tr>
+								</tbody>
+								<ng-template #noPlanList>
+									<tbody>
+										<tr>
+											<td colspan="6">No plan added yet</td>
+										</tr>
+									</tbody>
+								</ng-template>  
+							</table>
+						</div><!-- ]] -->
+
+					</div>
+				</div>
+			</div><!-- tab one -->
+			<!--    <div role="tabpanel" class="tab-pane" id="profile"></div> -->
+		</div>
+	</div>
+</div>

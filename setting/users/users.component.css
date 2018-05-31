@@ -1,0 +1,15 @@
+.errormsginviteuser{
+    background: #f44336;
+    color: #fff;
+}
+.errormsginviteuser .text-danger{
+    color: #fff;
+    display: block;
+    padding: 0 20px 2px;
+}
+.errormsginviteuser .text-danger:first-child{
+    padding-top: 15px;
+}
+.errormsginviteuser .text-danger:last-child{
+    padding-bottom: 15px;
+}

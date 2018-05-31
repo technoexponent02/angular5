@@ -1,0 +1,220 @@
+<!-- {{id}}<br>{{orgId}}  -->
+
+<!-- free msg -->
+<p-growl [(value)]="freeplanmsg"></p-growl>
+<!-- free msg -->
+
+<!-- payment popup -->
+<p-dialog header="Just one more step" [(visible)]="paymentPop" modal="modal" width="600" [responsive]="true">
+	<div class="modal-body">
+			
+			
+		<div class="stepon_bd">
+			<div class="row">
+				<div class="payment-done" *ngIf="paymentthanks; else dopayment">
+					<h3 style="text-align: center;">Thank you for your subscription.</h3>
+				</div>
+				<ng-template #dopayment>
+					<div class="col-sm-12">
+						<h2>Subscription Details</h2>
+					
+						<div class="row form-group">
+							<label class="col-lg-6 col-md-6 col-sm-6 col-xs-12">{{adminAssignPlan?.name}}</label>
+							<div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+								<h1>${{adminAssignPlan?.amount_monthly}}</h1>
+							</div>
+						</div>
+						<div class="row form-group">
+							<label class="col-lg-3 col-md-3 col-sm-6 col-xs-12">Period</label>
+							<div class="col-lg-9 col-md-9 col-sm-6 col-xs-12">
+								<div class="form-inline">
+									<div class="radio">
+										<label class="i-checks">                                
+											<input name="radio" id="yarlyplan" type="radio" (change)="yearlyDiscount(adminAssignPlan)"><i></i> Yearly
+										</label>
+									</div>
+									<div class="radio">
+										<label class="i-checks">                                
+											<input name="radio" id="monthlyplan" checked="true" type="radio" (change)="monthlyDiscount(adminAssignPlan)"><i></i> Monthly
+										</label>
+									</div>
+								</div>
+							</div>
+						</div>
+						<div class="row form-group">
+							<a href="javascript:void(0);" class="save_bd">Go yearly to save ${{adminAssignPlan?.yearly_discount}}%</a>
+						</div>
+						<div class="row form-group">
+							<label class="col-lg-6 col-md-6 col-sm-6 col-xs-12" style="font-size:18px;">TOTAL</label>
+							<div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+								<h1>${{planTotal}}</h1>
+							</div>
+						</div>
+						<div class="row form-group">
+							<button type="submit" class="btn btn-success btntheme" style="font-size:20px;font-weight:300;" (click)="paidPlan();">Subscribe</button>
+						</div>
+            <!-- <pre>{{paidPlanData | json}}</pre> -->
+					
+					</div>
+				</ng-template>
+			</div>
+			<p-messages [(value)]="stripemsgs"></p-messages>
+			<p-messages [(value)]="paymentemsgs"></p-messages>
+		</div>
+
+	</div>
+</p-dialog>
+<!-- payment popup -->
+
+<div class="container">
+  <div class="settings-loader-outer">
+      <div class="linear-progress med">
+        <div class="bar bar1"></div>
+        <div class="bar bar2"></div>
+      </div>
+      <div class="setting-http-load">
+      </div>
+
+  <!-- Tab panes -->
+  <div class="tab-content">
+    <div role="tabpanel" class="tab-pane active" id="home">
+
+      <div class="subscription_plan_bd">
+          <h1>
+              Subscription Plans
+              <span *ngIf="planData.length == 0; else hasallplan"></span>
+              <ng-template #hasallplan>
+                <span *ngIf="userInformation?.user?.subscription_plan?.expiration_date != null">
+                  <span *ngIf="expirePlanDate.length > 0">
+                    <span>({{planExpireIsWas}}: {{expirePlanDate}})</span>
+                  </span>
+                </span>
+              </ng-template>
+            </h1>
+    
+    
+      <div class="row plandata">
+          <div *ngIf="planData.length == 0; else hasplanlist">
+            Please choose the country first
+          </div>
+          <ng-template #hasplanlist>
+            <div class="col-sm-3" style="margin-bottom: 30px;" *ngFor="let plan of planData; let i=index">
+              <!-- <pre>{{plan | json}}</pre> -->
+              <div class="S_block_bd">
+                <h2>{{plan.name}}</h2>
+                <div class="p_sec_bd">
+                  <h1>${{plan.amount_monthly}}</h1>
+                  <p>{{plan.note}}</p>
+                </div>
+                
+                <div class="s_feature_bd">
+                  <div slimScroll
+                    width="auto"
+                    height="130px"
+                    size="4px">
+                      <ul style="padding: 0px;">
+                          <li><i class="fa fa-cog" aria-hidden="true"></i> Maximum tour: {{plan.maximum_tour}}</li>
+													<li><i class="fa fa-cog" aria-hidden="true"></i> Maximum user: {{plan.maximum_users}}</li>
+													<li><i class="fa fa-cog" aria-hidden="true"></i> Sences per tour: {{plan.sences_per_tour}}</li>
+                        <li *ngFor="let feature of plan.subscription_feture"><i class="fa fa-cog" aria-hidden="true"></i>  {{feature?.subscription_feture_details?.name}}</li>
+                      </ul>
+                  </div>
+                </div>
+                
+                <div class="plan_action_bd" *ngIf="firstUserPlanBtn; else notnewuser">
+                  <a href="javascript:void(0);" (click)="adminUpgradePlan(plan)">
+                    <span>Upgrade</span>
+                  </a>
+                </div>
+                <ng-template #notnewuser>
+                  <div class="plan_action_bd">
+                      
+                    <div class="plan_action_bd" *ngIf="plan.id == userInformation?.user?.subscription_plan?.subscription_id; else upgrade">
+                      <!-- <pre>{{plan.amount_monthly | json}}</pre>
+                      <pre>{{userInformation.subscription_details.amount_monthly | json}}</pre> -->
+                      
+                      <div class="plan_action_bd" *ngIf="plan.amount_monthly == 0; else freecurrent">
+                        <div class="plan_action_bd" *ngIf="onPaymentBtn; else updown">
+                          <a href="javascript:void(0);" disabled>
+                            <span>Current plan</span>
+                          </a>
+                        </div>
+                        <ng-template #updown>
+                          <a href="javascript:void(0);" (click)="adminUpgradePlan(plan)">
+                            <span>Current plan</span>
+                          </a>
+                        </ng-template>
+                      </div>
+                      <ng-template #freecurrent>
+                        <div class="plan_action_bd" *ngIf="onPaymentBtn; else updown">
+                          <button [disabled]="isDisabled" (click)="adminUpgradePlan(plan, $event)">
+                            <span>Current plan</span>
+                          </button>
+                        </div>
+                        <ng-template #updown>
+                          <a href="javascript:void(0);" (click)="adminUpgradePlan(plan)">
+                            <span>Current plan</span>
+                          </a>
+                        </ng-template>
+                      </ng-template>
+                    </div>
+                    <ng-template #upgrade>
+                      <div class="plan_action_bd" *ngIf="onPaymentBtn; else updown">
+                        <!-- <button [disabled]="isDisabled" (click)="adminUpgradePlan(plan, $event)" *ngIf="plan.amount_monthly > userInformation.subscription_details.amount_monthly; else downgrade">
+                          <span>Upgrade</span>
+                        </button>
+                        <ng-template #downgrade>
+                          <button [disabled]="isDisabled" (click)="adminUpgradePlan(plan, $event)">
+                            <span>Downgrade</span>
+                          </button>
+                        </ng-template> -->
+                        <!-- check this for first time user -->
+                        <div *ngIf="userInformation.hasOwnProperty('subscription_details'); else isFirst">
+                          <button [disabled]="isDisabled" (click)="adminUpgradePlan(plan)" *ngIf="plan.amount_monthly > userInformation.subscription_details.amount_monthly; else downgrade">
+                            <span>Upgrade</span>
+                          </button>
+                          <ng-template #downgrade>
+                            <button [disabled]="isDisabled" (click)="adminUpgradePlan(plan)">
+                              <span>Downgrade</span>
+                            </button>
+                          </ng-template>
+                        </div>
+                        <ng-template #isFirst>
+                          <a href="javascript:void(0);" (click)="adminUpgradePlan(plan)">
+                            <span>Upgrade</span>
+                          </a>
+                        </ng-template>
+                        <!-- check this for first time user -->
+                      </div>
+                      <ng-template #updown>
+                        <!-- <pre>{{plan.amount_monthly | json}}</pre>
+                        <pre>{{userInformation.subscription_details.amount_monthly | json}}</pre> -->
+                        <a href="javascript:void(0);" (click)="adminUpgradePlan(plan)" *ngIf="plan.amount_monthly > userInformation.subscription_details.amount_monthly; else downgrade">
+                          <span>Upgrade</span>
+                        </a>
+                        <ng-template #downgrade>
+                          <a href="javascript:void(0);" (click)="adminUpgradePlan(plan)">
+                            <span>Downgrade</span>
+                          </a>
+                        </ng-template>
+                      </ng-template>
+                    </ng-template>
+
+                  </div>
+                </ng-template>
+                
+
+              </div>
+            </div>
+          </ng-template>
+      </div>
+
+    </div>
+    
+    
+      
+    </div><!-- tab one -->
+ <!--    <div role="tabpanel" class="tab-pane" id="profile"></div> -->
+  </div>
+</div>
+</div>

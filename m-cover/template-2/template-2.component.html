@@ -1,0 +1,79 @@
+<!-- <p>
+  template-{{templateId}} works-2!
+  <button (click)="sendDefaultState()">Back</button>
+</p> -->
+
+
+<div class="profileEditHeader" style="padding: 16px 20px 30px 20px;" *ngIf="uploadComponentShow == false">
+  <!-- <pre>
+      {{templateModel | json}}
+    </pre> -->
+
+  <h2 class="popupTl tl">Edit header sections</h2>
+
+  <!-- popup 2 -->
+  <div class="chooseHeaderLayoutForm" id="headerType2" style="display:block;">
+    <form>
+      <div class="formRow nw full">
+        <span class="formTtl">Selected header variant</span>
+        <div class="formFld">
+          <div class="editbannerBox">
+
+
+            <div class="uploadImageview" *ngIf="templateModel?.headerImage?.imagesource?.image == null; else hasHdrImage"></div>
+            <ng-template #hasHdrImage>
+                <div class="uploadImageview" [ngStyle]="{'background': 'url(' + templateModel?.headerImage?.imagesource?.image + ') no-repeat 0 0'}"></div>
+            </ng-template>
+
+
+            <a href="javascript:void(0);" (click)="headerImageUpload();" class="edtUpload popupClick">
+              <i class="fa fa-camera"></i>
+            </a>
+          </div>
+          <div class="formRow nw full colorField">
+            <span class="formTtl">Or choose color</span>
+            <div class="formFld">
+              <!-- <p-colorPicker name="color" [(ngModel)]="templateModel.headerColor"></p-colorPicker> -->
+              <input type="text" name="color" class="colorPic" readonly
+                  [style.background]="templateModel.headerColor"
+                  [cpOutputFormat]="'hex'"
+                  [cpPosition]="'bottom'"
+                  [(colorPicker)]="templateModel.headerColor"/>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="spacer"></div>
+      <div class="headerProfileAndTxt">
+        <div class="pic">
+          <div class="formRow nw full">
+            <span class="formTtl">Profile picture</span>
+            <div class="formFld">
+              <div class="headEdtProfilePic">
+
+                <div class="uploadImageview" *ngIf="templateModel?.profileImage?.imagesource?.image == null; else hasProfImage"></div>
+                <ng-template #hasProfImage>
+                    <div class="uploadImageview" [ngStyle]="{'background': 'url(' + templateModel?.profileImage?.imagesource?.image + ') no-repeat 0 0'}"></div>
+                </ng-template>
+
+                <a href="javascript:void(0);" (click)="profileUpload()" class="edtUpload popupClick">
+                  <i class="fa fa-camera"></i>
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="spacer"></div>
+      </div>
+      <div class="buttonset align-center">
+        <a href="javascript:void(0);" (click)="sendDefaultState()" class="button black">Back</a>
+        <!-- <a href="javascript:void(0);" (click)="saveTpl()" class="button orange">Save</a> -->
+        <input [disabled]="btnDisable" (click)="saveTpl()" type="submit" class="button orange" value="Save">
+      </div>
+    </form>
+  </div>
+
+</div>
+
+
+<mcover-select-picture [setImage]="uploadImage" (uploadedImageDataEvent)="receiveUploadedDataAndState($event)" *ngIf="uploadComponentShow"></mcover-select-picture>

@@ -1,0 +1,128 @@
+<!-- <p>
+  template-{{templateId}} works-4!
+  <button (click)="sendDefaultState()">Back</button>
+</p> -->
+
+<div class="profileEditHeader" style="padding: 16px 20px 30px 20px;" *ngIf="uploadComponentShow == false">
+  <!-- <pre>
+      {{templateModel | json}}
+    </pre> -->
+
+  <h2 class="popupTl tl">Edit header sections</h2>
+
+  <!-- popup 4 -->
+  <div class="chooseHeaderLayoutForm" id="headerType4" style="display:block;">
+    <form>
+      <div class="formRow nw full">
+        <span class="formTtl">Selected header variant</span>
+        <div class="formFld">
+          <div class="rw">
+            <div class="colm">
+              <div class="editbannerBox">
+
+                <div class="uploadImageview" *ngIf="templateModel?.headerImageOne?.imagesource?.image == null; else hdrOneImage"></div>
+                <ng-template #hdrOneImage>
+                    <div class="uploadImageview" [ngStyle]="{'background': 'url(' + templateModel?.headerImageOne?.imagesource?.image + ') no-repeat 0 0'}"></div>
+                </ng-template>
+
+                <a href="javascript:void(0);" (click)="headerImageUploadOne()" class="edtUpload popupClick">
+                  <i class="fa fa-camera"></i>
+                </a>
+              </div>
+              <div class="formRow nw full colorField">
+                <span class="formTtl">Or choose color</span>
+                <div class="formFld hasbig">
+                  <!-- <p-colorPicker name="color1" [(ngModel)]="templateModel.headerColorOne"></p-colorPicker> -->
+                  <input type="text" name="color1" class="colorPic" readonly
+                  [style.background]="templateModel.headerColorOne"
+                  [cpOutputFormat]="'hex'"
+                  [cpPosition]="'bottom'"
+                  [(colorPicker)]="templateModel.headerColorOne"/>
+                </div>
+              </div>
+            </div>
+            <div class="colm">
+              <div class="editbannerBox">
+
+                  <div class="uploadImageview" *ngIf="templateModel?.headerImageTwo?.imagesource?.image == null; else hdrTwoImage"></div>
+                  <ng-template #hdrTwoImage>
+                      <div class="uploadImageview" [ngStyle]="{'background': 'url(' + templateModel?.headerImageTwo?.imagesource?.image + ') no-repeat 0 0'}"></div>
+                  </ng-template>
+
+                <a href="javascript:void(0);" (click)="headerImageUploadTwo()" class="edtUpload popupClick">
+                  <i class="fa fa-camera"></i>
+                </a>
+              </div>
+              <div class="formRow nw full colorField">
+                <span class="formTtl">Or choose color</span>
+                <div class="formFld hasbig">
+                  <!-- <p-colorPicker name="color2" [(ngModel)]="templateModel.headerColorTwo"></p-colorPicker> -->
+                  <input type="text" name="color2" class="colorPic" readonly
+                  [style.background]="templateModel.headerColorTwo"
+                  [cpOutputFormat]="'hex'"
+                  [cpPosition]="'bottom'"
+                  [(colorPicker)]="templateModel.headerColorTwo"/>
+                </div>
+              </div>
+            </div>
+            <div class="colm">
+              <div class="editbannerBox">
+
+                <div class="uploadImageview" *ngIf="templateModel?.headerImageThree?.imagesource?.image == null; else hdrThreeImage"></div>
+                <ng-template #hdrThreeImage>
+                    <div class="uploadImageview" [ngStyle]="{'background': 'url(' + templateModel?.headerImageThree?.imagesource?.image + ') no-repeat 0 0'}"></div>
+                </ng-template>
+
+                <a href="javascript:void(0);" (click)="headerImageUploadThree()" class="edtUpload popupClick">
+                  <i class="fa fa-camera"></i>
+                </a>
+
+              </div>
+              <div class="formRow nw full colorField">
+                <span class="formTtl">Or choose color</span>
+                <div class="formFld hasbig">
+                  <!-- <p-colorPicker name="color3" [(ngModel)]="templateModel.headerColorThree"></p-colorPicker> -->
+                  <input type="text" name="color3" class="colorPic" readonly
+                  [style.background]="templateModel.headerColorThree"
+                  [cpOutputFormat]="'hex'"
+                  [cpPosition]="'bottom'"
+                  [(colorPicker)]="templateModel.headerColorThree"/>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="spacer"></div>
+      <div class="headerProfileAndTxt">
+        <div class="pic">
+          <div class="formRow nw full">
+            <span class="formTtl">Profile picture</span>
+            <div class="formFld">
+              <div class="headEdtProfilePic">
+
+                <div class="uploadImageview" *ngIf="templateModel?.profileImage?.imagesource?.image == null; else hasProfImage"></div>
+                <ng-template #hasProfImage>
+                    <div class="uploadImageview" [ngStyle]="{'background': 'url(' + templateModel?.profileImage?.imagesource?.image + ') no-repeat 0 0'}"></div>
+                </ng-template>
+
+                <a href="javascript:void(0);" (click)="profileUpload()" class="edtUpload popupClick">
+                  <i class="fa fa-camera"></i>
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="spacer"></div>
+      </div>
+      <div class="buttonset align-center">
+        <a href="javascript:void(0);" (click)="sendDefaultState()" class="button black backprevHead">Back</a>
+        <!-- <a href="javascript:void(0);" (click)="saveTpl()" class="button orange">Save</a> -->
+        <input [disabled]="btnDisable" type="submit" (click)="saveTpl()" class="button orange" value="Save">
+      </div>
+    </form>
+  </div>
+</div>
+
+
+<mcover-select-picture [setImage]="uploadImage" (uploadedImageDataEvent)="receiveUploadedDataAndState($event)" *ngIf="uploadComponentShow"></mcover-select-picture>

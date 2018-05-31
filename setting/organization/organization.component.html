@@ -1,0 +1,368 @@
+<!-- <pre>
+	{{organizationObj | json}}
+</pre> -->
+
+<div class="container">
+	<div class="settings-loader-outer">
+		
+		<!-- loader -->
+		<div class="linear-progress med">
+			<div class="bar bar1"></div>
+			<div class="bar bar2"></div>
+		</div>
+		<div class="setting-http-load">
+		</div>
+		<!-- loader -->
+		
+		  <!-- Tab panes -->
+		<div class="tab-content">
+			<div role="tabpanel" class="tab-pane active" id="home">
+				<div class="row">
+
+					<form name="form" (ngSubmit)="f.form.valid && updateMyOrganization()" #f="ngForm" novalidate>
+
+						<input type="hidden" [value]="organizationObj.id">
+
+						<div class="col-lg-8 col-md-8 col-sm-8 col-xs-12">
+							
+
+							<div class="row form-group">
+								<label class="col-lg-3  col-md-3 col-sm-4 col-xs-12">{{ 'comp_name' | translate }}</label>
+								<div class="col-lg-9 col-md-9 col-sm-8 col-xs-12">
+									
+									<div *ngIf="orgValidationField.company_name == 1; else noRequiredCompany">
+										<input placeholder="XYZ PVT LTD" type="text" class="form-control" name="company-name" [(ngModel)]="organizationObj.company_name" #company_name="ngModel" required>
+										<!-- <div class="text-danger" *ngIf="f.submitted && company_name.errors && (company_name.dirty || company_name.touched)">
+											<div [hidden]="!company_name.errors.required">
+												Company Name is required
+											</div>
+										</div> -->
+										<div *ngIf="f.submitted && !company_name.valid" class="text-danger">
+											<div [hidden]="!company_name.errors.required">
+												Company Name is required
+											</div>
+										</div>
+									</div>
+									<ng-template #noRequiredCompany>
+										<input placeholder="XYZ PVT LTD" type="text" class="form-control" name="company-name" [(ngModel)]="organizationObj.company_name">
+									</ng-template>
+
+								</div>
+							</div>
+
+							<div class="row form-group">
+								<label class="col-lg-3  col-md-3 col-sm-4 col-xs-12">{{ 'website' | translate }}</label>
+								<div class="col-lg-9 col-md-9 col-sm-8 col-xs-12">
+
+									<div *ngIf="orgValidationField.website == 1; else noRequiredWebsite">
+										<input placeholder="www.yourcompany.com" type="text" class="form-control" name="website" [(ngModel)]="organizationObj.website" #website="ngModel" required>
+										<!-- <div class="text-danger" *ngIf="f.submitted && website.errors && (website.dirty || website.touched)">
+											<div [hidden]="!website.errors.required">
+												Website is required
+											</div>
+										</div> -->
+										<div *ngIf="f.submitted && !website.valid" class="text-danger">
+											<div [hidden]="!website.errors.required">
+												Website is required
+											</div>
+										</div>
+									</div>
+									<ng-template #noRequiredWebsite>
+										<input placeholder="www.yourcompany.com" type="text" class="form-control" name="website" [(ngModel)]="organizationObj.website">
+									</ng-template>
+
+								</div>
+							</div>
+
+
+							<div class="row form-group">
+								<label class="col-lg-3  col-md-3 col-sm-4 col-xs-12">{{ 'org_phone' | translate }}</label>
+								<div class="col-lg-9 col-md-9 col-sm-8 col-xs-12 form-inline">
+
+									<div class="form-group numbercode">
+
+										<div *ngIf="orgValidationField.phone_number_code == 1; else noRequiredPhcode">
+											<input placeholder="+xx" type="tel" name="phone-number-code" class="form-control" [(ngModel)]="organizationObj.phone_number_code" #phcode="ngModel" required>
+											<!-- <div class="text-danger" *ngIf="phcode.errors && (phcode.dirty || phcode.touched)">
+												<div [hidden]="!phcode.errors.required">
+													Required
+												</div>
+											</div> -->
+											<div *ngIf="f.submitted && !phcode.valid" class="text-danger">
+												<div [hidden]="!phcode.errors.required">
+													Required
+												</div>
+											</div>
+										</div>
+										<ng-template #noRequiredPhcode>
+											<input placeholder="+xx" type="tel" name="phone-number-code" class="form-control" [(ngModel)]="organizationObj.phone_number_code">
+										</ng-template>
+
+									</div>
+									<div class="form-group number">
+
+										<div *ngIf="orgValidationField.phone_number == 1; else noRequiredPhone">
+											<input placeholder="xxxxxxxxxx" type="tel" name="phone-number" class="form-control" [(ngModel)]="organizationObj.phone_number" #phnum="ngModel" required>
+											<!-- <div class="text-danger" *ngIf="phnum.errors && (phnum.dirty || phnum.touched)">
+												<div [hidden]="!phnum.errors.required">
+													Phone number required
+												</div>
+											</div> -->
+											<div *ngIf="f.submitted && !phnum.valid" class="text-danger">
+												<div [hidden]="!phnum.errors.required">
+													Phone number required
+												</div>
+											</div>
+										</div>
+										<ng-template #noRequiredPhone>
+											<input placeholder="xxxxxxxxxx" type="tel" name="phone-number" class="form-control" [(ngModel)]="organizationObj.phone_number">
+										</ng-template>
+
+									</div>
+
+								</div>
+							</div>
+
+							<div class="row form-group">
+								<label class="col-lg-3  col-md-3 col-sm-4 col-xs-12">{{ 'tax_id' | translate }}</label>
+								<div class="col-lg-9 col-md-9 col-sm-8 col-xs-12">
+
+									<div *ngIf="orgValidationField.tax_id == 1; else noRequiredTax">
+										<input type="text" class="form-control" name="tax-id" [(ngModel)]="organizationObj.tax_id" #tax="ngModel" required>
+										<!-- <div class="text-danger" *ngIf="tax.errors && (tax.dirty || tax.touched)">
+											<div [hidden]="!tax.errors.required">
+												Tax ID required
+											</div>
+										</div> -->
+										<div *ngIf="f.submitted && !tax.valid" class="text-danger">
+											<div [hidden]="!tax.errors.required">
+												Tax ID required
+											</div>
+										</div>
+									</div>
+									<ng-template #noRequiredTax>
+										<input type="text" class="form-control" name="tax-id" [(ngModel)]="organizationObj.tax_id">
+									</ng-template>
+									
+								</div>
+							</div>
+
+
+							<div class="row form-group">
+								<label class="col-lg-3  col-md-3 col-sm-4 col-xs-12">{{ 'address' | translate }}</label>
+								<div class="col-lg-9 col-md-9 col-sm-8 col-xs-12">
+
+									<div *ngIf="orgValidationField.address == 1; else noRequiredAddress">
+										<textarea cols="" rows="4" class="form-control" name="address" [(ngModel)]="organizationObj.address" #address="ngModel" required></textarea>
+										<!-- <div class="text-danger" *ngIf="address.errors && (address.dirty || address.touched)">
+											<div [hidden]="!address.errors.required">
+												Address is required
+											</div>
+										</div> -->
+										<div *ngIf="f.submitted && !address.valid" class="text-danger">
+											<div [hidden]="!address.errors.required">
+												Address is required
+											</div>
+										</div>
+									</div>
+									<ng-template #noRequiredAddress>
+										<textarea cols="" rows="4" class="form-control" name="address" [(ngModel)]="organizationObj.address"></textarea>
+									</ng-template>
+
+								</div>
+							</div>
+
+
+							<div class="row form-group">
+								<label class="col-lg-3  col-md-3 col-sm-4 col-xs-12">{{ 'pin' | translate }}</label>
+								<div class="col-lg-5 col-md-5 col-sm-5 col-xs-12">
+
+									<div *ngIf="orgValidationField.postal_code == 1; else noRequiredPostal">
+										<input type="text" class="form-control" name="postal-code" [(ngModel)]="organizationObj.postal_code" #postal="ngModel" required>
+										<!-- <div class="text-danger" *ngIf="postal.errors && (postal.dirty || postal.touched)">
+											<div [hidden]="!postal.errors.required">
+												Postal code is required
+											</div>
+										</div> -->
+										<div *ngIf="f.submitted && !postal.valid" class="text-danger">
+											<div [hidden]="!postal.errors.required">
+												Postal code is required
+											</div>
+										</div>
+									</div>
+									<ng-template #noRequiredPostal>
+										<input type="text" class="form-control" name="postal-code" [(ngModel)]="organizationObj.postal_code">
+									</ng-template>
+									
+								</div>
+							</div>
+
+
+							<div class="row form-group">
+								<label class="col-lg-3  col-md-3 col-sm-4 col-xs-12">{{ 'city' | translate }}</label>
+								<div class="col-lg-5 col-md-5 col-sm-5 col-xs-12">
+
+									<div *ngIf="orgValidationField.city == 1; else noRequiredCity">
+										<input type="text" class="form-control" name="city" [(ngModel)]="organizationObj.city" #city="ngModel" required>
+										<!-- <div class="text-danger" *ngIf="city.errors && (city.dirty || city.touched)">
+											<div [hidden]="!city.errors.required">
+												City is required
+											</div>
+										</div> -->
+										<div *ngIf="f.submitted && !city.valid" class="text-danger">
+											<div [hidden]="!city.errors.required">
+												City is required
+											</div>
+										</div>
+									</div>
+									<ng-template #noRequiredCity>
+										<input type="text" class="form-control" name="city" [(ngModel)]="organizationObj.city">
+									</ng-template>
+
+									
+								</div>
+							</div>
+
+
+							<div class="row form-group">
+								<label class="col-lg-3  col-md-3 col-sm-4 col-xs-12">{{ 'state' | translate }}</label>
+								<div class="col-lg-5 col-md-5 col-sm-5 col-xs-12">
+
+									<div *ngIf="orgValidationField.state == 1; else noRequiredState">
+										<input type="text" class="form-control" name="state" [(ngModel)]="organizationObj.state" #state="ngModel" required>
+										<!-- <div class="text-danger" *ngIf="state.errors && (state.dirty || state.touched)">
+											<div [hidden]="!state.errors.required">
+												State is required
+											</div>
+										</div> -->
+										<div *ngIf="f.submitted && !state.valid" class="text-danger">
+											<div [hidden]="!state.errors.required">
+												State is required
+											</div>
+										</div>
+									</div>
+									<ng-template #noRequiredState>
+										<input type="text" class="form-control" name="state" [(ngModel)]="organizationObj.state">
+									</ng-template>
+									
+								</div>
+							</div>
+
+
+							<div class="row form-group">
+								<label class="col-lg-3  col-md-3 col-sm-4 col-xs-12">{{ 'contry' | translate }}</label>
+								<div class="col-lg-5 col-md-5 col-sm-5 col-xs-12">
+									<select  class="form-control" name="country" [disabled]="orgUserData?.subscription?.amount_monthly > 0 ? true : false" [(ngModel)]="organizationObj.country_id">
+										<option [value]="0">--{{ 'slc_country' | translate }}--</option>
+										<option *ngFor="let country of organizationDetails.country" [value]="country.id">{{country.name}}</option>
+									</select>
+									<span 
+									style="font-size: 12px; color: #0778e5;"
+									*ngIf="orgUserData?.subscription?.amount_monthly > 0 ? true : false"
+									>You can change country after subscription end</span>
+
+								</div>
+							</div>
+						</div><!-- left col for input data -->
+						
+
+						<div class="col-lg-4 col-md-4 col-sm-5 col-xs-12 pull-right">
+							<div class="panel-body">
+								<div *ngIf="!dontShowProfileImage">
+									<div class="form-group">
+										<label>{{ 'logo' | translate }}</label>
+										<figure class="avatarfigure">
+
+											<img *ngIf="imgNoExt; else noLogoImg" [src]="organizationObj.logo" class="img-responsive">
+											<ng-template #noLogoImg>
+												<img src="assets/images/no-user-avatar.png" class="img-responsive">
+											</ng-template>
+
+												<div class="file-upload">
+													<label for="upload" class="file_upload__label"><i class="fa fa-camera" aria-hidden="true"></i>{{ 'chnage' | translate }}</label>
+													<!-- <input id="upload" class="file_upload__input" type="file" name="file-upload"> -->
+													<form id="orgLogoForm" method="post" enctype="multipart/form-data" [action]='logoImageUpdateApi'>
+														<input name="type" type="hidden" value="logo">
+														<input name="id" type="hidden" [value]="organizationObj.id">
+														<input name="picture" id="living_area" type="file" class="inputFile file_upload__input" (change)="imageUploadJq()" />
+													</form>
+												</div>
+										</figure>
+									</div>
+								</div>
+								
+								<div class="form-group">
+									<label>{{ 'about' | translate }}</label>
+
+									<div *ngIf="orgValidationField.about == 1; else noRequiredAbout">
+										<textarea cols="" rows="3" class="form-control" name="about" [(ngModel)]="organizationObj.about" #about="ngModel" required></textarea>
+										<!-- <div class="text-danger" *ngIf="about.errors && (about.dirty || about.touched)">
+											<div [hidden]="!about.errors.required">
+												About is required
+											</div>
+										</div> -->
+										<div *ngIf="f.submitted && !about.valid" class="text-danger">
+											<div [hidden]="!about.errors.required">
+												About is required
+											</div>
+										</div>
+									</div>
+									<ng-template #noRequiredAbout>
+										<textarea cols="" rows="3" class="form-control" name="about" [(ngModel)]="organizationObj.about"></textarea>
+									</ng-template>
+									
+								</div>
+
+								<div class="form-group">
+									<label>{{ 'industry' | translate }}</label>
+									<select class="form-control" name="industry" [(ngModel)]="organizationObj.industry_id">
+										<option [value]="0">--{{ 'slc_industry' | translate }}--</option>
+										<option *ngFor="let industry of organizationDetails.industry" [value]="industry.id">{{industry.name}}</option>
+									</select>
+								</div>
+												
+								<!-- <input type="submit" [disabled]="!f.form.valid" class="btn btn-success btn-lg btnbig" value="Update"> -->
+								<input type="submit" class="btn btn-success btn-lg btnbig" value="{{ 'update' | translate }}">
+
+								<!-- normal error when sending post -->
+								<div class="alert alert-danger updatealert" role="alert" *ngIf="organizationUpdatedError">
+									<span class="updatestatusclose danger" (click)="formUpdateErrorPostFailClose()">X</span>
+									<strong>Oh snap!</strong> Something went wrong
+								</div>
+
+								<!-- updated or created -->
+								<div class="alert alert-success updatealert" role="alert" *ngIf="organizationUpdatedSuccess">
+									<span class="updatestatusclose success" (click)="organizationUpdatedSuccessClose()">X</span>
+									<strong>You successfully done!</strong>
+								</div>
+
+								<!-- error alert -->
+								<div class="alert alert-danger updatealert" role="alert" *ngIf="isFormUpdatePostFail">
+									<span class="updatestatusclose danger" (click)="formUpdatePostFailClose()">X</span> 
+									<p>{{organizationFormUpdatePostErrorObj.errors.website}}</p>
+									<p>{{organizationFormUpdatePostErrorObj.errors.phone_number_code}}</p>
+									<p>{{organizationFormUpdatePostErrorObj.errors.phone_number}}</p>
+									<p>{{organizationFormUpdatePostErrorObj.errors.tax_id}}</p>
+									<p>{{organizationFormUpdatePostErrorObj.errors.postal_code}}</p>
+									<p>{{organizationFormUpdatePostErrorObj.errors.country_id}}</p>
+									<p>{{organizationFormUpdatePostErrorObj.errors.industry_id}}</p>
+									<p>{{organizationFormUpdatePostErrorObj.errors.company_name}}</p>
+									<p>{{organizationFormUpdatePostErrorObj.errors.address}}</p>
+									<p>{{organizationFormUpdatePostErrorObj.errors.about}}</p>
+									<p>{{organizationFormUpdatePostErrorObj.errors.city}}</p>
+									<p>{{organizationFormUpdatePostErrorObj.errors.state}}</p>
+								</div>
+							
+							</div>
+						</div><!-- right col LOGO UPLOAD ABOUT INDUSTRY ]]-->
+
+					</form>
+
+				</div>
+				<p-messages [(value)]="msgs"></p-messages>
+			</div><!-- tab one -->
+		 <!--    <div role="tabpanel" class="tab-pane" id="profile"></div> -->
+		</div>
+
+	</div>
+</div>

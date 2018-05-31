@@ -1,0 +1,112 @@
+<h2>Filter musician by</h2>
+
+<!-- <pre>{{searchData | json}}</pre>
+<button (click)="newSearch()">send</button> -->
+
+<div class="filterBox">
+  <h3>Musician types</h3>
+  <div class="chkList scrollChklict collapseCont">
+    <div class="list" *ngFor="let musician of musiciansTypeList">
+      <label class="chkBox orange">
+
+        <input type="checkbox" name="filter_musician_types" 
+          [checked]="this.searchData.musicianType.includes(musician.id)" 
+          [value]="musician.id" 
+          (change)="musicianFilter(musician.id, $event)">
+
+        <i class="fa fa-square-o"></i>
+        {{musician.itemName}}
+      </label>
+    </div>
+  </div>
+</div>
+<div class="filterBox">
+  <h3>Instruments</h3>
+  <div class="collapseCont">
+    <div class="chkList scrollChklict">
+      <div class="list full" *ngFor="let inst of instrumentList">
+        <label class="chkBox orange">
+
+          <input type="checkbox" name="filter_instruments" 
+            [checked]="this.searchData.instrument.includes(inst.id)" 
+            [value]="inst.id" 
+            (change)="instrumentFilter(inst.id, $event)">
+
+          <i class="fa fa-square-o"></i>
+          <!-- {{inst.itemName}} -->
+          <span [innerHtml]="inst.itemName.replace('--', '')"></span>
+        </label>
+      </div>
+    </div>
+    <!-- <div class="addFilter">
+      <a href="javascript:void(0);">+ Add</a>
+    </div> -->
+  </div>
+</div>
+
+<div class="filterBox">
+  <h3>Professional status</h3>
+  <div class="chkList scrollChklict collapseCont">
+    <div class="list" *ngFor="let pstat of pstatus">
+      <label class="chkBox orange">
+
+        <input type="checkbox" name="filter_professional_status"
+          [checked]="this.searchData.professional_status.includes(pstat.id)"
+          (change)="profStatusFilter(pstat.id, $event)"
+          [value]="pstat.id">
+
+        <i class="fa fa-square-o"></i>
+        {{pstat.itemName}}
+      </label>
+    </div>
+  </div>
+</div>
+<div class="filterBox">
+  <h3>Genre</h3>
+  <div class="chkList scrollChklict collapseCont">
+    <div class="list" *ngFor="let genre of genreList">
+      <label class="chkBox orange">
+
+        <input type="checkbox" name="filter_genre"
+          [checked]="this.searchData.genre.includes(genre.id)"
+          (change)="genreFilter(genre.id, $event)"
+          [value]="genre.id">
+
+        <i class="fa fa-square-o"></i>
+        <!-- {{genre.itemName}} -->
+        <span [innerHtml]="genre.itemName.replace('--', '')"></span>
+      </label>
+    </div>
+  </div>
+</div>
+<div class="filterBox">
+  <h3>Country</h3>
+  <div class="chkList scrollChklict collapseCont">
+    <div class="list">
+      <label class="chkBox orange">
+
+        <input type="radio" name="filter_country" value=""
+          [checked]="this.searchData.country == ''"
+          [(ngModel)]="this.searchData.country">
+
+        <i class="fa fa-square-o"></i>
+        All
+      </label>
+    </div>
+    <div class="list" *ngFor="let country of allCountryList">
+      <label class="chkBox orange">
+
+        <input type="radio" name="filter_country"
+          [checked]="this.searchData.country == country.country_id"
+          [value]="country.country_id" 
+          [(ngModel)]="this.searchData.country">
+
+        <i class="fa fa-square-o"></i>
+        {{country.name}}
+      </label>
+    </div>
+  </div>
+</div>
+<div class="filterSrchbtns">
+  <a href="javascript:void(0);" (click)="filterSearch()" class="button orange">Submit</a>
+</div>

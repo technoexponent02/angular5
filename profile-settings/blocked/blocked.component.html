@@ -1,0 +1,47 @@
+
+
+<h4 class="settTitleSub">Blocked User</h4>
+<div class="panel-body frndslist">
+  <div class="row">
+
+    <!-- if block -->
+    <ng-container *ngIf="blockedUserList.length != 0; else noBlocked">
+      <div class="col-lg-6 col-md-6 col-sm-12 colfrnd" *ngFor="let block of blockedUserList">
+        <div class="smfrndbx clearfix">
+          <a class="avsrc rounduc">
+            <img *ngIf="block?.friend?.profile_picture == 'NA'; else hasimg" src="assets/images/ctavatar_default.png" class="img-responsive"
+              alt="Phtoto">
+            <ng-template #hasimg>
+              <img src="{{profileurl}}{{block?.friend?.profile_picture}}" alt="profile-image" class="img-responsive">
+            </ng-template>
+
+          </a>
+          <div class="pull-left wrbtn">
+            <h4 class="avdrname">
+              {{block?.friend?.first_name}} {{block?.friend?.last_name}}
+            </h4>
+          </div>
+          <div class="dropdown forbtnmenu pull-right">
+            <a href="javascript:void(0);" (click)="mkUnblock(block)" class="btn btn-warning unblockbtn">Unblock</a>
+          </div>
+        </div>
+      </div>
+    </ng-container>
+
+    <!-- else block -->
+    <ng-template #noBlocked>
+      <h5>{{noBkUserMsg}}</h5>
+    </ng-template>
+
+    <div *ngIf="loading" style="position: relative; padding: 60px">
+      <div class="line-loading">
+        <div class="line-loading-bar"></div>
+        <div class="line-loading-bar"></div>
+        <div class="line-loading-bar"></div>
+        <div class="line-loading-bar"></div>
+      </div>
+    </div>
+
+
+  </div>
+</div>

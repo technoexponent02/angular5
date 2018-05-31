@@ -1,0 +1,169 @@
+<div class="thbrder" style="position: relative;">
+
+  <div class="coverload" *ngIf="coverLoad">
+    <div class="load-bar">
+      <div class="bar"></div>
+      <div class="bar"></div>
+      <div class="bar"></div>
+    </div>
+  </div>
+
+  <!-- <pre>{{user | json}}</pre> -->
+
+  <div class="profilecover" *ngIf="user.cover_picture == 'NA'; else hasCover">
+    <img src="assets/images/cover_dummy.png" class="img-responsive">
+    <a href="javascript:void(0);" class="upCoverPhoto" *ngIf="otherProfile == 'no'">
+      <img src="assets/images/upfile.png" id="coverPicModal" alt="" (click)="coverPicModal(pic)">
+    </a>
+  </div>
+
+  <ng-template #hasCover>
+    <div class="profilecover">
+      <img src="{{uploadurl}}{{user.cover_picture}}" class="img-responsive">
+      <a href="javascript:void(0);" class="upCoverPhoto" *ngIf="otherProfile == 'no'">
+        <img src="assets/images/upfile.png" id="coverPicModal" alt="" (click)="coverPicModal(pic)">
+      </a>
+    </div>
+  </ng-template>
+
+  <div class="myproare">
+    <app-profile-image></app-profile-image>
+
+    <div class="clearfix">
+      <h2 class="nameav pull-left">{{user.first_name+" "+user.last_name}}</h2>
+
+      <p class="pointEarn pull-right">Total Points&nbsp;&nbsp;:&nbsp;&nbsp;
+        <span>100</span>
+      </p>
+    </div>
+    <div class="clearfix">
+      <p class="addrsav pull-left">
+        <img src="assets/images/location-sm-grey.png" class="img-responsive">&nbsp;{{user.location}}</p>
+      <!-- <a href="javascript:void(0);" class="btn btn-warning btnfill btnbg usersp pull-left">Member Wall</a> -->
+      <div class="useraction pull-right dropdown" *ngIf="otherProfile == 'yes'">
+        <a href="javascript:void(0);" class="btn btnmore" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+          <span></span>
+          <span></span>
+          <span></span>
+        </a>
+        <ul class="dropdown-menu">
+          <li>
+            <a href="javascript:void(0)" (click)="doBlock(user.id);">
+              <i class="fa fa-ban"></i> Block User</a>
+          </li>
+        </ul>
+      </div>
+      <a href="javascript:void(0);" class="btn btn-warning btnbrder pull-right">Leaderboard</a>
+
+    </div>
+
+  </div>
+
+  <div class="clearfix probtnsec text-right">
+    <div class="inlinesec">
+      <a href="javascript:void(0);" class="btn btn-warning btnfill btnbg usersp pull-left">Member Wall</a>
+      <a href="javascript:void(0);" class="btn btn-warning  btnbrder btnbg diaryico pull-left">Personal Diary</a>
+      <a href="javascript:void(0);" class="btn btn-warning  btnbrder btnbg safevaultico pull-left">Safe vault</a>
+      <a href="javascript:void(0);" class="btn btn-warning btnbrder pull-left">Leaderboard</a>
+      <div class="useraction pull-left dropdown" *ngIf="otherProfile == 'yes'">
+        <a href="javascript:void(0);" class="btn btnmore" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+          <span></span>
+          <span></span>
+          <span></span>
+        </a>
+        <ul class="dropdown-menu">
+          <li>
+            <a href="javascript:void(0)" (click)="doBlock(user.id);">
+              <i class="fa fa-ban"></i> Block User</a>
+          </li>
+        </ul>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="btnsare clearfix">
+
+
+    <a href="javascript:void(0);" (click)="addfrnd(user)" *ngIf="otherProfile == 'yes'" class="btn btn-warning btnbrder btnbg userplussp pull-left">
+      <ng-container *ngIf="frnd == ''">
+        Add Friend
+      </ng-container>
+      <ng-container *ngIf="frnd == 'pending'">
+        Pending
+      </ng-container>
+      <ng-container *ngIf="frnd == 'friend'">
+        Friend
+      </ng-container>
+    </a>
+
+
+
+    <a href="javascript:void(0);" (click)="makFollow(user);" *ngIf="otherProfile == 'yes' && user.userfollowed_status == 'N'"
+      class="btn btn-warning  btnbrder btnbg folowsp pull-left">Follow</a>
+    <a href="javascript:void(0);" (click)="makUnFollow(user);" *ngIf="otherProfile == 'yes' && user.userfollowed_status == 'Y'"
+      class="btn btn-warning  btnbrder btnbg folowsp pull-left">Unfollow</a>
+
+
+    <a href="javascript:void(0);" class="btn btn-warning btnbrder btnbg chatsp pull-left">Chat</a>
+    <a href="javascript:void(0);" data-toggle="modal" data-target="#newmessage" class="btn btn-warning  btnbrder btnbg emailsp pull-left">Send Email</a>
+    <a href="javascript:void(0);" *ngIf="otherProfile == 'no'" class="btn btn-warning  btnbrder btnbg exlinksp pull-left">Private Wall</a>
+    <a href="profile-wall-photo.html" class="btn btn-warning  btnbrder btnbg galphotosp pull-left">Wall Gallery</a>
+    <a href="profile-wall-video.html" class="btn btn-warning  btnbrder btnbg videosp pull-left">Wall Videos </a>
+    <a routerLink="/{{user.username}}/friends/friend-list" *ngIf="otherProfile == 'yes'" class="btn btn-warning btnbrder btnbg user pull-left">Friends</a>
+  </div>
+</div>
+
+
+
+<ng-template #pic>
+  <!-- <div class="modal-dialog" role="document"> -->
+  <div class="modal-header">
+    <button type="button" class="close" (click)="closemodal()">
+      <span aria-hidden="true">&times;</span>
+    </button>
+    <h4 class="modal-title" id="myModalLabel">Cover Photo</h4>
+  </div>
+  <div class="text-center coverimage">
+
+    <div *ngIf="hasimage; else makecropperActive">
+
+      <div *ngIf="user.cover_picture == 'NA'; else hasCoverPicpop">
+        <div class="profileBack" [ngClass]="{'no-profile-image': user.cover_picture == 'NA'}" *ngIf="user.cover_picture == 'NA'; else hasProfilePicpop">
+          <img src="assets/images/NO-IMAGE-450x450.png" class="noImgIcon">
+          <h3>No Image Uploaded.</h3>
+        </div>
+      </div>
+
+      <ng-template #hasCoverPicpop>
+        <div class="profileBack">
+          <img src="{{uploadurl}}{{user.cover_picture}}" class="img-responsive" style="margin-left: auto;margin-right: auto;">
+        </div>
+      </ng-template>
+
+    </div>
+    <ng-template #makecropperActive>
+      <img-cropper [image]="data" [settings]="cropperSettings"></img-cropper>
+    </ng-template>
+
+  </div>
+  <div class="modal-footer">
+    <ng-container *ngIf="user.cover_picture == 'NA'; else noDeleteButton">
+    </ng-container>
+
+    <ng-template #noDeleteButton>
+      <a href="javascript:void(0);" class="btn btn-link pull-left" (click)="deleteCoverPic()">Delete photo</a>
+    </ng-template>
+
+    <button type="button" class="btn btn-primary delte" (click)="changePic()">
+      <ng-container *ngIf="user.cover_picture == 'NA'; else hasCoverPictext">Upload Photo</ng-container>
+      <ng-template #hasCoverPictext>Change Photo</ng-template>
+    </button>
+
+    <button type="button" [disabled]="loading" class="btn btn-primary" (click)="saveCover()" name="save">
+      <i class="fa fa-spinner fa-pulse fa-spin fa-spin" *ngIf="loading"></i>
+      Save
+    </button>
+  </div>
+  <!-- </div> -->
+</ng-template>

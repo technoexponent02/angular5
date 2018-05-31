@@ -1,0 +1,295 @@
+<!-- <pre>
+  {{profileDetails | json}}
+</pre> -->
+
+<div class="container">
+    <div class="settings-loader-outer">
+      
+      <div class="linear-progress med">
+        <div class="bar bar1"></div>
+        <div class="bar bar2"></div>
+      </div>
+      <div class="setting-http-load">
+      </div> 
+  
+      <div class="tab-content">
+        <div role="tabpanel" class="tab-pane active" id="home">
+          <div class="row">
+  
+            <form name="form" (ngSubmit)="f.form.valid && updateMyProfile()" #f="ngForm" novalidate>
+              <input type="hidden" [value]="profileDetails.api_token">
+              <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12 pull-right">
+                <figure class="avatarfigure">
+  
+                  <!-- <img *ngIf="profileDetails.thumb_image_url == ''" src="assets/images/no-user-avatar.png" class="img-responsive">
+                  <img *ngIf="!profileDetails.thumb_image_url == ''" [src]="profileDetails.thumb_image_url" class="img-responsive"> -->
+                  <img *ngIf="noProfileImage; else noProfImg" [src]="profileDetails.thumb_image_url" class="img-responsive">
+                  <ng-template #noProfImg>
+                      <img src="assets/images/no-user-avatar.png" class="img-responsive">
+                  </ng-template>
+  
+                  <div class="file-upload">
+                    <label for="upload" class="file_upload__label"><i class="fa fa-camera" aria-hidden="true"></i> Change</label>
+                     <!-- <input id="upload" class="file_upload__input" type="file" name="file-upload" accept="image/x-png,image/jpeg" (change)="imageUploadChange($event)">   -->
+  
+                    <form id="myProfileImages" method="post" enctype="multipart/form-data" [action]='myProfileImageUpdateApi'>
+                        <input name="profile_picture" id="living_area" type="file" class="inputFile file_upload__input" (change)="imageUploadJq()" />
+                    </form>
+                  </div>
+                </figure>
+  
+                <h3 class="slinktitle">Social Media</h3>
+  
+                <div class="input-group form-group facebook">
+                  <span class="input-group-addon"><i class="fa fa-facebook"></i></span>
+                  <input class="form-control" placeholder="www.facebook.com/" name="facebook" [(ngModel)]="profileDetails.facebook_token" #facebook="ngModel" required>
+                </div>
+                <!-- <div class="text-danger" *ngIf="facebook.errors && (facebook.dirty || facebook.touched)">
+                    <div [hidden]="!facebook.errors.required">
+                      Facebook link is required
+                    </div>
+                </div> -->
+                <div *ngIf="f.submitted && !facebook.valid" class="text-danger">
+                    <div [hidden]="!facebook.errors.required">
+                        Facebook link is required
+                    </div>
+                </div>
+  
+  
+                <div class="input-group form-group twitter">
+                  <span class="input-group-addon"><i class="fa fa-twitter"></i></span>
+                  <input class="form-control" placeholder="www.twitter.com/" name="twitter" [(ngModel)]="profileDetails.twitter_token" #twitter="ngModel" required>
+                </div>
+                <!-- <div class="text-danger" *ngIf="twitter.errors && (twitter.dirty || twitter.touched)">
+                    <div [hidden]="!twitter.errors.required">
+                      Twitter link is required
+                    </div>
+                </div> -->
+                <div *ngIf="f.submitted && !twitter.valid" class="text-danger">
+                    <div [hidden]="!twitter.errors.required">
+                        Twitter link is required
+                    </div>
+                </div>
+  
+                <div class="input-group form-group googleplus">
+                  <span class="input-group-addon"><i class="fa fa-google-plus"></i></span>
+                  <input class="form-control" placeholder="www.googleplus.com/" name="google" [(ngModel)]="profileDetails.google_token" #google="ngModel" required>
+                </div>
+                <!-- <div class="text-danger" *ngIf="google.errors && (google.dirty || google.touched)">
+                    <div [hidden]="!google.errors.required">
+                      Gplus link is required
+                    </div>
+                </div> -->
+                <div *ngIf="f.submitted && !google.valid" class="text-danger">
+                    <div [hidden]="!google.errors.required">
+                        Gplus link is required
+                    </div>
+                </div>
+  
+              </div>
+              <div class="col-lg-8 col-md-8 col-sm-8 col-xs-12">
+  
+                <div class="alert alert-success updatealert" role="alert" *ngIf="myProfileUpdatedSuccess">
+                  <span class="updatestatusclose success" (click)="closeUpdatedSuccessAlert()">X</span>
+                  <strong>Well done!</strong> You successfully updated the my profile section 
+                </div>
+  
+                <div class="alert alert-danger updatealert" role="alert" *ngIf="myProfileUpdatedError">
+                  <span class="updatestatusclose danger" (click)="closeUpdatedErrorAlert()">X</span>
+                  <strong>Oh snap!</strong> Something went wrong
+                </div>
+  
+                <div class="alert alert-danger updatealert" role="alert" *ngIf="myProfileUpdatedCheckingError">
+                  <span class="updatestatusclose danger" (click)="closeUpdatedSameValueErrorAlert()">X</span> 
+                  <p>{{myProfileUpdatedCheckingErrorObj.errors.phone_number}}</p>
+                  <p>{{myProfileUpdatedCheckingErrorObj.errors.email}}</p>
+                  <p>{{myProfileUpdatedCheckingErrorObj.errors.website}}</p>
+                  <p>{{myProfileUpdatedCheckingErrorObj.errors.facebook_token}}</p>
+                  <p>{{myProfileUpdatedCheckingErrorObj.errors.google_token}}</p>
+                  <p>{{myProfileUpdatedCheckingErrorObj.errors.twitter_token}}</p>
+                </div>
+  
+                <div class="row">
+                  <label class="col-lg-3  col-md-3 col-sm-3 col-xs-12">Full Name</label>
+                  <div class="col-lg-9 col-md-9 col-sm-9 col-xs-12">
+                    <div class="row">
+                      <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+                        <div class="form-group">
+                          <input type="text" class="form-control" placeholder="First Name" name="first-name" [(ngModel)]="profileDetails.first_name" #first_name="ngModel" required>
+                          <!-- <div class="text-danger" *ngIf="first_name.errors && (first_name.dirty || first_name.touched)">
+                            <div [hidden]="!first_name.errors.required">
+                              First Name is required
+                            </div>
+                          </div> -->
+                          <div *ngIf="f.submitted && !first_name.valid" class="text-danger">
+                              <div [hidden]="!first_name.errors.required">
+                                  First Name is required
+                              </div>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+                        <div class="form-group">
+                          <input type="text" class="form-control" placeholder="Last Name" name="last-name" [(ngModel)]="profileDetails.last_name" #last_name="ngModel" required>
+                          <!-- <div class="text-danger" *ngIf="last_name.errors && (last_name.dirty || last_name.touched)">
+                            <div [hidden]="!last_name.errors.required">
+                              Last Name is required
+                            </div>
+                          </div> -->
+                          <div *ngIf="f.submitted && !last_name.valid" class="text-danger">
+                              <div [hidden]="!last_name.errors.required">
+                                  Last Name is required
+                              </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+  
+                <div class="row form-group">
+                  <label class="col-lg-3  col-md-3 col-sm-3 col-xs-12">Email</label>
+                  <div class="col-lg-9 col-md-9 col-sm-9 col-xs-12">
+                    <input type="text" placeholder="type your email address" class="form-control" name="email" [(ngModel)]="profileDetails.email" #email="ngModel" required pattern="^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$">
+                    <!-- <div class="text-danger" *ngIf="email.errors && (email.dirty || email.touched)">
+                      <div [hidden]="!email.errors.required">
+                        Email is required
+                      </div>
+                      <div [hidden]="!email.errors.pattern">
+                        Email is not valid
+                      </div>
+                    </div> -->
+                    <div *ngIf="f.submitted && !email.valid" class="text-danger">
+                        <div [hidden]="!email.errors.required">
+                            Email is required
+                        </div>
+                        <div [hidden]="!email.errors.pattern">
+                            Email is not valid
+                        </div>
+                    </div>
+                  </div>
+                </div>
+  
+                <div class="row form-group">
+                  <label class="col-lg-3  col-md-3 col-sm-3 col-xs-12">Phone Number</label>
+                  <div class="col-lg-9 col-md-9 col-sm-9 col-xs-12">
+                    <input type="tel" placeholder="Phone number with country code" class="form-control" name="phone" [(ngModel)]="profileDetails.phone_number" #phone="ngModel" required pattern="[0-9]+">
+                    <!-- <div class="text-danger" *ngIf="phone.errors && (phone.dirty || phone.touched)">
+                        <div [hidden]="!phone.errors.required">
+                          Phone number is required
+                        </div>
+                        <div [hidden]="!phone.errors.pattern">
+                          Phone number is not a number
+                        </div>
+                    </div> -->
+                    <div *ngIf="f.submitted && !phone.valid" class="text-danger">
+                        <div [hidden]="!phone.errors.required">
+                            Phone number is required
+                        </div>
+                        <div [hidden]="!phone.errors.pattern">
+                            Phone number is not a number
+                        </div>
+                    </div>
+                  </div>
+                </div>
+  
+  
+                <div class="row form-group">
+                  <label class="col-lg-3  col-md-3 col-sm-3 col-xs-12">Language</label>
+                  <div class="col-lg-9 col-md-9 col-sm-9 col-xs-12">
+                    <select class="form-control" name="language" [(ngModel)]="profileDetails.language_id">
+                      <!-- <option [value]="0">Select Language</option> -->
+                      <option *ngFor="let language of profileDetails.language" [value]="language.id">{{language.name}}</option>
+                    </select>
+                  </div>
+                </div>
+  
+                <div class="row">
+                  <label class="col-lg-3  col-md-3 col-sm-3 col-xs-12">DOB and Gender</label>
+                  <div class="col-lg-9 col-md-9 col-sm-9 col-xs-12">
+                    <div class="row">
+                      <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+                        <div class="form-group">
+                           <input type="date" class="form-control" placeholder="dd / mm / yy" name="dob" [(ngModel)]="profileDetails.dob"> 
+                          <!-- <input type="date" class="form-control" name="dob" #date [value]="profileDetails.date | date:'yyyy-MM-dd'" (input)="profileDetails.date=parseDate($event.target.value)" /> -->
+                           <!-- {{profileDetails.date}}  -->
+                        </div>
+                      </div>
+                      <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+                        <div class="form-group">
+                          <select class="form-control" name="gender" [(ngModel)]="profileDetails.gender">
+                            <option [attr.value]="1">Male</option>
+                            <option [attr.value]="2">Female</option>
+                          </select>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+  
+                <div class="row form-group">
+                  <label class="col-lg-3  col-md-3 col-sm-3 col-xs-12">Position</label>
+                  <div class="col-lg-9 col-md-9 col-sm-9 col-xs-12">
+                    <input type="text" placeholder="Type your position" class="form-control" name="position" [(ngModel)]="profileDetails.position">
+                  </div>
+                </div>
+  
+                <!-- <div class="row form-group">
+                  <label class="col-lg-3  col-md-3 col-sm-3 col-xs-12">Website</label>
+                  <div class="col-lg-9 col-md-9 col-sm-9 col-xs-12">
+                    <input type="url" placeholder="example : www.loremipsum.com" class="form-control" name="website" [(ngModel)]="profileDetails.website" #website="ngModel" required>
+                    <div class="text-danger" *ngIf="website.errors && (website.dirty || website.touched)">
+                        <div [hidden]="!website.errors.required">
+                          Website is required
+                        </div>
+                    </div>
+                  </div>
+                </div> -->
+  
+                <div class="row form-group">
+                  <div class="col-lg-3  col-md-3 col-sm-3 hidden-xs"></div>
+                  <div class="col-lg-9 col-md-9 col-sm-9 col-xs-12">
+                    <div class="form-group">
+                      <label class="checkFld">
+                        Do you own camera ? 
+                          <input type="checkbox" name="hascamera" [ngModel]="profileDetails.own_camera == 1 ? true : profileDetails.own_camera == 0 ? false : null" (ngModelChange)="profileDetails.own_camera = $event ? 1 : 0">   
+                          
+                         <!-- {{profileDetails.own_camera}} -->
+                        <i class="fa fa-square-o"></i>
+                        <span *ngIf="profileDetails.own_camera == 0"> No </span>
+                        <span *ngIf="profileDetails.own_camera == 1"> Yes </span>
+                      </label>
+                    </div>
+  
+                    <div class="form-group">
+                      <label class="checkFld">
+                        Do you sell 360 Pictures ? 
+                        <input type="checkbox" name="hascamera360" [ngModel]="profileDetails.sell_360_picture == 1 ? true : profileDetails.sell_360_picture == 0 ? false : null" (ngModelChange)="profileDetails.sell_360_picture = $event ? 1 : 0">
+                        <i class="fa fa-square-o"></i>
+                        <span *ngIf="profileDetails.sell_360_picture == 0"> No </span>
+                        <span *ngIf="profileDetails.sell_360_picture == 1"> Yes </span>
+                      </label>
+                    </div>
+  
+                  </div>
+                </div>
+  
+                <div class="row form-group">
+                  <div class="col-lg-3  col-md-3 col-sm-3 hidden-xs"></div>
+                  <div class="col-lg-9 col-md-9 col-sm-9 col-xs-12">
+                    <!-- <input type="submit" [disabled]="!f.form.valid" class="btn btn-success btn-lg btnbig" value="Update"> -->
+                    <input type="submit" class="btn btn-success btn-lg btnbig" value="Update">
+                  </div>
+                </div>
+  
+                
+              </div>
+            </form>
+  
+          </div>
+          <p-messages [(value)]="msgs"></p-messages>
+        </div>
+      </div>
+    </div>
+  </div>
+  

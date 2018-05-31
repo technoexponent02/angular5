@@ -1,0 +1,152 @@
+<!-- <pre>{{authUser | json}}</pre> -->
+<form name="form" (ngSubmit)="f.form.valid && makeSave()" #f="ngForm" autocomplete="off" novalidate>
+  <div class="settTitleSub">
+    <h4>Account</h4>
+    <div class="settingbtngrp">
+      <button type="button" *ngIf="editBtn; else doSave" (click)="makeEdit()">
+          <i class="fa fa-edit"></i>
+          Edit
+      </button>
+      <ng-template #doSave>
+          <button type="submit" [disabled]="!f.form.valid || loading">
+              <ng-container *ngIf="loading; else notSavingMode">
+                  <i class="fa fa-spinner fa-pulse fa-spin fa-spin"></i>
+                  Saving...
+              </ng-container>
+              <ng-template #notSavingMode>
+                  <i class="fa fa-check"></i>
+                  Save
+              </ng-template>
+          </button>
+      </ng-template>
+    </div>
+  </div>
+  <div class="wformbx panel-body">
+    <div class="row">
+      <div class="col-sm-6">
+        <div class="row">
+          <label class="col-sm-12 col-md-3 paddr0">First Name</label>
+          <div class="form-group col-sm-12 col-md-9">
+
+            <input type="text" [readonly]="editBtn" class="form-control"
+            [(ngModel)]="authUser.first_name"
+            #firstName="ngModel"
+            required
+            name="firstname">
+
+            <div class="text-danger lite" *ngIf="firstName.errors && (firstName.dirty || firstName.touched)">
+              <div [hidden]="!firstName.errors.required">
+                First name is required
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </div>
+
+      <div class="col-sm-6">
+        <div class="row">
+          <label class="col-sm-12 col-md-3 paddr0">Last Name</label>
+          <div class="form-group col-sm-12 col-md-9">
+
+            <input type="text" [readonly]="editBtn" class="form-control"
+            [(ngModel)]="authUser.last_name"
+            #lastName="ngModel"
+            required 
+            name="lastname">
+
+            <div class="text-danger lite" *ngIf="lastName.errors && (lastName.dirty || lastName.touched)">
+              <div [hidden]="!lastName.errors.required">
+                Last name is required
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="row">
+      <div class="col-sm-6">
+        <div class="row">
+          <label class="col-sm-12 col-md-3 paddr0">Date of Birth</label>
+          <div class="form-group col-sm-12 col-md-9 withsrc">
+              
+            <input type="text" class="form-control" 
+            [readonly]="editBtn" name="dob" 
+            *ngIf="editBtn; else editDob" 
+            [value]="authUser.date_of_birth | date">
+            
+            <ng-template #editDob>
+                <div class="about-dob">
+                  <ng-datepicker 
+                  required 
+                  class="form-control" 
+                  name="date_of_birth" 
+                  [(ngModel)]="authUser.date_of_birth"></ng-datepicker>
+                </div>
+            </ng-template>
+
+          </div>
+        </div>
+      </div>
+
+      <div class="col-sm-6">
+        <div class="row">
+          <label class="col-sm-12 col-md-3 paddr0">Location</label>
+          <div class="form-group col-sm-12 col-md-9">
+
+            <input type="text" class="form-control" 
+            [readonly]="editBtn" name="location" 
+            *ngIf="editBtn; else editLoc" 
+            [value]="authUser.location">
+
+            <ng-template #editLoc>
+                <ng4geo-autocomplete
+                [userSettings]="userSettings3"
+                (componentCallback)="autoCompleteCallback1($event)"></ng4geo-autocomplete>
+            </ng-template>
+            
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+
+    <div class="row">
+      <div class="col-sm-6">
+        <div class="row">
+          <label class="col-sm-12 col-md-3 paddr0">Username</label>
+          <div class="form-group col-sm-12 col-md-9">
+
+            <input type="text" [readonly]="editBtn" class="form-control"
+            pattern="^[a-zA-Z0-9]+$"
+            required
+            [(ngModel)]="authUser.username"
+            #userName="ngModel"
+            name="username">
+
+            <div class="text-danger lite" *ngIf="userName.errors && (userName.dirty || userName.touched)">
+              <div [hidden]="!userName.errors.required">
+                Username is required
+              </div>
+
+              <div [hidden]="!userName.errors.pattern">
+                Combination of alphabetic and numeric number only
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </div>
+
+      <!-- <div class="col-sm-6">
+      </div> -->
+
+    </div>
+
+    <p-messages [(value)]="msgs"></p-messages>
+  </div>
+</form>

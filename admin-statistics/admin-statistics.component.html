@@ -1,0 +1,175 @@
+<!-- <pre>
+	{{adminDashboardClientData | json}}
+</pre>  -->
+
+<!-- <section class="dashboard topbg">
+  <div class="container"> -->
+
+    <div class="white_bg topstc panel-body">
+      <h3 class="dbtitle">Statistics</h3>
+
+      <div class="form-inline formstyle form-group inlineinputs admin-filter">
+        <div class="form-group">
+          <select class="form-control" [(ngModel)]="singleOrg" (change)="selectOrg(singleOrg);">
+            <option value="">Select Organization</option>
+            <option [value]="org.organization_id" *ngFor="let org of allOrgData">{{org.company_name}}</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <select class="form-control" name="dateRange" [(ngModel)]="filterDate" (change)="filterDateRange()">
+            <option value="">Date Range</option>
+            <option value="7">Last 7 days</option>
+            <option value="C">Custom</option>
+          </select>
+        </div>
+
+        <!-- <div class="form-group date">
+          <label>From</label>
+          <div class="input-group">
+            <input type="text" class="form-control hasDatepicker" name="" id="datepicker">
+            <div class="input-group-addon">
+              <i class="fa fa-calendar" aria-hidden="true"></i>
+            </div>
+          </div>
+        </div>
+
+        <div class="form-group date">
+          <label>To</label>
+          <div class="input-group">
+            <input type="text" class="form-control hasDatepicker" name="" id="datepicker2">
+            <div class="input-group-addon">
+              <i class="fa fa-calendar" aria-hidden="true"></i>
+            </div>
+          </div>
+        </div> -->
+
+        <div class="form-group date-filter" *ngIf="openDateRange">
+          <!-- <nz-rangepicker [(ngModel)]="_dateRange"
+                    [nzPlaceholder]="['Select start date', 'Select end date']"></nz-rangepicker> -->
+
+                  <my-date-range-picker name="mydaterange" 
+                    [options]="myDateRangePickerOptions"
+                    [(ngModel)]="model" required
+                    (click)="clicCalender()"
+                    placeholder="Choose date range"
+                    (dateRangeChanged)="onDateRangeChanged($event)"></my-date-range-picker>
+
+        </div>
+        <!-- <pre>{{model | json}}</pre> -->
+
+                    <!-- <pre>{{_dateRange | json}}</pre> -->
+
+      </div>
+
+      <div class="row form-group">
+
+
+
+        <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12 formstyle">
+          <div class="menuwrap">
+            <div class="panel-title titlewrp clearfix">
+              <p>Subscription</p>
+            </div>
+
+            <div id="myfirstchart" style="height: 250px;">
+            </div>
+
+          </div>
+        </div>
+        <!--  col ]] -->
+
+
+        <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12 formstyle">
+          <div class="menuwrap">
+            <div class="panel-title titlewrp clearfix">
+              <p>Country</p>
+            </div>
+
+            <div id="hero-donut" style="height: 250px;">
+            </div>
+
+          </div>
+        </div>
+        <!--  col ]] -->
+
+        <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12 formstyle">
+          <div class="menuwrap">
+            <div class="panel-title titlewrp clearfix">
+                <!-- <p>Revenue </p> -->
+              <p>Revenue</p>
+            </div>
+
+            <div id="pushups" style="height: 250px;">
+            </div>
+
+          </div>
+        </div>
+        <!--  col ]] -->
+      </div>
+
+      <div class="form-group">
+        <div class="panel-body"></div>
+      </div>
+
+      <div class="row">
+        <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12 formstyle">
+          <div class="menuwrap">
+            <div class="panel-title titlewrp clearfix">
+              <p>Total Revenue</p>
+            </div>
+            <div class="panel-body">
+              <div class="revstat text-center">
+                <strong>{{revenueStat?.revenue?.total}} USD</strong>
+              </div>
+              <div class="clearfix">
+                <p class="psttxt pull-left">Past: {{revenueStat?.revenue?.past}}USD</p>
+                <p class="psttxt pull-right">Next: {{revenueStat?.revenue?.next}}USD</p>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- col ]] -->
+
+        <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12 formstyle">
+          <div class="menuwrap">
+            <div class="panel-title titlewrp clearfix">
+              <p>Total Active Clients</p>
+            </div>
+            <div class="panel-body">
+              <div class="revstat text-center">
+                <strong>{{activeInavtive.new}}</strong>
+              </div>
+              <div class="clearfix">
+                <p class="psttxt pull-left">New: 5</p>
+                <p class="psttxt pull-right">Inactive: {{activeInavtive.inactive}}</p>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- col ]] -->
+
+        <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12 formstyle">
+          <div class="menuwrap">
+            <div class="panel-title titlewrp clearfix">
+              <p>Total Tours</p>
+            </div>
+            <div class="panel-body">
+              <div class="revstat text-center">
+                <strong>{{toursData.tourCount}}</strong>
+              </div>
+              <div class="clearfix">
+                <p class="psttxt pull-left">Space: {{toursData.space}}</p>
+                <p class="psttxt pull-right">Views: {{toursData.tourView}}</p>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- col ]] -->
+
+      </div>
+
+    </div>
+
+  <!-- </div>
+</section> -->

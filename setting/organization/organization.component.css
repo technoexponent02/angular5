@@ -1,0 +1,30 @@
+.updatealert{
+    position: relative;
+    margin-top: 20px;
+}
+.updatestatusclose{
+    position: absolute;
+    top: 50%;
+    right: 15px;
+    padding-top: 3px;
+    cursor: pointer;
+    display: inline-block;
+    width: 25px;
+    height: 25px;
+    text-align: center;
+    transform: translateY(-50%);
+    -webkit-transform: translateY(-50%);
+    -moz-transform: translateY(-50%);
+    -ms-transform: translateY(-50%);
+    -o-transform: translateY(-50%);
+}
+.updatestatusclose.success{
+    background: rgba(60, 118, 61, 0.6);
+    color: #fff;
+}
+.updatestatusclose.danger{
+    background: rgba(169, 68, 66, 0.8);
+    color: #fff;
+}
+
+

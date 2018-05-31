@@ -1,0 +1,128 @@
+
+<!-- <pre>{{invoiceData | json}}</pre> -->
+
+<p-growl [(value)]="msgs"></p-growl>
+
+
+<p-dialog header="Invoice Details" [(visible)]="planDetails" modal="modal" width="500" [responsive]="true">
+	<table class="table table-bordered">
+		<tbody>
+			<tr>
+				<td>Plan Name</td>
+				<td>{{viewInvoice.name}}</td>
+			</tr>
+			<tr>
+				<td>Monthly Amout</td>
+				<td>${{viewInvoice.amount_monthly}}</td>
+			</tr>
+			<tr>
+				<td>Total Amout</td>
+				<td>${{viewInvoice.amount}}</td>
+			</tr>
+			<tr>
+				<td>Yearly Discount</td>
+				<td>{{viewInvoice.yearly_discount}}%</td>
+			</tr>
+			<tr>
+				<td>Signed Date</td>
+				<td>{{viewInvoice.date_signed}}</td>
+			</tr>
+			<tr>
+				<td>Expire Date</td>
+				<td>{{viewInvoice.expiration_date}}</td>
+			</tr>
+			<tr>
+				<td>Maximum Tour</td>
+				<td>{{viewInvoice.maximum_tour}}</td>
+			</tr>
+			<tr>
+				<td>Maximum User</td>
+				<td>{{viewInvoice.maximum_users}}</td>
+			</tr>
+			<tr>
+				<td>Sences Per Tour</td>
+				<td>{{viewInvoice.sences_per_tour}}</td>
+			</tr>
+		</tbody>
+	</table>
+</p-dialog>
+
+
+
+<div class="container">
+	<div class="settings-loader-outer">
+				
+		<div class="linear-progress med">
+			<div class="bar bar1"></div>
+			<div class="bar bar2"></div>
+		</div>
+		<div class="setting-http-load">
+		</div>
+
+		  <!-- Tab panes -->
+		  <div class="tab-content">
+		    <div role="tabpanel" class="tab-pane active" id="home">
+
+		    	<div class="clearfix">
+		    		<h3 class="dbtitle pull-left">INVOCIES</h3>
+				</div>
+				
+
+				<div class="form-inline form-group inputgrstyle">
+					<div class="form-group">
+						<label for="exampleInputName2">Date from</label>
+						<div class="input-group">
+							<input id="frmdate" class="form-control" type="text" placeholder="date">
+							<div class="input-group-addon">
+								<i class="fa fa-calendar"></i>
+							</div>
+						</div>
+					</div>
+					<div class="form-group" style="padding-left: 30px;">
+						<label for="exampleInputEmail2">To</label>
+						<div class="input-group" [ngClass]="{'disabled': calfrmDate.length <= 0}">
+							<input id="todate" type="text" class="form-control" placeholder="date" [disabled]="calfrmDate.length <= 0">
+							<div class="input-group-addon">
+								<i class="fa fa-calendar"></i>
+							</div>
+						</div>
+					</div>
+				</div>
+
+				<div class="table-responsive themecolor">
+					<table class="table table-bordered">
+						
+						<thead>
+							<tr>
+								<th>Package</th>
+								<th>Amount</th>
+								<th>Payment method</th>
+								<th>Date</th>
+								<th>View</th>
+								<th>Download</th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr *ngFor="let invoice of invoiceData">
+								<td>{{invoice?.name}}</td>
+								<td>${{invoice?.amount}}</td>
+								<td>
+									<span *ngIf="invoice.subscription_method == 'P'">PayPal</span>
+									<span *ngIf="invoice.subscription_method == 'S'">Stripe</span>
+									<span *ngIf="invoice.subscription_method == 'F'">Free</span>
+								</td>
+								<td>{{invoice?.date_signed}}</td>
+								<td><a class="viewbtn" href="/view-invoice?{{invoice?.invoice_link}}" target="_blank"><i class="fa fa-eye"></i></a></td>
+								<td><a class="delete"  [href]="invoice?.link" download><i class="fa fa-file-pdf-o"></i></a></td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+
+				<h3 class="dbtitle">CURRENT PLAN</h3>
+				<div class="para">Your current plan is <strong>{{currentPlanData?.name}}</strong> and the next billibg will be on {{currentPlanData?.expiration_date}}<br></div>
+				
+		    </div><!-- tab one -->
+		</div>
+	</div>
+</div>

@@ -1,0 +1,30 @@
+<aside class="bodyLeft">
+
+    <div class="sidebarNavCont">
+        <!-- <div class="sidebarU">
+          <div class="uBox">
+            <span class="uImage" style="background:url(assets/images/u-image.jpg);"></span>
+            <span class="uName">Justin Bieber</span>
+          </div>
+        </div> -->
+        <app-sidenav></app-sidenav>
+    </div>
+
+
+    <div class="advCont" *ngIf="searchFilter.hasFilter == false || searchFilter.hasFilterBand == false">
+        <a href="javascript:void(0);">
+            <img src="assets/images/advImage1.jpg" alt="">
+        </a>
+    </div>
+
+
+
+    <div class="sidebarFilter" *ngIf="searchFilter.hasFilter">
+        <app-musician-filter></app-musician-filter>
+    </div>
+
+    <div class="sidebarFilter" *ngIf="searchFilter.hasFilterBand">
+        <app-band-filter></app-band-filter>
+    </div>
+
+</aside>

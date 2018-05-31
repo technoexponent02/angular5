@@ -1,0 +1,258 @@
+<!-- <pre>
+	{{adminOrganaizationDetails | json}}
+</pre> -->
+
+<p-growl [(value)]="allMessage"></p-growl>
+
+<div class="container">
+	<div class="settings-loader-outer">
+
+		<!-- loader -->
+		<div class="linear-progress med">
+			<div class="bar bar1"></div>
+			<div class="bar bar2"></div>
+		</div>
+		<div class="setting-http-load">
+		</div>
+		<!-- loader -->
+
+		<!-- Tab panes -->
+		<div class="tab-content">
+			<div role="tabpanel" class="tab-pane active" id="home">
+				<div class="row">
+
+					<form name="form" (ngSubmit)="adminOrgEditProcess()" #f="ngForm" novalidate>
+
+						<div class="col-lg-8 col-md-8 col-sm-8 col-xs-12">
+
+							<div class="row form-group">
+								<label class="col-lg-3  col-md-3 col-sm-4 col-xs-12">COMPANY NAME</label>
+								<div class="col-lg-9 col-md-9 col-sm-8 col-xs-12">
+
+									<input disabled placeholder="XYZ PVT LTD" type="text" class="form-control" name="companyname" [(ngModel)]="adminOrganaizationDetails.admin_name" #companyname="ngModel" required>
+									<div class="text-danger" *ngIf="companyname.errors && (companyname.dirty || companyname.touched)">
+										<div [hidden]="!companyname.errors.required">
+											Company name is required
+										</div>
+									</div>
+
+								</div>
+							</div>
+	
+							<div class="row form-group">
+								<label class="col-lg-3  col-md-3 col-sm-4 col-xs-12">WEBSITE</label>
+								<div class="col-lg-9 col-md-9 col-sm-8 col-xs-12">
+
+									<input disabled placeholder="www.yourcompany.com" type="text" class="form-control" name="website" [(ngModel)]="adminOrganaizationDetails.website" #website="ngModel" required>
+									<div class="text-danger" *ngIf="website.errors && (website.dirty || website.touched)">
+										<div [hidden]="!website.errors.required">
+											Website is required
+										</div>
+									</div>
+
+								</div>
+							</div>
+	
+	
+							<div class="row form-group">
+								<label class="col-lg-3  col-md-3 col-sm-4 col-xs-12">PHONE</label>
+								<div class="col-lg-9 col-md-9 col-sm-8 col-xs-12 form-inline clearfix">
+	
+									<div class="form-group numbercode">
+
+										<input disabled placeholder="+xx" type="text" class="form-control" name="phonecode" [(ngModel)]="adminOrganaizationDetails.phone_number_code" #phonecode="ngModel" required>
+										<div class="text-danger" *ngIf="phonecode.errors && (phonecode.dirty || phonecode.touched)">
+											<div [hidden]="!phonecode.errors.required">
+												Required
+											</div>
+										</div>
+
+									</div>
+									<div class="form-group number">
+
+										<input disabled placeholder="xxxxxxxxxx" type="text" name="phone" class="form-control" [(ngModel)]="adminOrganaizationDetails.phone_number" #phonenumber="ngModel" required>
+										<div class="text-danger" *ngIf="phonenumber.errors && (phonenumber.dirty || phonenumber.touched)">
+											<div [hidden]="!phonenumber.errors.required">
+												Phone number is required
+											</div>
+										</div>
+
+									</div>
+	
+								</div>
+							</div>
+	
+							<div class="row form-group">
+								<label class="col-lg-3  col-md-3 col-sm-4 col-xs-12">TAX ID</label>
+								<div class="col-lg-9 col-md-9 col-sm-8 col-xs-12">
+
+									<input disabled type="text" class="form-control" name="taxid" [(ngModel)]="adminOrganaizationDetails.tax_id" #taxid="ngModel" required>
+									<div class="text-danger" *ngIf="taxid.errors && (taxid.dirty || taxid.touched)">
+										<div [hidden]="!taxid.errors.required">
+											Tax Id is required
+										</div>
+									</div>
+
+								</div>
+							</div>
+	
+	
+							<div class="row form-group">
+								<label class="col-lg-3  col-md-3 col-sm-4 col-xs-12">ADDRESS</label>
+								<div class="col-lg-9 col-md-9 col-sm-8 col-xs-12">
+
+									<textarea disabled cols="" rows="4" name="address" class="form-control" [(ngModel)]="adminOrganaizationDetails.address" #address="ngModel" required></textarea>
+									<div class="text-danger" *ngIf="address.errors && (address.dirty || address.touched)">
+										<div [hidden]="!address.errors.required">
+											Address is required
+										</div>
+									</div>
+
+								</div>
+							</div>
+	
+	
+	
+							<div class="row form-group">
+								<label class="col-lg-3  col-md-3 col-sm-4 col-xs-12">POSTAL CODE</label>
+								<div class="col-lg-5 col-md-5 col-sm-5 col-xs-12">
+
+									<input disabled type="text" class="form-control" name="postalcode" [(ngModel)]="adminOrganaizationDetails.postal_code" #postalcode="ngModel" required>
+									<div class="text-danger" *ngIf="postalcode.errors && (postalcode.dirty || postalcode.touched)">
+										<div [hidden]="!postalcode.errors.required">
+											Postal code is required
+										</div>
+									</div>
+
+								</div>
+							</div>
+	
+	
+							<div class="row form-group">
+								<label class="col-lg-3  col-md-3 col-sm-4 col-xs-12">CITY</label>
+								<div class="col-lg-5 col-md-5 col-sm-5 col-xs-12">
+
+									<input disabled type="text" class="form-control" name="city" [(ngModel)]="adminOrganaizationDetails.city" #city="ngModel" required>
+									<div class="text-danger" *ngIf="city.errors && (city.dirty || city.touched)">
+										<div [hidden]="!city.errors.required">
+											City is required
+										</div>
+									</div>
+
+								</div>
+							</div>
+	
+	
+	
+							<div class="row form-group">
+								<label class="col-lg-3  col-md-3 col-sm-4 col-xs-12">STATE</label>
+								<div class="col-lg-5 col-md-5 col-sm-5 col-xs-12">
+
+									<input disabled type="text" class="form-control" name="state" [(ngModel)]="adminOrganaizationDetails.state" #state="ngModel" required>
+									<div class="text-danger" *ngIf="state.errors && (state.dirty || state.touched)">
+										<div [hidden]="!state.errors.required">
+											State is required
+										</div>
+									</div>
+
+								</div>
+							</div>
+	
+	
+							<div class="row form-group">
+								<label class="col-lg-3  col-md-3 col-sm-4 col-xs-12">COUNTRY</label>
+								<div class="col-lg-5 col-md-5 col-sm-5 col-xs-12">
+									
+									<select disabled class="form-control" name="country" [(ngModel)]="adminOrganaizationDetails.country_id">
+										<option [value]="country.id" *ngFor="let country of countryList">{{country.name}}</option>
+									</select>
+								</div>
+							</div>
+	
+	
+						</div>
+
+						<div class="col-lg-4 col-md-4 col-sm-4 col-xs-12 pull-right">
+							<div class="panel-body">
+								<div class="form-group">
+									<label>LOGO</label>
+
+									<figure class="avatarfigure">
+										<!-- <img *ngIf="adminOrganaizationDetails.site_logo == ''" src="assets/images/no-user-avatar.png" class="img-responsive">
+										<img *ngIf="!adminOrganaizationDetails.site_logo == ''" [src]="adminOrganaizationDetails.site_logo" class="img-responsive"> -->
+										<img *ngIf="imgNoExt; else noLogoImg" [src]="adminOrganaizationDetails.site_logo" class="img-responsive">
+										<ng-template #noLogoImg>
+											<img src="assets/images/no-user-avatar.png" class="img-responsive">
+										</ng-template>
+
+											<!-- <div class="file-upload">
+												<label for="upload" class="file_upload__label"><i class="fa fa-camera" aria-hidden="true"></i> Change</label>
+												<form id="orgLogoForm" method="post" enctype="multipart/form-data" [action]='logoImageUpdateApi'>
+													<input name="type" type="hidden" value="site_logo">
+													<input name="id" type="hidden" [value]="adminOrganaizationDetails.id">
+													<input name="picture" id="living_area" type="file" class="inputFile file_upload__input" (change)="imageUploadJq()" />
+												</form>
+											</div> -->
+									</figure>
+		
+								</div>
+								<div class="form-group">
+									<label>Support email</label>
+
+									<input disabled type="text" class="form-control" name="email" [(ngModel)]="adminOrganaizationDetails.support_email" #supportemail="ngModel" required pattern="^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$">
+									<div class="text-danger" *ngIf="supportemail.errors && (supportemail.dirty || supportemail.touched)">
+										<div [hidden]="!supportemail.errors.required">
+											Email is required
+										</div>
+										<div [hidden]="!supportemail.errors.pattern">
+											Email is not valid
+										</div>
+									</div>
+
+								</div>
+		
+		
+								<div class="form-group">
+									<label>Billing email</label>
+
+									<input disabled type="text" class="form-control" name="billemail" [(ngModel)]="adminOrganaizationDetails.billing_email" #billingemail="ngModel" required pattern="^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$">
+									<div class="text-danger" *ngIf="billingemail.errors && (billingemail.dirty || billingemail.touched)">
+										<div [hidden]="!billingemail.errors.required">
+											Email is required
+										</div>
+										<div [hidden]="!billingemail.errors.pattern">
+											Email is not valid
+										</div>
+									</div>
+
+								</div>
+		
+		
+								<div class="form-group">
+									<label>Sales email</label>
+
+									<input disabled type="text" class="form-control" name="sales-email" [(ngModel)]="adminOrganaizationDetails.sales_email" #salesemail="ngModel" required pattern="^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$">
+									<div class="text-danger" *ngIf="salesemail.errors && (salesemail.dirty || salesemail.touched)">
+										<div [hidden]="!salesemail.errors.required">
+											Email is required
+										</div>
+										<div [hidden]="!salesemail.errors.pattern">
+											Email is not valid
+										</div>
+									</div>
+
+								</div>
+								<!-- <input type="submit" [disabled]="!f.form.valid" class="btn btn-success btn-lg btnbig" value="SAVE"> -->
+								
+							</div>
+						</div>
+
+						<p-messages [(value)]="msgs"></p-messages>
+
+					</form>
+
+				</div>
+			</div><!-- tab one -->
+		</div>
+	</div>
+</div>

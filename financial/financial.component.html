@@ -1,0 +1,142 @@
+
+<!-- view financial details -->
+<p-dialog header="Invoice Details" [(visible)]="financeDetails" modal="modal" width="500" [responsive]="true">
+	<table class="table table-bordered">
+		<tbody>
+			<tr>
+				<td>Plan Name</td>
+				<td>dummy name</td>
+			</tr>
+		</tbody>
+	</table>
+</p-dialog>
+<!-- view financial details -->
+
+
+<!-- <pre>{{fnResults | json}}</pre> -->
+
+
+
+<section class="dashboardexmenu">
+    <!-- Tab panes -->
+    <div class="box-shadow">
+      
+
+        <div class="clearfix">
+          <h3 class="dbtitle pull-left">FINANCIAL</h3>
+          
+        </div>
+
+        <div class="form-inline form-group inputgrstyle">
+
+        <div class="form-group">
+          <input type="text" class="form-control serachfild" placeholder="Serach by organization" title="Serach by organization" style="padding-left: 30px;" name="searchkey" [(ngModel)]="searchKey" (keyup)="clientNameSearch()">
+        </div>
+
+        <div class="form-group">
+          <select class="form-control minimal" [(ngModel)]="selectedPlan" (change)="planNameSearch()">
+            <option value="0">-- Select plan --</option>
+            <option *ngFor="let plan of planList" [value]="plan.id">{{plan.name}}</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <select class="form-control minimal" [(ngModel)]="selectedStatus" (change)="statusNameSearch()">
+            <option value="0">-- Select status --</option>
+            <option value="Y">Active</option>
+            <option value="N">Expired</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label for="exampleInputName2">Payment date</label>
+          <div class="input-group">
+            <input type="text" class="form-control" id="frmdate" placeholder="Select date">
+            <!-- <input type="text" class="form-control" placeholder="payment date"> -->
+            <div class="input-group-addon">
+               <i class="fa fa-calendar"></i>
+            </div>
+            <!-- <span>{{calfrmDate}}</span> -->
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="exampleInputEmail2">To</label>
+          <div class="input-group">
+            <input type="text" class="form-control" id="todate"  placeholder="Select date" [disabled]="calfrmDate.length <= 0">
+            <!-- <input type="text" class="form-control" placeholder="payment date"> -->
+            <div class="input-group-addon">
+               <i class="fa fa-calendar"></i>
+            </div>
+            <!-- <span>{{caltoDate}}</span> -->
+          </div>
+        </div>
+
+        <div class="form-group" style="margin-left: 10px;">
+          <input type="button" (click)="searchPlan()" class="btn btn-success btntheme" value="Search" name="search">
+        </div>
+
+      </div>
+        <div class="table-responsive themecolor">
+          
+          <p-dataTable [value]="fnResults" [rows]="10" [paginator]="true" [pageLinks]="3" [rowsPerPageOptions]="[10,50,80]" resizableColumns="true">
+
+            <p-column field="organization_name" [style]="{'width':'20%'}" header="Organization" [sortable]="true">
+              <ng-template let-col let-org="rowData" pTemplate="body">
+                <span>
+                  <a (click)="goToOrg(org.organization);" [routerLink]="['/admin/organization', org.organization.id]">
+                    {{org.organization_name}}
+                  </a>
+                </span>
+              </ng-template>
+            </p-column>
+            <!-- <p-column field="country.name" header="Country"></p-column> -->
+
+            <p-column field="subscription_plan_name" header="Plan" [sortable]="true">
+              <ng-template let-col let-plan="rowData" pTemplate="body">
+                <!-- <pre>{{plan.subscription_plan_name[0]?.name | json}}</pre> -->
+                <span>{{plan.subscription_plan_name[0]?.name}}</span>
+              </ng-template>
+            </p-column>
+
+            <p-column field="subscription_amount" header="Amount" [sortable]="true">
+              <ng-template let-col let-plan="rowData" pTemplate="body">
+                <span>${{plan?.subscription_amount}}</span>
+              </ng-template>
+            </p-column>
+
+            <p-column field="subscription_status" header="Payment Status" [sortable]="true">
+              <ng-template let-col let-plan="rowData" pTemplate="body">
+                <span>{{plan?.subscription_status == 'C' ? 'Active' : 'Expired'}}</span>
+              </ng-template>
+            </p-column>
+
+            <p-column field="payment_status" header="Payment Method" [sortable]="true">
+              <ng-template let-col let-plan="rowData" pTemplate="body">
+                <span>Stripe</span>
+              </ng-template>
+            </p-column>
+
+
+            <p-column field="details" [style]="{'width':'10%', 'text-align': 'center'}" header="View Invoice" [sortable]="true">
+              <ng-template let-col let-client="rowData" pTemplate="body">
+                <!-- <a [href]="apiurl + 'invoicePdf?api_token=' + authUser.api_token + '&id=' + client.subscription_id">View</a> -->
+                <a class="viewbtn" href="/view-invoice?id={{client?.subscription_id}}" target="_blank"><i class="fa fa-eye"></i></a>
+              </ng-template>
+            </p-column>
+
+            <!-- <p-column field="date_signed" header="Paid Date"></p-column> -->
+            <p-column field="details" [style]="{'width':'12%', 'text-align': 'center'}" header="Download Invoice" [sortable]="true">
+              <ng-template let-col let-client="rowData" pTemplate="body">
+                <!-- <a [href]="apiurl + 'invoicePdf?api_token=' + authUser.api_token + '&id=' + client.subscription_id">View</a> -->
+                <a class="delete" [href]="apiurl + 'invoicePdf?api_token=' + authUser.api_token + '&id=' + client.subscription_id" download><i class="fa fa-file-pdf-o"></i></a>
+              </ng-template>
+            </p-column>
+
+
+
+          </p-dataTable> 
+      </div>
+
+  </div>
+</section>

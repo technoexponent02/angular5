@@ -1,0 +1,691 @@
+<ng-template #banner>
+    <div class="popupBody">
+        <a href="javascript:void(0);" class="popupClose" (click)="closeModal()"></a>
+
+        <div class="profileHeaderPopupBody" *ngIf="showEditCoverTpl == false">
+            <h2 class="popupTl tl">Select your profile header layout</h2>
+            <div class="chooseHeaderLayout">
+                <div class="rw">
+                    <!-- <pre>{{selectedTemplate | json}}</pre> -->
+                    <div class="colm">
+                        <label class="changeHeaderRdo">
+                            <input type="radio" value='1' id="tpl-1" [(ngModel)]="selectedTemplate" name="profile_header" data-id="headerType1">
+                            <span class="imageCont">
+                                <img src="assets/images/profile-header-type1.jpg" alt="">
+                            </span>
+                        </label>
+                    </div>
+                    <div class="colm">
+                        <label class="changeHeaderRdo">
+                            <input type="radio" value='2' id="tpl-2" [(ngModel)]="selectedTemplate" name="profile_header" data-id="headerType2">
+                            <span class="imageCont">
+                                <img src="assets/images/profile-header-type2.jpg" alt="">
+                            </span>
+                        </label>
+                    </div>
+                    <div class="colm">
+                        <label class="changeHeaderRdo">
+                            <input type="radio" value='3' id="tpl-3" [(ngModel)]="selectedTemplate" name="profile_header" data-id="headerType3">
+                            <span class="imageCont">
+                                <img src="assets/images/profile-header-type3.jpg" alt="">
+                            </span>
+                        </label>
+                    </div>
+                    <div class="colm">
+                        <label class="changeHeaderRdo">
+                            <input type="radio" value='4' id="tpl-4" [(ngModel)]="selectedTemplate" name="profile_header" data-id="headerType4">
+                            <span class="imageCont">
+                                <img src="assets/images/profile-header-type4.jpg" alt="">
+                            </span>
+                        </label>
+                    </div>
+                    <div class="colm">
+                        <label class="changeHeaderRdo">
+                            <input type="radio" value='5' id="tpl-5" [(ngModel)]="selectedTemplate" name="profile_header" data-id="headerType5">
+                            <span class="imageCont">
+                                <img src="assets/images/profile-header-type5.jpg" alt="">
+                            </span>
+                        </label>
+                    </div>
+                    <div class="colm">
+                        <label class="changeHeaderRdo">
+                            <input type="radio" value='6' id="tpl-6" [(ngModel)]="selectedTemplate" name="profile_header" data-id="headerType6">
+                            <span class="imageCont">
+                                <img src="assets/images/profile-header-type6.jpg" alt="">
+                            </span>
+                        </label>
+                    </div>
+                    <div class="buttonset align-center" *ngIf="selectedTemplate != null">
+                        <input (click)="showEditCover()" type="button" class="button orange profileheadNext" value="Next">
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+        <!-- cover template one -->
+        <mcover-template-1 [templateId]="selectedTemplate" (defaultStateEvent)="receiveDefaultState($event)" *ngIf="selectedTemplate == 1 && showEditCoverTpl"></mcover-template-1>
+        <!-- cover template one -->
+
+        <!-- cover template two -->
+        <mcover-template-2 [templateId]="selectedTemplate" (defaultStateEvent)="receiveDefaultState($event)" *ngIf="selectedTemplate == 2 && showEditCoverTpl"></mcover-template-2>
+        <!-- cover template two -->
+
+        <!-- cover template three -->
+        <mcover-template-3 [templateId]="selectedTemplate" (defaultStateEvent)="receiveDefaultState($event)" *ngIf="selectedTemplate == 3 && showEditCoverTpl"></mcover-template-3>
+        <!-- cover template three -->
+
+        <!-- cover template four -->
+        <mcover-template-4 [templateId]="selectedTemplate" (defaultStateEvent)="receiveDefaultState($event)" *ngIf="selectedTemplate == 4 && showEditCoverTpl"></mcover-template-4>
+        <!-- cover template four -->
+
+        <!-- cover template five -->
+        <mcover-template-5 [templateId]="selectedTemplate" (defaultStateEvent)="receiveDefaultState($event)" *ngIf="selectedTemplate == 5 && showEditCoverTpl"></mcover-template-5>
+        <!-- cover template five -->
+
+        <!-- cover template six -->
+        <mcover-template-6 [templateId]="selectedTemplate" (defaultStateEvent)="receiveDefaultState($event)" *ngIf="selectedTemplate == 6 && showEditCoverTpl"></mcover-template-6>
+        <!-- cover template six -->
+
+    </div>
+</ng-template>
+
+
+
+<section class="banner">
+    <!-- <pre>{{user}}</pre> -->
+    <h2 class="hide"></h2>
+    <div class="mainWrapper">
+
+        <div id="header-cover" *ngIf="showHeaderLoading">
+            <i class="fa fa-spinner fa-pulse fa-3x fa-fw"></i>
+        </div>
+
+        <!-- banner template 1 -->
+        <div class="musicianbanner" id="musicianbanner1" *ngIf="templateData.tplid == 1" style="display:block;">
+            <div class="musicianBannerImage">
+                <div class="colm colm3" [style.background]="templateData.headerColor"></div>
+            </div>
+            <div class="musicianBannerDesc">
+                <div class="innerBnrWrap" style="width: 972px;">
+                    <div class="banrProfileboxCont">
+                        <div class="banrProfilebox">
+                            <div class="picDescCont">
+                                <div class="banProfileImg" [style.background-image]="profileImage"></div>
+                                <div class="details">
+                                    <h2>{{templateData.details.name}}
+                                        <!-- <span class="ico"></span> -->
+                                        <ng-container *ngIf="templateData.details.usertype == 3">
+                                            <span class="ico headerusertype"></span>
+                                        </ng-container>
+                                        <ng-container *ngIf="templateData.details.usertype == 4">
+                                            <span class="ico headerusertype">Pro</span>
+                                        </ng-container>
+                                        <ng-container *ngIf="templateData.details.usertype == 5">
+                                            <span class="ico headerusertype gray"></span>
+                                        </ng-container>
+                                    </h2>
+                                    <p>
+                                        <strong>{{templateData.details.nick_name}}</strong>
+                                        <!-- GUitar, Drums, Trumpet Rock - Classic Rock  -->
+
+                                        <span class="hedertextoverflow">
+                                            <ng-container *ngFor="let item of templateData.details.userInstrumentsProfession; let i = index;">
+                                                {{item.instrument_name}} 
+                                                <span *ngIf="i+1 == templateData.details.userInstrumentsProfession.length; else hasComma"></span>
+                                                <ng-template #hasComma> ,</ng-template>
+                                            </ng-container>
+                                        </span>
+
+                                        <span class="hedertextoverflow">
+                                            <ng-container *ngFor="let item of templateData.details.userGenre; let i = index;">
+                                                {{item.itemName}}
+                                                <span *ngIf="i+1 == templateData.details.userGenre.length; else hasSecondComma"></span>
+                                                <ng-template #hasSecondComma> ,</ng-template>
+                                            </ng-container>
+                                        </span>
+
+                                        <br>
+                                        <span class="hedertextoverflow">
+                                            {{templateData.details.city}}, {{templateData.details.country}}
+                                        </span>
+                                        
+                                    </p>
+                                    <ul class="profileShr">
+                                        <li class="shrLi">
+                                            <a href="javascript:void(0);">
+                                                <img src="assets/images/music-icon.png" alt=""> </a>
+                                            <span class="shrCount">700</span>
+                                        </li>
+                                        <li class="shrLi">
+                                            <a href="javascript:void(0);">
+                                                <img src="assets/images/users-icon.png" alt=""> </a>
+                                            <span class="shrCount">300</span>
+                                        </li>
+                                        <li class="shrLi">
+                                            <a href="javascript:void(0);">
+                                                <img src="assets/images/share-icon.png" alt=""> </a>
+                                        </li>
+                                        <li class="shrLi">
+                                            <a href="javascript:void(0);">
+                                                <img src="assets/images/user-plus-icon.png" alt=""> </a>
+                                        </li>
+                                        <li class="shrLi">
+                                            <a href="javascript:void(0);">
+                                                <img src="assets/images/link-icon.png" alt=""> </a>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                            <a href="javascript:void(0);" (click)="openModal(banner)" *ngIf="editBtn" class="edt">
+                                <i class="fa fa-edit"></i>
+                            </a>
+                        </div>
+                    </div>
+                    <!-- <pre>{{templateData.about}}</pre> -->
+                    <div class="banrProfileText" *ngIf="templateData.about !== ''">
+                        {{templateData.about}}
+                    </div>
+                    <div class="spacer"></div>
+                </div>
+            </div>
+        </div>
+        <!-- banner template 1 -->
+
+        <!-- banner template 2 -->
+        <div class="musicianbanner" id="musicianbanner2" *ngIf="templateData.tplid == 2" style="display:block;">
+            <div class="musicianBannerImage">
+                <!-- <pre>{{templateData.headerImage.imagesource.image == ''}}</pre> -->
+                <div class="colm colm3" 
+                *ngIf="templateData.headerImage.imagesource.image !== ''"
+                [style.background-image]="headerImageOne"></div>
+
+                <div class="colm colm3" 
+                *ngIf="templateData.headerImage.imagesource.image == ''"
+                [style.background-color]="templateData.headerColor"></div>
+            </div>
+            <div class="musicianBannerDesc">
+                <div class="innerBnrWrap" style="width: 972px;">
+                    <div class="banrProfileboxCont">
+                        <div class="banrProfilebox">
+                            <div class="picDescCont">
+                                <div class="banProfileImg" [style.background-image]="profileImage"></div>
+                                <div class="details">
+                                    <h2>{{templateData.details.name}}
+                                        <!-- <span class="ico"></span> -->
+                                        <ng-container *ngIf="templateData.details.usertype == 3">
+                                            <span class="ico headerusertype"></span>
+                                        </ng-container>
+                                        <ng-container *ngIf="templateData.details.usertype == 4">
+                                            <span class="ico headerusertype">Pro</span>
+                                        </ng-container>
+                                        <ng-container *ngIf="templateData.details.usertype == 5">
+                                            <span class="ico headerusertype gray"></span>
+                                        </ng-container>
+                                    </h2>
+                                    <p>
+                                        <strong>{{templateData.details.nick_name}}</strong>
+                                        <!-- GUitar, Drums, Trumpet Rock - Classic Rock  -->
+                                        <span class="hedertextoverflow">
+                                            <ng-container *ngFor="let item of templateData.details.userInstrumentsProfession; let i = index;">
+                                                {{item.instrument_name}} 
+                                                <span *ngIf="i+1 == templateData.details.userInstrumentsProfession.length; else hasComma"></span>
+                                                <ng-template #hasComma> ,</ng-template>
+                                            </ng-container>
+                                        </span>
+
+                                        <span class="hedertextoverflow">
+                                            <ng-container *ngFor="let item of templateData.details.userGenre; let i = index;">
+                                                {{item.itemName}}
+                                                <span *ngIf="i+1 == templateData.details.userGenre.length; else hasSecondComma"></span>
+                                                <ng-template #hasSecondComma> ,</ng-template>
+                                            </ng-container>
+                                        </span>
+
+
+                                        <br>
+                                        <span class="hedertextoverflow">
+                                            {{templateData.details.city}}, {{templateData.details.country}}
+                                        </span>
+                                    </p>
+                                    <ul class="profileShr">
+                                        <li class="shrLi">
+                                            <a href="javascript:void(0);">
+                                                <img src="assets/images/music-icon.png" alt=""> </a>
+                                            <span class="shrCount">700</span>
+                                        </li>
+                                        <li class="shrLi">
+                                            <a href="javascript:void(0);">
+                                                <img src="assets/images/users-icon.png" alt=""> </a>
+                                            <span class="shrCount">300</span>
+                                        </li>
+                                        <li class="shrLi">
+                                            <a href="javascript:void(0);">
+                                                <img src="assets/images/share-icon.png" alt=""> </a>
+                                        </li>
+                                        <li class="shrLi">
+                                            <a href="javascript:void(0);">
+                                                <img src="assets/images/user-plus-icon.png" alt=""> </a>
+                                        </li>
+                                        <li class="shrLi">
+                                            <a href="javascript:void(0);">
+                                                <img src="assets/images/link-icon.png" alt=""> </a>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                            <a href="javascript:void(0);" (click)="openModal(banner)" *ngIf="editBtn" class="edt">
+                                <i class="fa fa-edit"></i>
+                            </a>
+                        </div>
+                    </div>
+                    <!-- <div class="banrProfileText">Lorem Ipsum is simply dummy text of theprinting and typeng industry Lorem Ipsum has iu standard Ipsum is simply dummy text of typeng</div> -->
+                    <div class="spacer"></div>
+                </div>
+            </div>
+        </div>
+        <!-- banner template 2 -->
+
+        <!-- banner template 3 -->
+        <div class="musicianbanner" id="musicianbanner3" *ngIf="templateData.tplid == 3" style="display:block;">
+            <div class="musicianBannerImage">
+                    <div class="colm colm3" 
+                    *ngIf="templateData.headerImage.imagesource.image !== ''"
+                    [style.background-image]="headerImageOne"></div>
+    
+                    <div class="colm colm3" 
+                    *ngIf="templateData.headerImage.imagesource.image == ''"
+                    [style.background-color]="templateData.headerColor"></div>
+            </div>
+            <div class="musicianBannerDesc">
+                <div class="innerBnrWrap" style="width: 972px;">
+                    <div class="banrProfileboxCont">
+                        <div class="banrProfilebox">
+                            <div class="picDescCont">
+                                <div class="banProfileImg" [style.background-image]="profileImage"></div>
+                                <div class="details">
+                                        <!-- <pre>{{message}}</pre> -->
+                                    <h2>{{templateData.details.name}}
+                                        <ng-container *ngIf="templateData.details.usertype == 3">
+                                            <span class="ico headerusertype"></span>
+                                        </ng-container>
+                                        <ng-container *ngIf="templateData.details.usertype == 4">
+                                            <span class="ico headerusertype">Pro</span>
+                                        </ng-container>
+                                        <ng-container *ngIf="templateData.details.usertype == 5">
+                                            <span class="ico headerusertype gray"></span>
+                                        </ng-container>
+                                    </h2>
+                                    <!-- <pre>{{message}}</pre> -->
+                                    <p>
+                                        <strong>{{templateData.details.nick_name}}</strong>
+                                        <!-- GUitar, Drums, Trumpet Rock - Classic Rock  -->
+                                        <span class="hedertextoverflow">
+                                            <ng-container *ngFor="let item of templateData.details.userInstrumentsProfession; let i = index;">
+                                                {{item.instrument_name}} 
+                                                <span *ngIf="i+1 == templateData.details.userInstrumentsProfession.length; else hasComma"></span>
+                                                <ng-template #hasComma> ,</ng-template>
+                                            </ng-container>
+                                        </span>
+
+                                        <span class="hedertextoverflow">
+                                            <ng-container *ngFor="let item of templateData.details.userGenre; let i = index;">
+                                                {{item.itemName}}
+                                                <span *ngIf="i+1 == templateData.details.userGenre.length; else hasSecondComma"></span>
+                                                <ng-template #hasSecondComma> ,</ng-template>
+                                            </ng-container>
+                                        </span>
+
+                                        <br>
+                                        <span class="hedertextoverflow">
+                                            {{templateData.details.city}}, {{templateData.details.country}}
+                                        </span>
+                                    </p>
+                                    <ul class="profileShr">
+                                        <li class="shrLi">
+                                            <a href="javascript:void(0);">
+                                                <img src="assets/images/music-icon.png" alt=""> </a>
+                                            <span class="shrCount">700</span>
+                                        </li>
+                                        <li class="shrLi">
+                                            <a href="javascript:void(0);">
+                                                <img src="assets/images/users-icon.png" alt=""> </a>
+                                            <span class="shrCount">300</span>
+                                        </li>
+                                        <li class="shrLi">
+                                            <a href="javascript:void(0);">
+                                                <img src="assets/images/share-icon.png" alt=""> </a>
+                                        </li>
+                                        <li class="shrLi">
+                                            <a href="javascript:void(0);">
+                                                <img src="assets/images/user-plus-icon.png" alt=""> </a>
+                                        </li>
+                                        <li class="shrLi">
+                                            <a href="javascript:void(0);">
+                                                <img src="assets/images/link-icon.png" alt=""> </a>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                            <a href="javascript:void(0);" (click)="openModal(banner)" *ngIf="editBtn" class="edt">
+                                <i class="fa fa-edit"></i>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="banrProfileText" *ngIf="templateData.about !== ''">{{templateData.about}}</div>
+                    <div class="spacer"></div>
+                </div>
+            </div>
+        </div>
+        <!-- banner template 3 -->
+
+        <!-- banner template 4 -->
+        <div class="musicianbanner" id="musicianbanner4" *ngIf="templateData.tplid == 4" style="display:block;">
+            <div class="musicianBannerImage">
+
+
+                <div class="colm" 
+                *ngIf="templateData.headerImageOne.imagesource.image !== ''"
+                [style.background-image]="headerImageOne"></div>
+                <div class="colm" 
+                *ngIf="templateData.headerImageOne.imagesource.image == ''"
+                [style.background-color]="templateData.headerColorOne"></div>
+
+
+                <div class="colm" 
+                *ngIf="templateData.headerImageTwo.imagesource.image !== ''"
+                [style.background-image]="headerImageTwo"></div>
+                <div class="colm" 
+                *ngIf="templateData.headerImageTwo.imagesource.image == ''"
+                [style.background-color]="templateData.headerColorTwo"></div>
+
+                <div class="colm" 
+                *ngIf="templateData.headerImageThree.imagesource.image !== ''"
+                [style.background-image]="headerImageThree"></div>
+                <div class="colm" 
+                *ngIf="templateData.headerImageThree.imagesource.image == ''"
+                [style.background-color]="templateData.headerColorThree"></div>
+
+            </div>
+            <div class="musicianBannerDesc">
+                <div class="innerBnrWrap" style="width: 972px;">
+                    <div class="banrProfileboxCont">
+                        <div class="banrProfilebox">
+                            <div class="picDescCont">
+                                <div class="banProfileImg" [style.background-image]="profileImage"></div>
+                                <div class="details">
+                                    <h2>{{templateData.details.name}}
+                                        <!-- <span class="ico"></span> -->
+                                        <ng-container *ngIf="templateData.details.usertype == 3">
+                                            <span class="ico headerusertype"></span>
+                                        </ng-container>
+                                        <ng-container *ngIf="templateData.details.usertype == 4">
+                                            <span class="ico headerusertype">Pro</span>
+                                        </ng-container>
+                                        <ng-container *ngIf="templateData.details.usertype == 5">
+                                            <span class="ico headerusertype gray"></span>
+                                        </ng-container>
+                                    </h2>
+                                    <p>
+                                        <strong>{{templateData.details.nick_name}}</strong>
+                                        <!-- GUitar, Drums, Trumpet Rock - Classic Rock  -->
+
+                                        <span class="hedertextoverflow">
+                                            <ng-container *ngFor="let item of templateData.details.userInstrumentsProfession; let i = index;">
+                                                {{item.instrument_name}} 
+                                                <span *ngIf="i+1 == templateData.details.userInstrumentsProfession.length; else hasComma"></span>
+                                                <ng-template #hasComma> ,</ng-template>
+                                            </ng-container>
+                                        </span>
+
+                                        <span class="hedertextoverflow">
+                                            <ng-container *ngFor="let item of templateData.details.userGenre; let i = index;">
+                                                {{item.itemName}}
+                                                <span *ngIf="i+1 == templateData.details.userGenre.length; else hasSecondComma"></span>
+                                                <ng-template #hasSecondComma> ,</ng-template>
+                                            </ng-container>
+                                        </span>
+
+                                        <br>
+                                        <span class="hedertextoverflow">
+                                            {{templateData.details.city}}, {{templateData.details.country}}
+                                        </span>
+                                    </p>
+                                    <ul class="profileShr">
+                                        <li class="shrLi">
+                                            <a href="javascript:void(0);">
+                                                <img src="assets/images/music-icon.png" alt=""> </a>
+                                            <span class="shrCount">700</span>
+                                        </li>
+                                        <li class="shrLi">
+                                            <a href="javascript:void(0);">
+                                                <img src="assets/images/users-icon.png" alt=""> </a>
+                                            <span class="shrCount">300</span>
+                                        </li>
+                                        <li class="shrLi">
+                                            <a href="javascript:void(0);">
+                                                <img src="assets/images/share-icon.png" alt=""> </a>
+                                        </li>
+                                        <li class="shrLi">
+                                            <a href="javascript:void(0);">
+                                                <img src="assets/images/user-plus-icon.png" alt=""> </a>
+                                        </li>
+                                        <li class="shrLi">
+                                            <a href="javascript:void(0);">
+                                                <img src="assets/images/link-icon.png" alt=""> </a>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                            <a href="javascript:void(0);" (click)="openModal(banner)" *ngIf="editBtn" class="edt">
+                                <i class="fa fa-edit"></i>
+                            </a>
+                        </div>
+                    </div>
+                    <!-- <div class="banrProfileText">Lorem Ipsum is simply dummy text of theprinting and typeng industry Lorem Ipsum has iu standard Ipsum is simply dummy text of typeng</div> -->
+                    <div class="spacer"></div>
+                </div>
+            </div>
+        </div>
+        <!-- banner template 4 -->
+
+        <!-- banner template 5 -->
+        <div class="musicianbanner" id="musicianbanner5" *ngIf="templateData.tplid == 5" style="display:block;">
+            <div class="musicianBannerImage">
+                <div class="colm" [style.background]="templateData.headerColorMain"></div>
+                <div class="colm" [style.background]="templateData.headerColorMain"></div>
+                <!-- <div class="colm" [style.background-image]="headerImageOne"></div> -->
+
+                <div class="colm" 
+                *ngIf="templateData.headerImage.imagesource.image !== ''"
+                [style.background-image]="headerImageOne"></div>
+
+                <div class="colm" 
+                *ngIf="templateData.headerImage.imagesource.image == ''"
+                [style.background-color]="templateData.headerColor"></div>
+
+            </div>
+            <div class="musicianBannerDesc">
+                <div class="innerBnrWrap" style="width: 972px;">
+                    <div class="banrProfileboxCont">
+                        <div class="banrProfilebox">
+                            <div class="picDescCont">
+                                <div class="banProfileImg" [style.background-image]="profileImage"></div>
+                                <div class="details">
+                                    <h2>{{templateData.details.name}}
+                                        <!-- <span class="ico"></span> -->
+                                        <ng-container *ngIf="templateData.details.usertype == 3">
+                                            <span class="ico headerusertype"></span>
+                                        </ng-container>
+                                        <ng-container *ngIf="templateData.details.usertype == 4">
+                                            <span class="ico headerusertype">Pro</span>
+                                        </ng-container>
+                                        <ng-container *ngIf="templateData.details.usertype == 5">
+                                            <span class="ico headerusertype gray"></span>
+                                        </ng-container>
+                                    </h2>
+                                    <p>
+                                        <strong>{{templateData.details.nick_name}}</strong>
+                                        <!-- GUitar, Drums, Trumpet Rock - Classic Rock  -->
+
+                                        <span class="hedertextoverflow">
+                                            <ng-container *ngFor="let item of templateData.details.userInstrumentsProfession; let i = index;">
+                                                {{item.instrument_name}} 
+                                                <span *ngIf="i+1 == templateData.details.userInstrumentsProfession.length; else hasComma"></span>
+                                                <ng-template #hasComma> ,</ng-template>
+                                            </ng-container>
+                                        </span>
+
+                                        <span class="hedertextoverflow">
+                                            <ng-container *ngFor="let item of templateData.details.userGenre; let i = index;">
+                                                {{item.itemName}}
+                                                <span *ngIf="i+1 == templateData.details.userGenre.length; else hasSecondComma"></span>
+                                                <ng-template #hasSecondComma> ,</ng-template>
+                                            </ng-container>
+                                        </span>
+
+                                        <br>
+                                        <span class="hedertextoverflow">
+                                            {{templateData.details.city}}, {{templateData.details.country}}
+                                        </span>
+                                    </p>
+                                    <ul class="profileShr">
+                                        <li class="shrLi">
+                                            <a href="javascript:void(0);">
+                                                <img src="assets/images/music-icon.png" alt=""> </a>
+                                            <span class="shrCount">700</span>
+                                        </li>
+                                        <li class="shrLi">
+                                            <a href="javascript:void(0);">
+                                                <img src="assets/images/users-icon.png" alt=""> </a>
+                                            <span class="shrCount">300</span>
+                                        </li>
+                                        <li class="shrLi">
+                                            <a href="javascript:void(0);">
+                                                <img src="assets/images/share-icon.png" alt=""> </a>
+                                        </li>
+                                        <li class="shrLi">
+                                            <a href="javascript:void(0);">
+                                                <img src="assets/images/user-plus-icon.png" alt=""> </a>
+                                        </li>
+                                        <li class="shrLi">
+                                            <a href="javascript:void(0);">
+                                                <img src="assets/images/link-icon.png" alt=""> </a>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                            <a href="javascript:void(0);" (click)="openModal(banner)" *ngIf="editBtn" class="edt">
+                                <i class="fa fa-edit"></i>
+                            </a>
+                        </div>
+                    </div>
+                    <!-- <div class="banrProfileText">Lorem Ipsum is simply dummy text of theprinting and typeng industry Lorem Ipsum has iu standard Ipsum is simply dummy text of typeng</div> -->
+                    <div class="spacer"></div>
+                </div>
+            </div>
+        </div>
+        <!-- banner template 5 -->
+
+        <!-- banner template 6 -->
+        <div class="musicianbanner" id="musicianbanner6" *ngIf="templateData.tplid == 6" style="display:block;">
+            
+            
+            <div class="musicianBannerImage"
+            *ngIf="templateData.headerImage.imagesource.image == ''"
+            [style.background-color]="templateData.headerColor">
+                <div class="colm colm2" [style.background-color]="templateData.headerColorMain"></div>
+            </div>
+
+            <div class="musicianBannerImage"
+            *ngIf="templateData.headerImage.imagesource.image !== ''"
+            [style.background-color]="templateData.headerColor">
+                <div class="colm colm2" [style.background-image]="headerImageOne"></div>
+            </div>
+
+
+            <div class="musicianBannerDesc">
+                <div class="innerBnrWrap" style="width: 972px;">
+                    <div class="banrProfileboxCont">
+                        <div class="banrProfilebox">
+                            <div class="picDescCont">
+                                <div class="banProfileImg" [style.background-image]="profileImage"></div>
+                                <div class="details">
+                                    <h2>{{templateData.details.name}}
+                                        <!-- <span class="ico"></span> -->
+                                        <ng-container *ngIf="templateData.details.usertype == 3">
+                                            <span class="ico headerusertype"></span>
+                                        </ng-container>
+                                        <ng-container *ngIf="templateData.details.usertype == 4">
+                                            <span class="ico headerusertype">Pro</span>
+                                        </ng-container>
+                                        <ng-container *ngIf="templateData.details.usertype == 5">
+                                            <span class="ico headerusertype gray"></span>
+                                        </ng-container>
+                                    </h2>
+                                    <p>
+                                        <strong>{{templateData.details.nick_name}}</strong>
+                                        <!-- GUitar, Drums, Trumpet Rock - Classic Rock  -->
+
+                                        <span class="hedertextoverflow">
+                                            <ng-container *ngFor="let item of templateData.details.userInstrumentsProfession; let i = index;">
+                                                {{item.instrument_name}} 
+                                                <span *ngIf="i+1 == templateData.details.userInstrumentsProfession.length; else hasComma"></span>
+                                                <ng-template #hasComma> ,</ng-template>
+                                            </ng-container>
+                                        </span>
+
+                                        <span class="hedertextoverflow">
+                                            <ng-container *ngFor="let item of templateData.details.userGenre; let i = index;">
+                                                {{item.itemName}}
+                                                <span *ngIf="i+1 == templateData.details.userGenre.length; else hasSecondComma"></span>
+                                                <ng-template #hasSecondComma> ,</ng-template>
+                                            </ng-container>
+                                        </span>
+                                        
+                                        <br>
+                                        <span class="hedertextoverflow">
+                                            {{templateData.details.city}}, {{templateData.details.country}}
+                                        </span>
+                                    </p>
+                                    <ul class="profileShr">
+                                        <li class="shrLi">
+                                            <a href="javascript:void(0);">
+                                                <img src="assets/images/music-icon.png" alt=""> </a>
+                                            <span class="shrCount">700</span>
+                                        </li>
+                                        <li class="shrLi">
+                                            <a href="javascript:void(0);">
+                                                <img src="assets/images/users-icon.png" alt=""> </a>
+                                            <span class="shrCount">300</span>
+                                        </li>
+                                        <li class="shrLi">
+                                            <a href="javascript:void(0);">
+                                                <img src="assets/images/share-icon.png" alt=""> </a>
+                                        </li>
+                                        <li class="shrLi">
+                                            <a href="javascript:void(0);">
+                                                <img src="assets/images/user-plus-icon.png" alt=""> </a>
+                                        </li>
+                                        <li class="shrLi">
+                                            <a href="javascript:void(0);">
+                                                <img src="assets/images/link-icon.png" alt=""> </a>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                            <a href="javascript:void(0);" (click)="openModal(banner)" *ngIf="editBtn" class="edt">
+                                <i class="fa fa-edit"></i>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="banrProfileText" *ngIf="templateData.about !== ''">{{templateData.about}}</div>
+                    <div class="spacer"></div>
+                </div>
+            </div>
+        </div>
+        <!-- banner template 6 -->
+
+
+    </div>
+</section>

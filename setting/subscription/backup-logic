@@ -1,0 +1,81 @@
+<div class="plan_action_bd" *ngIf="firstUserPlanBtn; else notnewuser">
+										<a href="javascript:void(0);" (click)="upgradePlanPop(plan)">
+											<span>Upgrade</span>
+										</a>
+									</div>
+									<ng-template #notnewuser>
+										<div class="plan_action_bd">
+												
+											<div class="plan_action_bd" *ngIf="plan.id == userInformation?.user?.subscription_plan?.subscription_id; else upgrade">
+												<!-- <pre>{{plan.amount_monthly | json}}</pre>
+												<pre>{{userInformation.subscription_details.amount_monthly | json}}</pre> -->
+												
+												<div class="plan_action_bd" *ngIf="plan.amount_monthly == 0; else freecurrent">
+													<div class="plan_action_bd" *ngIf="onPaymentBtn; else updown">
+														<a href="javascript:void(0);" disabled>
+															<span>Current plan</span>
+														</a>
+													</div>
+													<ng-template #updown>
+														<a href="javascript:void(0);" (click)="upgradePlanPop(plan)">
+															<span>Current plan</span>
+														</a>
+													</ng-template>
+												</div>
+												<ng-template #freecurrent>
+													<div class="plan_action_bd" *ngIf="onPaymentBtn; else updown">
+														<button [disabled]="isDisabled" (click)="upgradePlanPop(plan, $event)">
+															<span>Current plan</span>
+														</button>
+													</div>
+													<ng-template #updown>
+														<a href="javascript:void(0);" (click)="upgradePlanPop(plan)">
+															<span>Current plan</span>
+														</a>
+													</ng-template>
+												</ng-template>
+											</div>
+											<ng-template #upgrade>
+												<div class="plan_action_bd" *ngIf="onPaymentBtn; else updown">
+													<!-- <button [disabled]="isDisabled" (click)="upgradePlanPop(plan, $event)" *ngIf="plan.amount_monthly > userInformation.subscription_details.amount_monthly; else downgrade">
+														<span>Upgrade</span>
+													</button>
+													<ng-template #downgrade>
+														<button [disabled]="isDisabled" (click)="upgradePlanPop(plan, $event)">
+															<span>Downgrade</span>
+														</button>
+													</ng-template> -->
+													<!-- check this for first time user -->
+													<div *ngIf="userInformation.hasOwnProperty('subscription_details'); else isFirst">
+														<button [disabled]="isDisabled" (click)="upgradePlanPop(plan, $event)" *ngIf="plan.amount_monthly > userInformation.subscription_details.amount_monthly; else downgrade">
+															<span>Upgrade</span>
+														</button>
+														<ng-template #downgrade>
+															<button [disabled]="isDisabled" (click)="upgradePlanPop(plan, $event)">
+																<span>Downgrade</span>
+															</button>
+														</ng-template>
+													</div>
+													<ng-template #isFirst>
+														<a href="javascript:void(0);" (click)="upgradePlanPop(plan, $event)">
+															<span>Upgrade</span>
+														</a>
+													</ng-template>
+													<!-- check this for first time user -->
+												</div>
+												<ng-template #updown>
+													<!-- <pre>{{plan.amount_monthly | json}}</pre>
+													<pre>{{userInformation.subscription_details.amount_monthly | json}}</pre> -->
+													<a href="javascript:void(0);" (click)="upgradePlanPop(plan)" *ngIf="plan.amount_monthly > userInformation.subscription_details.amount_monthly; else downgrade">
+														<span>Upgrade</span>
+													</a>
+													<ng-template #downgrade>
+														<a href="javascript:void(0);" (click)="upgradePlanPop(plan)">
+															<span>Downgrade</span>
+														</a>
+													</ng-template>
+												</ng-template>
+											</ng-template>
+	
+										</div>
+									</ng-template>

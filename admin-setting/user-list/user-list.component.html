@@ -1,0 +1,204 @@
+<!-- <pre>
+	{{inviteUserObj | json}}
+</pre> -->
+
+
+<p-growl [(value)]="msgs"></p-growl>
+
+<!-- invite user popup -->
+<p-dialog header="INVITE USER" [(visible)]="inviteUser" modal="modal" width="600" [responsive]="true">
+	<div class="row">        	
+		<div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+				<div class="row form-group">      
+				<label class="col-lg-6 col-md-6 col-sm-6 col-xs-12">First name</label>
+				<div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+					<input type="text" class="form-control" name="first-name" autocomplete="off" [(ngModel)]="inviteUserObj.first_name">
+				</div>
+			</div>
+		</div>       	
+		<div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+				<div class="row form-group">      
+				<label class="col-lg-6 col-md-6 col-sm-6 col-xs-12">Last name</label>
+				<div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+					<input type="text" class="form-control" name="last-name" autocomplete="off" [(ngModel)]="inviteUserObj.last_name">
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="row form-group">      
+		<label class="col-lg-3 col-md-3 col-sm-3 col-xs-12">Email</label>
+		<div class="col-lg-9 col-md-9 col-sm-9 col-xs-12">
+			<input type="text" class="form-control" name="email" autocomplete="off" [(ngModel)]="inviteUserObj.email">
+		</div>
+	</div>
+	<div class="row form-group">      
+		<label class="col-lg-3 col-md-3 col-sm-3 col-xs-12">Role</label>
+		<div class="col-lg-9 col-md-9 col-sm-9 col-xs-12">
+			<select class="form-control" [(ngModel)]="inviteUserObj.role_id">
+				<option [value]="role.id" *ngFor="let role of inviteUserRole">{{role.name}}</option>
+			</select>
+		</div>
+	</div>
+	<div class="text-right">
+		<button type="button" class="btn btn-success btntheme" (click)="inviteUserPost()">INVITE USER</button>
+	</div>
+	<br>
+	<p-messages [(value)]="errmsgs"></p-messages>
+</p-dialog>
+<!-- invite user popup -->
+
+
+<!-- user role change popup -->
+<p-dialog header="Change role" [(visible)]="userRole" modal="modal" width="600" [responsive]="true">
+		
+	<div class="row form-group">
+		<!-- <pre>{{inviteUserObj | json}}</pre> -->
+		<label class="col-lg-3 col-md-3 col-sm-3 col-xs-12">Role</label>
+		<div class="col-lg-9 col-md-9 col-sm-9 col-xs-12">
+			<select class="form-control" [(ngModel)]="inviteUserObj.role_id">
+				<option [value]="role.id" *ngFor="let role of inviteUserRole">{{role.name}}</option>
+			</select>
+		</div>
+	</div>
+	<div class="text-right">
+		<button type="button" class="btn btn-success btntheme" (click)="roleChange()">Change</button>
+	</div>
+	<br>
+	<p-messages [(value)]="errmsgs"></p-messages>
+</p-dialog>
+<!-- user role change popup -->
+
+
+<div class="container">
+	<div class="settings-loader-outer">
+
+		<!-- loader -->
+		<div class="linear-progress med">
+			<div class="bar bar1"></div>
+			<div class="bar bar2"></div>
+		</div>
+		<div class="setting-http-load">
+		</div>
+		<!-- loader -->
+
+		<!-- Tab panes -->
+		<div class="tab-content">
+			<div role="tabpanel" class="tab-pane active" id="home">
+
+				<div class="clearfix">
+					<h3 class="dbtitle pull-left"><i class="fa fa-user"></i>USER LIST</h3>
+					<button type="button" class="btn btn-success btntheme pull-right" (click)="inviteUserPop()">INVITE USER</button>
+				</div>
+				<div class="table-responsive themecolor client-table">
+					<!-- <table class="table table-bordered">
+						
+						<thead>
+							<tr>
+								<th>Full Name</th>
+								<th>Email</th>
+								<th>Role</th>
+								<th>Date signed</th>
+								<th>Date last signed</th>
+								<th>Status</th>
+								<th>Delete</th>
+							</tr>
+						</thead>
+						<tbody>
+							
+							<tr *ngFor="let user of userList">
+								<td>{{user.first_name}} {{user.last_name}}</td>
+								<td>{{user.email}}</td>
+								<td>{{user.invite.name}}</td>
+								<td>{{user.created_at}}</td>
+								<td>16/05/2017</td>
+								<td>
+									<label class="i-switch i-switch-md  csswitch">
+										<input type="checkbox" name="status" [ngModel]="user.is_active == 'Y' ? true : user.is_active == 'N' ? false : null" (ngModelChange)="user.is_active = $event ? 'Y' : 'N'">
+										<i></i>
+									</label>
+								</td>
+								<td><button class="delete" (click)="deleteUser(user.id)"><i class="fa fa-close"></i></button></td>
+							</tr>
+
+						</tbody>
+					</table> -->
+
+					<p-dataTable [value]="userList" [rows]="10" [paginator]="true" [pageLinks]="3" [rowsPerPageOptions]="[10,20,50]" resizableColumns="true">
+
+							<p-column field="company_name" header="Full Name" [sortable]="true">
+								<ng-template let-col let-name="rowData" pTemplate="body">
+									<span>{{name.first_name}} {{name.last_name}}</span>
+								</ng-template>
+							</p-column>
+
+							<p-column field="email" header="Email" [style]="{'width':'25%'}"></p-column>
+
+							<p-column field="invite" header="Role">
+								<ng-template let-col let-role="rowData" pTemplate="body">
+									<!-- <span>{{role.invite.name}}</span> -->
+									<span>{{role?.invite?.name == null? 'OWNER' : role?.invite?.name}}</span>
+								</ng-template>
+							</p-column>
+
+							<p-column field="created_at" header="Date signed"></p-column>
+
+							<p-column field="created_at" header="Date last signed">
+								<ng-template let-col let-lastSigned="rowData" pTemplate="body">
+									<span>16/05/2017</span>
+								</ng-template>
+							</p-column>
+
+							<p-column field="is_active" header="Status" [style]="{'width':'7%'}">
+								<ng-template let-col let-status="rowData" pTemplate="body">
+									<label class="i-switch i-switch-md  csswitch">
+										<input type="checkbox" name="status" [ngModel]="status.is_active == 'Y' ? true : status.is_active == 'N' ? false : null" (ngModelChange)="status.is_active = $event ? 'Y' : 'N'">
+										<i></i>
+									</label>
+								</ng-template>
+							</p-column>
+
+							<p-column header="Edit Role" [style]="{'width':'9%', 'text-align': 'center'}">
+								<ng-template let-col let-edit="rowData" pTemplate="body">
+
+									<!-- manager -->
+									<span *ngIf="authUser.type == 4">
+										<span *ngIf="edit.type == 4 || edit.type == 5; else ownerAccess">
+											<button class="edit" (click)="editRole(edit)"><i class="fa fa-edit"></i></button>
+										</span>
+										<ng-template #ownerAccess>
+											----
+										</ng-template>
+									</span>
+									<!-- manager -->
+
+									<!-- executive -->
+									<span *ngIf="authUser.type == 5">
+										----
+									</span>
+									<!-- executive -->
+
+									<!-- owner -->
+									<span *ngIf="authUser.type == 2">
+										<button class="edit" (click)="editRole(edit)"><i class="fa fa-edit"></i></button>
+									</span>
+									<!-- owner -->
+
+
+								</ng-template>
+							</p-column>
+
+
+							<p-column header="Delete" [style]="{'width':'7%', 'text-align': 'center'}">
+								<ng-template let-col let-delete="rowData" pTemplate="body">
+									<button class="delete" (click)="deleteUser(delete.id)"><i class="fa fa-close"></i></button>
+								</ng-template>
+							</p-column>
+
+					</p-dataTable>
+
+				</div>
+			</div><!-- tab one -->
+			<!--    <div role="tabpanel" class="tab-pane" id="profile"></div> -->
+		</div>
+	</div>
+</div>
